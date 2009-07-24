@@ -14,7 +14,7 @@ namespace Wms.Proto.MVC
 
 		public ActionResult Index()
 		{
-			
+			return View();
 		}
 	}
 }
