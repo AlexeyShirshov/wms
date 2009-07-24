@@ -1,3 +1,5 @@
+using System.Web.Routing;
+using Wms.Proto.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +32,16 @@ namespace Wms.Proto.Web.Controllers
 			return View(new Page());
     	}
 
+		[AcceptVerbs(HttpVerbs.Post)]
     	public ActionResult Create(IPage page)
     	{
-    		PageRepository.Save(page);
-			return RedirectToAction("Index");
+			if(ValidatePage(page))
+			{
+    			PageRepository.Save(page);
+				RouteTable.Routes.MapRoute(page.Name, page.Url, new { controller = page.Name, action = "Index" });
+				return RedirectToAction("Index");
+			}
+			return View();
     	}
 
     	public ActionResult Edit(string name)
@@ -45,5 +53,20 @@ namespace Wms.Proto.Web.Controllers
 			}
 			throw new HttpException(404, "");
     	}
+
+		private bool ValidatePage(IPage page)
+		{
+			if(page.Name.IsNullOrEmpty())
+			{
+				ModelState.AddModelError("Name", "*");
+			}
+
+			if(page.Url.IsNullOrEmpty())
+			{
+				ModelState.AddModelError("Url", "*");
+			}
+
+			return ModelState.IsValid;
+		}
     }
 }
