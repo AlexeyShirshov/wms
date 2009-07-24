@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.UI;
 using Wms.Proto.Data;
+using Wms.Proto.Web.Data;
 using Page = Wms.Proto.Web.Page;
 
 namespace Wms.Proto.Web.Controllers
@@ -17,9 +18,13 @@ namespace Wms.Proto.Web.Controllers
 		//Datasources
 		public IRepository<IPage> PageRepository { get; set; }
 
-        //
-        // GET: /Admin/
+		public AdminController() : this(null) { }
 
+		public AdminController(IRepository<IPage> db)
+		{
+			PageRepository = db ?? DataHelper.GetPageRepository();
+		}
+        
         public ActionResult Index()
         {
             return View(PageRepository.Items);
@@ -33,12 +38,11 @@ namespace Wms.Proto.Web.Controllers
     	}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-    	public ActionResult Create(IPage page)
+    	public ActionResult Create(Page page)
     	{
 			if(ValidatePage(page))
 			{
     			PageRepository.Save(page);
-				RouteTable.Routes.MapRoute(page.Name, page.Url, new { controller = page.Name, action = "Index" });
 				return RedirectToAction("Index");
 			}
 			return View();
