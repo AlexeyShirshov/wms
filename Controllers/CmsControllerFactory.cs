@@ -19,6 +19,7 @@ namespace Wms.Proto.Web.Controllers
 			}
 			var controller = base.CreateController(requestContext, "Page") as CmsController;
 			controller.Page = Data.DataHelper.GetPageRepository().Items.FirstOrDefault(p => p.Name == controllerName);
+			
 			return controller;
 		}
 	}
