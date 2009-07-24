@@ -11,7 +11,7 @@
     <% foreach (var page in Model)
 	   {%>
     <p>
-		<%= Html.PageEditLink(page) %>
+		<%= Html.PageEditLink(page) %> <a href="<%= "/" + page.Url %>"> go to page</a>
     </p>
     <% } %>
     <p>
