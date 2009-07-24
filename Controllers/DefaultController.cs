@@ -8,14 +8,14 @@ using Wms.Proto.MVC;
 
 namespace Wms.Proto.Web.Controllers
 {
-    public class DefaultController : CmsController
+    public class PageController : CmsController
     {
         //
         // GET: /Default/
 
         public ActionResult Index()
         {
-            return View();
+            return View(Page);
         }
 
     }

@@ -74,6 +74,7 @@
     <Content Include="Global.asax" />
     <Content Include="Views\Admin\Create.aspx" />
     <Content Include="Views\Admin\Index.aspx" />
+    <Content Include="Views\Page\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
