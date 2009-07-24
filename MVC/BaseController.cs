@@ -12,9 +12,5 @@ namespace Wms.Proto.MVC
 	{
 		public IPage Page { get; set; }
 
-		public ActionResult Index()
-		{
-			return View();
-		}
 	}
 }
