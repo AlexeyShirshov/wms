@@ -44,6 +44,7 @@ namespace Wms.Proto.Web.Controllers
 			{
     			PageRepository.Save(page);
 				return RedirectToAction("Index");
+				//RouteTable.Routes.Insert(0, new Route()  )
 			}
 			return View();
     	}

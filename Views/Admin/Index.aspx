@@ -8,10 +8,12 @@
 </head>
 <body>
     <div>
-    <% foreach(var page  in Model) {%>
+    <% foreach (var page in Model)
+	   {%>
     <p>
-		
+		<%= page.Name%>
     </p>
+    <% } %>
     
    
     </div>
