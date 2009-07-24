@@ -16,7 +16,7 @@
 		<%= Html.TextBox("Url") %>
     </p>
         <p>Contents<br />
-		<%= Html.TextBox("Name") %>
+		<%= Html.TextArea("Contents") %>
     </p>
     <p>
 		<input type="submit" />
