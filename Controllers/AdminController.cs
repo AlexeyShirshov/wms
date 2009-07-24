@@ -27,6 +27,8 @@ namespace Wms.Proto.Web.Controllers
         
         public ActionResult Index()
         {
+            string s = null;
+            bool f = s.IsNullOrEmpty();
             return View(PageRepository.Items);
         }
 
