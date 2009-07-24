@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9A56F7B3-5286-480E-8180-720F509CFB2A}</ProjectGuid>
+    <ProjectGuid>{869360AD-CAD7-4C4C-A1D0-96F3A81F0535}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cms.Proto</RootNamespace>
-    <AssemblyName>Cms.Proto</AssemblyName>
+    <RootNamespace>Cms.Proto.Tests</RootNamespace>
+    <AssemblyName>Cms.Proto.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gallio, Version=3.0.6.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="MbUnit, Version=3.0.6.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -46,12 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\DataInterfaces.cs" />
-    <Compile Include="MVC\BaseController.cs" />
+    <Compile Include="Controllers\AdminControllerTest.cs" />
+    <Compile Include="Controllers\ControllerTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\WebInterfaces.cs" />
-    <Compile Include="Repository\PageRepository.cs" />
-    <Compile Include="Web\Page.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cms.Proto.Web\Cms.Proto.Web.csproj">
+      <Project>{69447330-7DDF-4962-8673-D538E77D71E4}</Project>
+      <Name>Cms.Proto.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cms.Proto\Cms.Proto.csproj">
+      <Project>{9A56F7B3-5286-480E-8180-720F509CFB2A}</Project>
+      <Name>Cms.Proto</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

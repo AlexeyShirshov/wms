@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cms.Proto")]
+[assembly: AssemblyTitle("Cms.Proto.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Cms.Proto")]
+[assembly: AssemblyProduct("Cms.Proto.Tests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1ca56cf7-9a02-4900-9102-8d8adc285c14")]
+[assembly: Guid("efde0f32-1636-40fe-9878-11d14ae5c4e0")]
 
 // Version information for an assembly consists of the following four values:
 //
