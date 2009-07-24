@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Interfaces\DataInterfaces.cs" />
     <Compile Include="MVC\BaseController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
