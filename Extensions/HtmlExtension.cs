@@ -12,7 +12,7 @@ namespace Cms.Proto.Web.Extensions
 	{
 		public static string PageEditLink(this HtmlHelper html, IPage page)
 		{
-			return html.ActionLink("Edit", "Admin", new { id = page.Name });
+			return html.ActionLink(page.Name,  "Edit", "Admin", new { id = page.Name }, null);
 		}
 	}
 }

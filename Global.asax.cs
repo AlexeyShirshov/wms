@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Wms.Proto.Web.Controllers;
 
 namespace Wms.Proto.Web
 {
@@ -27,6 +28,7 @@ namespace Wms.Proto.Web
 		protected void Application_Start()
 		{
 			RegisterRoutes(RouteTable.Routes);
+			ControllerBuilder.Current.SetControllerFactory(typeof(CmsControllerFactory));
 		}
 	}
 }

@@ -43,8 +43,9 @@ namespace Wms.Proto.Web.Controllers
 			if(ValidatePage(page))
 			{
     			PageRepository.Save(page);
+				RouteTable.Routes.Insert(0, new Route(page.Url, new RouteValueDictionary(new {controller = page.Name, action = "Index"}),
+					new MvcRouteHandler()));
 				return RedirectToAction("Index");
-				//RouteTable.Routes.Insert(0, new Route()  )
 			}
 			return View();
     	}
