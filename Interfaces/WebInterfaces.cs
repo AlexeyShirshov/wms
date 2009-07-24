@@ -32,4 +32,9 @@ namespace Wms.Proto.Web
 	{
 		string Name { get; }
 	}
+
+	public interface IPageGenerator
+	{
+		
+	}
 }
