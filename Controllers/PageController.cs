@@ -15,7 +15,7 @@ namespace Wms.Proto.Web.Controllers
 
         public ActionResult Index()
         {
-            return Content(Page.Contents);
+            return View("Page", string.Empty, Page);
         }
 
     }

@@ -7,9 +7,7 @@
     <title>Index</title>
 </head>
 <body>
-    <div>
     <%= Model.Contents %>
     
-    </div>
 </body>
 </html>
