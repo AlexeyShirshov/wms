@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Wms.Proto.Web
+namespace Wms.Web
 {
 	public class Page : IPage
 	{

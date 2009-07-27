@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using Wms.Proto.Data;
-using Wms.Proto.Web;
+using Wms.Data;
+using Wms.Web;
 
-namespace Wms.Proto.MVC
+namespace Wms.MVC
 {
 	public abstract class CmsController : Controller
 	{

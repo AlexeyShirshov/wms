@@ -8,8 +8,8 @@
     <ProjectGuid>{9A56F7B3-5286-480E-8180-720F509CFB2A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cms.Proto</RootNamespace>
-    <AssemblyName>Cms.Proto</AssemblyName>
+    <RootNamespace>Wms</RootNamespace>
+    <AssemblyName>Wms.Lib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\WebInterfaces.cs" />
     <Compile Include="Repository\PageRepository.cs" />
+    <Compile Include="Web\AspVirtualPathPageGenerator.cs" />
     <Compile Include="Web\Page.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

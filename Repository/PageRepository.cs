@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Wms.Proto.Data;
-using Wms.Proto.Web;
+using Wms.Data;
+using Wms.Web;
 
-namespace Wms.Proto.Repository
+namespace Wms.Repository
 {
 	public class ListPageRepository : IRepository<IPage>
 	{

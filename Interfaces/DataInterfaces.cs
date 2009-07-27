@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Wms.Proto.Web;
+using Wms.Web;
 
-namespace Wms.Proto.Data
+namespace Wms.Data
 {
 	public interface IRepository<T>
 	{
