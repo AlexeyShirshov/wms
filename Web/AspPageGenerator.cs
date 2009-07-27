@@ -45,7 +45,7 @@ namespace Wms.Web
 
 		private static string GetAsp(IControl control)
 		{
-			return @"<%@ Control Language=""C#"" Inherits=""System.Web.Mvc.ViewUserControl<IControlModel>"" %>" + control.Contents;
+			return @"<%@ Control Language=""C#"" Inherits=""System.Web.Mvc.ViewUserControl<Wms.Web.IControlModel>"" %>" + control.Contents;
 		}
 		#endregion
 	}
