@@ -25,16 +25,22 @@ namespace Wms.Web
 		string Name { get; set; }
 		string Url { get; set; }
 		string Contents { get; set; }
-		IEnumerable<IControl> Controls { get; }
 	}
 
 	public interface IControl
 	{
-		string Name { get; }
+		string Name { get; set;  }
+		string Contents { get; set; }
 	}
 
 	public interface IPageGenerator
 	{
 		void Generate(IPage page);
+		void Generate(IControl control);
+	}
+
+	public interface IControlModel
+	{
+		object Data { get; set; }
 	}
 }

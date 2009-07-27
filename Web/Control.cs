@@ -5,10 +5,13 @@ using System.Text;
 
 namespace Wms.Web
 {
-	public class Page : IPage
+	public class Control : IControl
 	{
+		#region Implementation of IControl
+
 		public string Name { get; set; }
-		public string Url { get; set; }
 		public string Contents { get; set; }
+
+		#endregion
 	}
 }

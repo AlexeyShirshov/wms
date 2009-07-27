@@ -9,7 +9,7 @@ namespace Wms.Web
 {
 	public class AspPageGenerator : IPageGenerator
 	{
-		private string _rootFolder;
+		private readonly string _rootFolder;
 
 		public AspPageGenerator(string rootFolder)
 		{
@@ -30,9 +30,22 @@ namespace Wms.Web
             }
 		}
 
+		public void Generate(IControl control)
+		{
+			using (var sw = new StreamWriter(Path.Combine(_rootFolder, control.Name) + ".ascx", false))
+			{
+				sw.Write(GetAsp(control));
+			}
+		}
+
 		private static string GetAsp(IPage page)
 		{
-			return @"<%@ Page Language=""C#"" Inherits=""System.Web.Mvc.ViewPage"" %>" + page.Contents;
+			return @"<%@ Page Language=""C#"" Inherits=""Wms.Mvc.BasePage""%>" + page.Contents;
+		}
+
+		private static string GetAsp(IControl control)
+		{
+			return @"<%@ Control Language=""C#"" Inherits=""System.Web.Mvc.ViewUserControl<IControlModel>"" %>" + control.Contents;
 		}
 		#endregion
 	}
