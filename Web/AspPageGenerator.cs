@@ -24,6 +24,11 @@ namespace Wms.Web
 		#region Implementation of IPageGenerator
 		public void Generate(IPage page)
 		{
+			if (page == null)
+			{
+				throw new ArgumentNullException("page");
+			}
+
             using(var sw = new StreamWriter(Path.Combine(_rootFolder, page.Name) + ".aspx", false))
             {
 				sw.Write(GetAsp(page));
@@ -32,6 +37,11 @@ namespace Wms.Web
 
 		public void Generate(IControl control)
 		{
+			if (control == null)
+			{
+				throw new ArgumentNullException("control");
+			}
+
 			using (var sw = new StreamWriter(Path.Combine(_rootFolder, control.Name) + ".ascx", false))
 			{
 				sw.Write(GetAsp(control));
