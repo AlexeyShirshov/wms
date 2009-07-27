@@ -31,7 +31,7 @@ namespace Wms.Tests
 		public void Index_Returns_Pages()
 		{
 			_controller.PageRepository = _pageRepository;
-			var result = _controller.Index() as ViewResult;
+			var result = _controller.Pages() as ViewResult;
 
 			Assert.IsInstanceOfType(typeof(IEnumerable<IPage>), result.ViewData.Model);
 		}
@@ -39,7 +39,7 @@ namespace Wms.Tests
 		[Test]
 		public void Create_Returns_Page()
 		{
-			var result = _controller.Create() as ViewResult;
+			var result = _controller.CreatePage() as ViewResult;
 
 			Assert.IsInstanceOfType(typeof(IPage), result.ViewData.Model);
 		}
@@ -49,7 +49,7 @@ namespace Wms.Tests
 		{
 			var page = new Page() { Name = "Unit", Contents = "", Url = "/unit" };
 
-			_controller.Create(page);
+			_controller.CreatePage(page);
 
 			Assert.IsTrue(_pageRepository.Items.Any(p => p.Name == "Unit"));
 		}
@@ -57,7 +57,7 @@ namespace Wms.Tests
 		[Test]
 		public void Edit_Existing_Returns_Page()
 		{
-			var result = _controller.Edit("News") as ViewResult;
+			var result = _controller.EditPage("News") as ViewResult;
 
 			var page = result.ViewData.Model as IPage;
 
@@ -69,7 +69,7 @@ namespace Wms.Tests
 		[ExpectedException(typeof(HttpException))]
 		public void Edit_NonExisting_Throws_404()
 		{
-			_controller.Edit("Zhopa");
+			_controller.EditPage("Zhopa");
 		}
 
 
