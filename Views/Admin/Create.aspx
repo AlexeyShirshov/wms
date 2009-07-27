@@ -16,7 +16,7 @@
 		<%= Html.TextBox("Url") %>
     </p>
         <p>Contents<br />
-		<%= Html.TextArea("Contents", new {width = "100%", height = "500px") %>
+		<%= Html.TextArea("Contents", new {width = "100%", height = "500px"}) %>
     </p>
     <p>
 		<input type="submit" value="Save" />
