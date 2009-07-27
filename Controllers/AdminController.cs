@@ -1,5 +1,4 @@
 using System.Web.Routing;
-using Wms.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,12 +94,12 @@ namespace Wms.Web.Controllers
 
 		private bool ValidatePage(IPage page)
 		{
-			if(page.Name.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(page.Name))
 			{
 				ModelState.AddModelError("Name", "*");
 			}
 
-			if(page.Url.IsNullOrEmpty())
+			if(string.IsNullOrEmpty(page.Url))
 			{
 				ModelState.AddModelError("Url", "*");
 			}
@@ -110,12 +109,12 @@ namespace Wms.Web.Controllers
 
 		private bool ValidateControl(IControl control)
 		{
-            if(control.Name.IsNullOrEmpty())
+            if(string.IsNullOrEmpty(control.Name))
             {
 				ModelState.AddModelError("Name", "*");
             }
 
-			if(control.Contents.IsNullOrEmpty())
+			if(string.IsNullOrEmpty(control.Contents))
 			{
 				ModelState.AddModelError("Contents", "*");
 			}

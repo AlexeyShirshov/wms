@@ -19,7 +19,7 @@ namespace Wms.Web.Controllers
 			}
 			var controller = base.CreateController(requestContext, "Page") as CmsController;
 			controller.Page = Data.Container.GetPageRepository().Items
-				.FirstOrDefault(p => p.Name == requestContext.RouteData.Values["page"].ToString());
+				.Single(p => p.Name == requestContext.RouteData.Values["page"].ToString());
 			
 			return controller;
 		}
