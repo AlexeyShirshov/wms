@@ -51,6 +51,7 @@ namespace Wms.Web.Controllers
     	}
 
 		[AcceptVerbs(HttpVerbs.Post)]
+		[ValidateInput(false)]
     	public ActionResult CreatePage(Page page)
     	{
 			if(ValidatePage(page))
@@ -80,6 +81,7 @@ namespace Wms.Web.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
+		[ValidateInput(false)]
 		public ActionResult CreateControl(Control control)
 		{
 			if(ValidateControl(control))
