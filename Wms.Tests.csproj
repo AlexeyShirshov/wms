@@ -8,8 +8,8 @@
     <ProjectGuid>{869360AD-CAD7-4C4C-A1D0-96F3A81F0535}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cms.Proto.Tests</RootNamespace>
-    <AssemblyName>Cms.Proto.Tests</AssemblyName>
+    <RootNamespace>Wms.Tests</RootNamespace>
+    <AssemblyName>Wms.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -58,13 +58,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cms.Proto.Web\Cms.Proto.Web.csproj">
+    <ProjectReference Include="..\Cms.Proto.Web\Wms.Web.csproj">
       <Project>{69447330-7DDF-4962-8673-D538E77D71E4}</Project>
-      <Name>Cms.Proto.Web</Name>
+      <Name>Wms.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cms.Proto\Cms.Proto.csproj">
+    <ProjectReference Include="..\Cms.Proto\Wms.Lib.csproj">
       <Project>{9A56F7B3-5286-480E-8180-720F509CFB2A}</Project>
-      <Name>Cms.Proto</Name>
+      <Name>Wms.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

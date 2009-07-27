@@ -5,12 +5,12 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using MbUnit.Framework;
-using Wms.Proto.Repository;
-using Wms.Proto.Tests.Controllers;
-using Wms.Proto.Web;
-using Wms.Proto.Web.Controllers;
+using Wms.Repository;
+using Wms.Tests.Controllers;
+using Wms.Web;
+using Wms.Web.Controllers;
 
-namespace Wms.Proto.Tests
+namespace Wms.Tests
 {
 	[TestFixture]
 	[TestsOn("AdminController")]

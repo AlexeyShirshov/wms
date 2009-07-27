@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 
-namespace Wms.Proto.Tests.Controllers
+namespace Wms.Tests.Controllers
 {
 	public class ControllerTestBase<T> where T: Controller, new()
 	{
