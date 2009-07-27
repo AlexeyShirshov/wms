@@ -1,5 +1,5 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Wms.Web.IPage>>" %>
-<%@ import namespace="Cms.Web.Extensions"  %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -8,16 +8,8 @@
 </head>
 <body>
     <div>
-    <% foreach (var page in Model)
-	   {%>
-    <p>
-		<%= Html.PageEditLink(page) %> <a href="<%= "/" + page.Url %>"> go to page</a>
-    </p>
-    <% } %>
-    <p>
-		<%= Html.ActionLink("Create new  page", "Create") %>
-    </p>
-   
+		<p><%= Html.ActionLink("Pages", "Pages") %></p>
+		<p><%= Html.ActionLink("Controls", "Controls") %></p>
     </div>
 </body>
 </html>
