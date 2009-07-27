@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cms.Proto.Web</RootNamespace>
-    <AssemblyName>Cms.Proto.Web</AssemblyName>
+    <RootNamespace>Wms.Web</RootNamespace>
+    <AssemblyName>Wms.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <SccProjectName>SAK</SccProjectName>
@@ -83,9 +83,9 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cms.Proto\Cms.Proto.csproj">
+    <ProjectReference Include="..\Cms.Proto\Wms.Lib.csproj">
       <Project>{9A56F7B3-5286-480E-8180-720F509CFB2A}</Project>
-      <Name>Cms.Proto</Name>
+      <Name>Wms.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

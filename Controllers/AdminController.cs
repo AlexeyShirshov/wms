@@ -1,5 +1,5 @@
 using System.Web.Routing;
-using Wms.Proto.Helpers;
+using Wms.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +7,24 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.UI;
-using Wms.Proto.Data;
-using Wms.Proto.Web.Data;
-using Page = Wms.Proto.Web.Page;
+using Wms.Data;
+using Wms.Web.Data;
+using Page = Wms.Web.Page;
 
-namespace Wms.Proto.Web.Controllers
+namespace Wms.Web.Controllers
 {
     public class AdminController : Controller
     {
-		//Datasources
+		private IPageGenerator PageGenerator { get; set; }
+    	//Datasources
 		public IRepository<IPage> PageRepository { get; set; }
 
-		public AdminController() : this(null) { }
+		public AdminController() : this(null, null) { }
 
-		public AdminController(IRepository<IPage> db)
+		public AdminController(IRepository<IPage> db, IPageGenerator pageGenerator)
 		{
 			PageRepository = db ?? DataHelper.GetPageRepository();
+			PageGenerator = pageGenerator ?? DataHelper.GetPageGenerator();
 		}
         
         public ActionResult Index()
@@ -45,6 +47,7 @@ namespace Wms.Proto.Web.Controllers
 			if(ValidatePage(page))
 			{
     			PageRepository.Save(page);
+				PageGenerator.Generate(page);
 				RouteTable.Routes.Insert(0, new Route(page.Url, new RouteValueDictionary(new {controller = "Page", action = "Index", page = page.Name}),
 					new MvcRouteHandler()));
 				return RedirectToAction("Index");

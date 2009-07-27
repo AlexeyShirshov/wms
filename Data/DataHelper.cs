@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
-using Wms.Proto.Data;
-using Wms.Proto.Repository;
+using System.Web.Hosting;
+using Wms.Data;
+using Wms.Repository;
 
-namespace Wms.Proto.Web.Data
+namespace Wms.Web.Data
 {
 	public class DataHelper
 	{
@@ -15,5 +17,11 @@ namespace Wms.Proto.Web.Data
 		{
 			return _pageRepository;
 		}
+
+		public static IPageGenerator GetPageGenerator()
+		{
+			return new AspPageGenerator(HostingEnvironment.MapPath("/Views/Shared"));
+		}
+
 	}
 }

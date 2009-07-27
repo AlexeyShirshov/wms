@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace Wms.Proto.Web
+namespace Wms.Web
 {
 	public partial class _Default : System.Web.UI.Page
 	{

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Wms.Proto.Data;
-using Wms.Proto.MVC;
+using Wms.Data;
+using Wms.MVC;
 
-namespace Wms.Proto.Web.Controllers
+namespace Wms.Web.Controllers
 {
 	public class CmsControllerFactory : DefaultControllerFactory
 	{

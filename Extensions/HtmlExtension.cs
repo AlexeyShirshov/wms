@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Wms.Proto.Web;
+using Wms.Web;
 
-namespace Cms.Proto.Web.Extensions
+namespace Cms.Web.Extensions
 {
 	public static class HtmlExtension
 	{

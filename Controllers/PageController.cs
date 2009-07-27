@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using Wms.Proto.MVC;
+using Wms.MVC;
 
-namespace Wms.Proto.Web.Controllers
+namespace Wms.Web.Controllers
 {
     public class PageController : CmsController
     {
@@ -15,7 +15,7 @@ namespace Wms.Proto.Web.Controllers
 
         public ActionResult Index()
         {
-            return View("Page", string.Empty, Page);
+			return View(Page.Name);
         }
 
     }
