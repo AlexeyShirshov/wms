@@ -9,6 +9,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.UI;
 using Wms.Data;
 using Wms.Web.Data;
+using Wms.Web.Models.Admin;
 using Page = Wms.Web.Page;
 
 namespace Wms.Web.Controllers
@@ -18,31 +19,39 @@ namespace Wms.Web.Controllers
 		private IPageGenerator PageGenerator { get; set; }
     	//Datasources
 		public IRepository<IPage> PageRepository { get; set; }
+		public IRepository<IControl> ControlRepository { get; set; }
 
-		public AdminController() : this(null, null) { }
+		public AdminController() : this(null, null, null) { }
 
-		public AdminController(IRepository<IPage> db, IPageGenerator pageGenerator)
+		public AdminController(IRepository<IPage> pageRepository, IRepository<IControl> controlRepository, IPageGenerator pageGenerator)
 		{
-			PageRepository = db ?? DataHelper.GetPageRepository();
-			PageGenerator = pageGenerator ?? DataHelper.GetPageGenerator();
+			PageRepository = pageRepository ?? Container.GetPageRepository();
+			PageGenerator = pageGenerator ?? Container.GetPageGenerator();
+			ControlRepository = controlRepository ?? Container.GetControlRepository();
+		}
+
+		public ActionResult Index()
+		{
+			return View();
 		}
         
-        public ActionResult Index()
+        public ActionResult Pages()
         {
-            string s = null;
-            bool f = s.IsNullOrEmpty();
             return View(PageRepository.Items);
         }
 
-    	
+		public ActionResult Controls()
+		{
+			return View(ControlRepository.Items);
+		}
 
-    	public ActionResult Create()
+    	public ActionResult CreatePage()
     	{
-			return View(new Page());
+			return View(new PageEditorModel { Page = new Page(), Controls = ControlRepository.Items });
     	}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-    	public ActionResult Create(Page page)
+    	public ActionResult CreatePage(Page page)
     	{
 			if(ValidatePage(page))
 			{
@@ -50,12 +59,12 @@ namespace Wms.Web.Controllers
 				PageGenerator.Generate(page);
 				RouteTable.Routes.Insert(0, new Route(page.Url, new RouteValueDictionary(new {controller = "Page", action = "Index", page = page.Name}),
 					new MvcRouteHandler()));
-				return RedirectToAction("Index");
+				return RedirectToAction("Pages");
 			}
 			return View();
     	}
 
-    	public ActionResult Edit(string name)
+    	public ActionResult EditPage(string name)
     	{
 			var page = PageRepository.Items.FirstOrDefault(p => p.Name == name);
 			if(page != null)
@@ -64,6 +73,23 @@ namespace Wms.Web.Controllers
 			}
 			throw new HttpException(404, "");
     	}
+
+		public ActionResult CreateControl()
+		{
+			return View(new Control());
+		}
+
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult CreateControl(Control control)
+		{
+			if(ValidateControl(control))
+			{
+				ControlRepository.Save(control);
+				PageGenerator.Generate(control);
+				return RedirectToAction("Controls");
+			}
+			return View();
+		}
 
 		private bool ValidatePage(IPage page)
 		{
@@ -79,5 +105,22 @@ namespace Wms.Web.Controllers
 
 			return ModelState.IsValid;
 		}
+
+		private bool ValidateControl(IControl control)
+		{
+            if(control.Name.IsNullOrEmpty())
+            {
+				ModelState.AddModelError("Name", "*");
+            }
+
+			if(control.Contents.IsNullOrEmpty())
+			{
+				ModelState.AddModelError("Contents", "*");
+			}
+
+			return ModelState.IsValid;
+		}
+
+		
     }
 }

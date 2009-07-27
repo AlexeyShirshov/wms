@@ -9,9 +9,10 @@ using Wms.Repository;
 
 namespace Wms.Web.Data
 {
-	public class DataHelper
+	public class Container
 	{
 		private static IRepository<IPage> _pageRepository = new ListPageRepository();
+		private static IRepository<IControl> _controlRepository = new ListControlRepository();
 
 		public static IRepository<IPage> GetPageRepository()
 		{
@@ -23,5 +24,9 @@ namespace Wms.Web.Data
 			return new AspPageGenerator(HostingEnvironment.MapPath("/Views/Shared"));
 		}
 
+		public static IRepository<IControl> GetControlRepository()
+		{
+			return _controlRepository;	
+		}
 	}
 }

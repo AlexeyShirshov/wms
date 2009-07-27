@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Wms.Data;
-using Wms.MVC;
+using Wms.Mvc;
 
 namespace Wms.Web.Controllers
 {
@@ -18,7 +18,7 @@ namespace Wms.Web.Controllers
 				return base.CreateController(requestContext, controllerName);
 			}
 			var controller = base.CreateController(requestContext, "Page") as CmsController;
-			controller.Page = Data.DataHelper.GetPageRepository().Items
+			controller.Page = Data.Container.GetPageRepository().Items
 				.FirstOrDefault(p => p.Name == requestContext.RouteData.Values["page"].ToString());
 			
 			return controller;
