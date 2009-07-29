@@ -22,35 +22,29 @@ namespace Wms.Web
 
 
 		#region Implementation of IPageGenerator
-		public void Generate(IPage page)
+		public void Generate(IPage page, TextWriter writer)
 		{
 			if (page == null)
-			{
 				throw new ArgumentNullException("page");
-			}
-
-            using(var sw = new StreamWriter(Path.Combine(_rootFolder, page.Name) + ".aspx", false))
-            {
-				sw.Write(GetAsp(page));
-            }
+			if (writer == null)
+				throw new ArgumentNullException("writer");
+			
+			writer.Write(GetAsp(page));
 		}
 
-		public void Generate(IControl control)
+		public void Generate(IControl control, TextWriter writer)
 		{
 			if (control == null)
-			{
 				throw new ArgumentNullException("control");
-			}
+			if (writer == null)
+				throw new ArgumentNullException("writer");
 
-			using (var sw = new StreamWriter(Path.Combine(_rootFolder, control.Name) + ".ascx", false))
-			{
-				sw.Write(GetAsp(control));
-			}
+			writer.Write(GetAsp(control));
 		}
 
 		private static string GetAsp(IPage page)
 		{
-			return @"<%@ Page Language=""C#"" Inherits=""Wms.Mvc.BasePage""%>" + page.Contents;
+			return @"<%@ Page Language=""C#"" Inherits=""Wms.Mvc.WmsPage""%>" + page.Contents;
 		}
 
 		private static string GetAsp(IControl control)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -8,7 +9,6 @@ namespace Wms.Web
 {
 	interface IAuthenticationService
 	{
-
 	}
 
 	interface IMembershipService
@@ -17,7 +17,6 @@ namespace Wms.Web
 
 	interface IAuthorizationService
 	{
-		
 	}
 
 	public interface IPage
@@ -35,12 +34,13 @@ namespace Wms.Web
 
 	public interface IPageGenerator
 	{
-		void Generate(IPage page);
-		void Generate(IControl control);
+		void Generate(IControl control, TextWriter writer);
+		void Generate(IPage page, TextWriter writer);
 	}
 
 	public interface IControlModel
 	{
 		object Data { get; set; }
 	}
+
 }

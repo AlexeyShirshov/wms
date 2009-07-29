@@ -6,7 +6,7 @@ using System.Web.Mvc.Html;
 
 namespace Wms.Mvc
 {
-	public class BasePage : System.Web.Mvc.ViewPage
+	public class WmsPage : System.Web.Mvc.ViewPage
 	{
 		public void Control(string name)
 		{
