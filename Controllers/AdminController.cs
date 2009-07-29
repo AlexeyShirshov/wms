@@ -1,3 +1,5 @@
+using System.IO;
+using System.Net.Mime;
 using System.Web.Routing;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,14 @@ namespace Wms.Web.Controllers
 {
     public class AdminController : Controller
     {
-		private IPageGenerator PageGenerator { get; set; }
+		public IPageGenerator PageGenerator { get; set; }
     	//Datasources
 		public IRepository<IPage> PageRepository { get; set; }
 		public IRepository<IControl> ControlRepository { get; set; }
+    	public RouteCollection RouteCollection
+    	{
+    		get { return RouteTable.Routes; }
+    	}
 
 		public AdminController() : this(null, null, null) { }
 
@@ -55,11 +61,14 @@ namespace Wms.Web.Controllers
     	{
 			if(ValidatePage(page))
 			{
-    			PageRepository.Save(page);
-				PageGenerator.Generate(page);
-				RouteTable.Routes.Insert(0, new Route(page.Url, new RouteValueDictionary(new {controller = "Page", action = "Index", page = page.Name}),
-					new MvcRouteHandler()));
-				return RedirectToAction("Pages");
+				using(var sw = new StreamWriter(Request.MapPath("/Views/Pages/" + page.Name + ".aspx")))
+				{
+    				PageRepository.Save(page);
+					PageGenerator.Generate(page, sw );
+					RouteCollection.Insert(0, new Route(page.Url, new RouteValueDictionary(new {controller = "Page", action = "Index", page = page.Name}),
+						new MvcRouteHandler()));
+					return RedirectToAction("Pages");
+				}
 			}
 			return View();
     	}
@@ -85,9 +94,12 @@ namespace Wms.Web.Controllers
 		{
 			if(ValidateControl(control))
 			{
-				ControlRepository.Save(control);
-				PageGenerator.Generate(control);
-				return RedirectToAction("Controls");
+				using (var sw = new StreamWriter(ControllerContext.HttpContext.Request.MapPath("/Views/Pages/" + control.Name + ".ascx")))
+				{
+					ControlRepository.Save(control);
+					PageGenerator.Generate(control, sw);
+					return RedirectToAction("Controls");
+				}
 			}
 			return View();
 		}

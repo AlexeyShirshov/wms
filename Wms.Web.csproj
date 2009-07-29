@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\CmsControllerFactory.cs" />
+    <Compile Include="Controllers\WmsControllerFactory.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Data\Container.cs" />
     <Compile Include="Default.aspx.cs">
@@ -86,7 +86,6 @@
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Admin\Pages.aspx" />
     <Content Include="Views\Shared\Page.aspx" />
-    <Content Include="Views\ViewUserControl1.ascx" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
   </ItemGroup>

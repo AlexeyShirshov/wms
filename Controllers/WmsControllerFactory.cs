@@ -9,7 +9,7 @@ using Wms.Mvc;
 
 namespace Wms.Web.Controllers
 {
-	public class CmsControllerFactory : DefaultControllerFactory
+	public class WmsControllerFactory : DefaultControllerFactory
 	{
 		public override IController CreateController(RequestContext requestContext, string controllerName)
 		{

@@ -28,7 +28,7 @@ namespace Wms.Web
 		protected void Application_Start()
 		{
 			RegisterRoutes(RouteTable.Routes);
-			ControllerBuilder.Current.SetControllerFactory(typeof(CmsControllerFactory));
+			ControllerBuilder.Current.SetControllerFactory(typeof(WmsControllerFactory));
 		}
 	}
 }
