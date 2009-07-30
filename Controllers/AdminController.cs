@@ -78,7 +78,7 @@ namespace Wms.Web.Controllers
 			var page = PageRepository.Items.FirstOrDefault(p => p.Name == name);
 			if(page != null)
 			{
-				return View(page);
+				return View(new PageEditorModel { Page = page, Controls = ControlRepository.Items });
 			}
 			throw new HttpException(404, "");
     	}
