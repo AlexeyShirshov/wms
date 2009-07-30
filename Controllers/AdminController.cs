@@ -104,6 +104,14 @@ namespace Wms.Web.Controllers
 			return View();
 		}
 
+		public ActionResult EditControl(string name)
+		{
+			var control = ControlRepository.Items.FirstOrDefault(c => c.Name == name);
+			if (control != null)
+				return View(control);
+			throw new HttpException(404, "");
+		}
+
 		private bool ValidatePage(IPage page)
 		{
             if (string.IsNullOrEmpty(page.Name))
