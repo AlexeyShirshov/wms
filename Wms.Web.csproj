@@ -76,6 +76,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\wms.mdf">
+    </Content>
+    <Content Include="App_Data\wms_log.ldf">
+      <DependentUpon>wms.mdf</DependentUpon>
+    </Content>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.3.2-vsdoc2.js" />
@@ -96,7 +101,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
