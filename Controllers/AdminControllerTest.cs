@@ -118,11 +118,17 @@ namespace Wms.Tests
 		}
 
 		[Test]
-		[ExpectedException(typeof(HttpException))]
-		public void Edit_NonExisting_Throws_404()
+		public void EditPage_NonExisting_Throws_404()
 		{
-			_controller.EditPage("NoPage");
+			Assert.Throws<HttpException>(() => _controller.EditPage("NoPage"));
 		}
+
+		[Test]
+		public void EditControl_NonExisting_Throws_404()
+		{
+			Assert.Throws<HttpException>(() => _controller.EditControl("NoControl"));
+		}
+		
 
 
 	}
