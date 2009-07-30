@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Wms.Repository;
 using Wms.Tests.Controllers;
 using Wms.Web;
@@ -16,7 +16,6 @@ using Wms.Web.Models.Admin;
 namespace Wms.Tests
 {
 	[TestFixture]
-	[TestsOn("AdminController")]
 	public class AdminControllerTest
 	{
         private ListPageRepository _pageRepository;

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Wms.Web;
 
 namespace Wms.Tests
 {
 	[TestFixture]
-	[TestsOn(typeof(AspPageGenerator))]
 	public class AspPageGeneratorTest
 	{
 		[Test]
@@ -19,24 +18,23 @@ namespace Wms.Tests
 			var page = new Page { Name = "Test", Url = "test", Contents = "Test page" };
 			const string expected = @"<%@ Page Language=""C#"" Inherits=""Wms.Mvc.WmsPage""%>Test page";
 
-			string s = "";
+			string s;
 			using (var sw = new StringWriter())
 			{
                 generator.Generate(page, sw);
 				s = sw.ToString();
 			}
 			Assert.AreEqual(expected, s);
-			
 		}
 
 		[Test]
 		public void Can_Generate_Control()
 		{
 			IPageGenerator generator = new AspPageGenerator(".");
-			var control = new Control() { Name = "TestControl", Contents = "Test control" };
+			var control = new Control { Name = "TestControl", Contents = "Test control" };
 			const string expected = @"<%@ Control Language=""C#"" Inherits=""System.Web.Mvc.ViewUserControl<Wms.Web.IControlModel>"" %>Test control";
 
-			string s = "";
+			string s;
 			using (var sw = new StringWriter())
 			{
 				generator.Generate(control, sw);
