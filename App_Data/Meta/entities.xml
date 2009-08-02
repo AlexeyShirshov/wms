@@ -13,7 +13,9 @@
       </oos:SourceFragments>
 
       <oos:Properties>
-        <oos:Property propertyName="ID" fieldName="id" attributes="PrimaryKey" table="tblPage" typeRef="tInt32" />
+        <oos:Property propertyName="ID" fieldName="id" attributes="PrimaryKey" table="tblPage" typeRef="tInt32" dbTypeName="int" dbTypeNullable="false" />
+        <oos:Property propertyName="Name" fieldName="name" table="tblPage" typeRef="tString" dbTypeName="nvarchar" dbTypeNullable="false" dbTypeSize="100" />
+        <oos:Property propertyName="Url" fieldName="url" table="tblPage" typeRef="tString" dbTypeName="nvarchar" dbTypeNullable="false" dbTypeSize="1000" />
       </oos:Properties>
 
       <oos:extension name="f">

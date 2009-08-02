@@ -1,4 +1,4 @@
-<%@ Page Language="VB" Inherits="System.Web.Mvc.ViewPage<WXML.Model.Descriptors.EntityDescription>" Strict="false" %>
+<%@ Page Language="VB" Inherits="System.Web.Mvc.ViewPage(Of WXML.Model.Descriptors.EntityDescription)" Strict="false" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,20 +8,20 @@
 </head>
 <body>
     <table>
+    <tr>
     <% For Each item In Model.ActiveProperties%>
-        <tr>
-            <th><%= item.Name %></th>
-        </tr>
+        <th><%= item.Name %></th>
     <% Next %>
-
+    </tr>
+    
     <% For Each item In Wms.Repository.WmsDataFacade.GetEntity(Model.Name)%>
-        <tr>
-            <th><%= item.ID %></th>
-        </tr>
-    <% Next %>
+    <tr>
+        <td><%=item.ID%></td>
+        <td><%=item.Name%></td>
+        <td><%=item.Url%></td>
+    </tr>
+    <% Next %>    
     </table>
-
-
 </body>
 </html>
 
