@@ -5,6 +5,7 @@ using System.Text;
 using WXML.Model;
 using LinqCodeGenerator;
 using System.Reflection;
+using System.Configuration;
 
 namespace Wms.Repository
 {
@@ -18,7 +19,7 @@ namespace Wms.Repository
 
             Type t = ass.GetType("Wms.Data.WmsRepository");
 
-            return Activator.CreateInstance(t);
+            return Activator.CreateInstance(t, (object)ConfigurationManager.ConnectionStrings["wms"].ConnectionString);
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Wms.Repository
     {
         private static object _repository;
 
-        public static IEnumerable GetEntity(string name)
+        public static IQueryable GetEntity(string name)
         {
             string propName = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(name);
 
             PropertyInfo pi = _repository.GetType().GetProperty(propName);
 
-            return (IEnumerable)pi.GetValue(_repository, null);
+            return (IQueryable)pi.GetValue(_repository, null);
         }
 
         public static object GetRepository(WXMLModel model)
