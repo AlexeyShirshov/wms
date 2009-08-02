@@ -7,7 +7,7 @@
   <oos:Linq contextName="WmsRepository" enable="true" />
 
   <oos:Entities>
-    <oos:Entity id="Page" name="Page" namespace="Internal">
+    <oos:Entity id="Page" name="Page" namespace="Wms.Data.Internal">
       <oos:SourceFragments>
         <oos:SourceFragment ref="tblPage" />
       </oos:SourceFragments>
