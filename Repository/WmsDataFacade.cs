@@ -23,21 +23,21 @@ namespace Wms.Repository
             return (IQueryable)pi.GetValue(_repository, null);
         }
 
-        public static object GetRepository(WXMLModel model)
+        public static object GetRepository(string tempPath, WXMLModel model)
         {
             if (_repository == null)
-                _repository = CreateRepository(model);
+                _repository = CreateRepository(tempPath, model);
 
             return _repository;
         }
 
-        private static object CreateRepository(WXMLModel model)
+        private static object CreateRepository(string tempPath, WXMLModel model)
         {
             Type repositoryType = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
 
             IRepositoryProvider provider = (IRepositoryProvider)Activator.CreateInstance(repositoryType);
 
-            return provider.CreateRepository(model);
+            return provider.CreateRepository(tempPath, model);
         }
     }
 }

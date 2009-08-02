@@ -8,6 +8,6 @@ namespace Wms.Repository
 {
     public interface IRepositoryProvider
     {
-        object CreateRepository(WXMLModel model);
+        object CreateRepository(string tempPath, WXMLModel model);
     }
 }

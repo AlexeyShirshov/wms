@@ -6,16 +6,18 @@ using WXML.Model;
 using LinqCodeGenerator;
 using System.Reflection;
 using System.Configuration;
+using System.Web.Hosting;
+using System.Web.Compilation;
 
 namespace Wms.Repository
 {
     public class LinqRepositoryProvider : IRepositoryProvider
     {
-        public object CreateRepository(WXMLModel model)
+        public object CreateRepository(string tempPath, WXMLModel model)
         {
             LinqCodeDomGenerator gen = new LinqCodeDomGenerator(model, new WXML.CodeDom.WXMLCodeDomGeneratorSettings());
 
-            Assembly ass = gen.Compile(LinqToCodedom.CodeDomGenerator.Language.CSharp);
+            Assembly ass = gen.Compile(/*tempPath + "\\Wms.Data.dll", */LinqToCodedom.CodeDomGenerator.Language.CSharp);
 
             Type t = ass.GetType("Wms.Data.WmsRepository");
 
