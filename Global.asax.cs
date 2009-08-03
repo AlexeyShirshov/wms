@@ -24,11 +24,7 @@ namespace Wms.Web
 
 			routes.MapRoute("Entities","Admin/Entities/{action}/{id}", new { controller = "Entities", action = "Index", id = "" });
 
-            routes.MapRoute(
-				"Default",                                              // Route name
-				"{controller}/{action}/{id}",                           // URL with parameters
-				new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
-			);
+            routes.MapRoute("Default","{controller}/{action}/{id}",new { controller = "Home", action = "Index", id = "" });
 
         }
 

@@ -15,7 +15,7 @@
     <% foreach (var item in Model.ActiveEntities) { %>
         <tr>
             <td>
-                <%= Html.ActionLink(item.Name, "Edit", new { /* id=item.PrimaryKey */ }) %>
+                <%= Html.ActionLink(item.Name, "BrowseEntity", new { id = item.Identifier }) %>
             </td>
         </tr>
     
