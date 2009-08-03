@@ -13,7 +13,7 @@ namespace Wms.Web.Controllers
 	{
 		public override IController CreateController(RequestContext requestContext, string controllerName)
 		{
-			if (controllerName == "admin")
+			if (controllerName == "admin" || controllerName == "Entities")
 			{
 				return base.CreateController(requestContext, controllerName);
 			}

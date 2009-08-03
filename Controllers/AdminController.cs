@@ -35,20 +35,6 @@ namespace Wms.Web.Controllers
 			ControlRepository = controlRepository ?? Container.GetControlRepository();
 		}
 
-        public ActionResult BrowseEntity2(string id)
-        {
-            return View(Wms.Repository.WmsDataFacade.GetEntity(MvcApplication.Entities.ActiveEntities.Single(e => e.Identifier == id).Name));
-        }
-
-        public ActionResult BrowseEntity(string id)
-        {
-            return View(MvcApplication.Entities.ActiveEntities.Single(e=>e.Identifier==id));
-        }
-
-        public ActionResult Entities()
-        {
-            return View(MvcApplication.Entities);
-        }
 
 		public ActionResult Index()
 		{

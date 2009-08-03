@@ -22,17 +22,14 @@ namespace Wms.Web
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+			routes.MapRoute("Entities","Admin/Entities/{action}/{id}", new { controller = "Entities", action = "Index", id = "" });
+
             routes.MapRoute(
 				"Default",                                              // Route name
 				"{controller}/{action}/{id}",                           // URL with parameters
 				new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
 			);
 
-            //routes.MapRoute(
-            //    "Entities",                                              // Route name
-            //    "/Admin/{controller}/{action}/{id}",                           // URL with parameters
-            //    new { controller = "Entities", action = "Index", id = "" }  // Parameter defaults
-            //);
         }
 
 		protected void Application_Start()
