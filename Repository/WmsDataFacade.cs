@@ -12,32 +12,41 @@ namespace Wms.Repository
 {
     public class WmsDataFacade
     {
-        private static object _repository;
+        private static IRepositoryProvider _provider;
 
         public static IQueryable GetEntity(string name)
         {
             string propName = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(name);
 
-            PropertyInfo pi = _repository.GetType().GetProperty(propName);
+            PropertyInfo pi = _provider.RepositoryType.GetProperty(propName);
 
-            return (IQueryable)pi.GetValue(_repository, null);
+            return (IQueryable)pi.GetValue(GetRepository(), null);
         }
 
-        public static object GetRepository(string tempPath, WXMLModel model)
+        public static object GetRepository()
         {
-            if (_repository == null)
-                _repository = CreateRepository(tempPath, model);
-
-            return _repository;
+            return _provider.CreateRepository();
         }
 
-        private static object CreateRepository(string tempPath, WXMLModel model)
+        public static IRepositoryProvider GetRepositoryProvider(string tempPath, WXMLModel model)
         {
-            Type repositoryType = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
+            if (_provider == null)
+            {
+                Type pt = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
 
-            IRepositoryProvider provider = (IRepositoryProvider)Activator.CreateInstance(repositoryType);
+                _provider = (IRepositoryProvider)Activator.CreateInstance(pt);
 
-            return provider.CreateRepository(tempPath, model);
+                _provider.Init(tempPath, model);
+            }
+
+            return _provider;
+        }
+
+        internal static void SetRepositoryProvider(Type t)
+        {
+            Type pt = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
+
+            _provider = (IRepositoryProvider)Activator.CreateInstance(pt, (object)t);
         }
     }
 }

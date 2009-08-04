@@ -13,15 +13,37 @@ namespace Wms.Repository
 {
     public class LinqRepositoryProvider : IRepositoryProvider
     {
-        public object CreateRepository(string tempPath, WXMLModel model)
+        private Type _repositoryType;
+
+        public LinqRepositoryProvider(Type t)
+        {
+            _repositoryType = t;
+        }
+
+        public LinqRepositoryProvider()
+        {
+        }
+
+        public void Init(string tempPath, WXMLModel model)
         {
             LinqCodeDomGenerator gen = new LinqCodeDomGenerator(model, new WXML.CodeDom.WXMLCodeDomGeneratorSettings());
 
             Assembly ass = gen.Compile(/*tempPath + "\\Wms.Data.dll", */LinqToCodedom.CodeDomGenerator.Language.CSharp);
 
-            Type t = ass.GetType("Wms.Data.WmsRepository");
+            _repositoryType = ass.GetType("Wms.Data.WmsRepository");
+        }
 
-            return Activator.CreateInstance(t, (object)ConfigurationManager.ConnectionStrings["wms"].ConnectionString);
+        public object CreateRepository()
+        {
+            return Activator.CreateInstance(_repositoryType, (object)ConfigurationManager.ConnectionStrings["wms"].ConnectionString);
+        }
+
+        public Type RepositoryType 
+        {
+            get
+            {
+                return _repositoryType;
+            }
         }
     }
 }
