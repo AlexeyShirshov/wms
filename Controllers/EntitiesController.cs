@@ -18,6 +18,7 @@ namespace Wms.Web.Controllers
 		public ActionResult BrowseEntity2(string id)
 		{
 			return View(Wms.Repository.WmsDataFacade.GetEntity(MvcApplication.Entities.ActiveEntities.Single(e => e.Identifier == id).Name));
+            //return View(new Wms.Data.WmsRepository().Page);
 		}
 
 		public ActionResult BrowseEntity(string id)

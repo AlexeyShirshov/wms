@@ -35,8 +35,8 @@ namespace Wms.Web
 
             _model = WXMLModel.LoadFromXml(new XmlTextReader(HostingEnvironment.MapPath(@"~/App_Data/Meta/entities.xml")));
 
-            Wms.Repository.WmsDataFacade.GetRepository(
-                System.IO.Path.GetDirectoryName(this.GetType().Assembly.CodeBase), _model);
+            //Wms.Repository.WmsDataFacade.GetRepositoryProvider(
+            //    System.IO.Path.GetDirectoryName(this.GetType().Assembly.CodeBase), _model);
 		}
 
         public static WXMLModel Entities

@@ -1,4 +1,5 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<System.Linq.IQueryable<Wms.Data.Internal.Page>>"  %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<System.Linq.IQueryable<Wms.Data.Internal.Page>>" %>
+<%----%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -20,7 +21,7 @@
         <td><%=item.Name%></td>
         <td><%=item.Url%></td>
     </tr>
-    <% } %>    
+    <% } %>
     </table>
 </body>
 </html>
