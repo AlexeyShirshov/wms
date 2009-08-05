@@ -111,7 +111,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Code\1.wms" />
+    <None Include="App_Code\wms.models" />
     <None Include="App_Data\Meta\OrmObjectsSchema.xsd" />
     <None Include="App_Data\Meta\OrmObjectsSchema.xsx">
       <DependentUpon>OrmObjectsSchema.xsd</DependentUpon>
@@ -137,7 +137,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3765</DevelopmentServerPort>
+          <DevelopmentServerPort>14076</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
