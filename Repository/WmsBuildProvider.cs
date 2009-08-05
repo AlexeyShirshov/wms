@@ -22,19 +22,12 @@ namespace Wms
 
             WXMLModel model = WXMLModel.LoadFromXml(new XmlTextReader(HostingEnvironment.MapPath(@"~/App_Data/Meta/entities.xml")));
 
-            //IRepositoryProvider prov = WmsDataFacade.GetRepositoryProvider(assemblyBuilder.GetTempFilePhysicalPath("dll"), model);
+            IRepositoryProvider prov = WmsDataFacade.GetRepositoryProvider();
 
-            //assemblyBuilder.AddAssemblyReference(prov.RepositoryType.Assembly);
-
-            LinqCodeDomGenerator gen = new LinqCodeDomGenerator(model, new WXML.CodeDom.WXMLCodeDomGeneratorSettings());
-
-            LinqToCodedom.CodeDomGenerator.Language lang = LinqToCodedom.CodeDomGenerator.Language.CSharp;
-
-            CodeCompileUnit unit = gen.GetCompileUnit(lang);
-
-            //CodeSnippetCompileUnit unit = new CodeSnippetCompileUnit("namespace Wms.Data.Internal { public static class Page2 { public static string Hello { get { return \"hi!\";}}}}");
-
-            assemblyBuilder.AddCodeCompileUnit(this, unit);
+            foreach (CodeCompileUnit unit in prov.CreateCompileUnits(model))
+            {
+                assemblyBuilder.AddCodeCompileUnit(this, unit);
+            }
 
             string fn = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(assemblyBuilder.GetTempFilePhysicalPath("dll")));
 
@@ -43,7 +36,7 @@ namespace Wms
             {
                 if (args.LoadedAssembly.ManifestModule.Name.StartsWith(fn))
                 {
-                    WmsDataFacade.SetRepositoryProvider(args.LoadedAssembly.GetType("Wms.Data.WmsRepository"));
+                    prov.SetRepositoryAssembly(args.LoadedAssembly);
                     AppDomain.CurrentDomain.AssemblyLoad -= d;
                 }
             };

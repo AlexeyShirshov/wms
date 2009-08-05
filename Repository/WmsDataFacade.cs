@@ -42,6 +42,18 @@ namespace Wms.Repository
             return _provider;
         }
 
+        public static IRepositoryProvider GetRepositoryProvider()
+        {
+            if (_provider == null)
+            {
+                Type pt = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
+
+                _provider = (IRepositoryProvider)Activator.CreateInstance(pt);
+            }
+
+            return _provider;
+        }
+
         internal static void SetRepositoryProvider(Type t)
         {
             Type pt = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
