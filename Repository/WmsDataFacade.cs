@@ -19,6 +19,9 @@ namespace Wms.Repository
         {
             string propName = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(name);
 
+            if (_provider == null)
+                _provider = GetRepositoryProvider();
+
             PropertyInfo pi = _provider.RepositoryType.GetProperty(propName);
 
             return (IQueryable)pi.GetValue(GetRepository(), null);
