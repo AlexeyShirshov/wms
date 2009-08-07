@@ -13,10 +13,10 @@ namespace Wms.Web.Controllers
 	{
 		public override IController CreateController(RequestContext requestContext, string controllerName)
 		{
-			if (controllerName == "admin" || controllerName == "Entities")
-			{
+			if (String.Equals(controllerName, "admin", StringComparison.InvariantCultureIgnoreCase)
+				|| String.Equals(controllerName, "entities", StringComparison.InvariantCultureIgnoreCase))
 				return base.CreateController(requestContext, controllerName);
-			}
+
 			var controller = base.CreateController(requestContext, "Page") as CmsController;
 			controller.Page = Data.Container.GetPageRepository().Items
 				.Single(p => p.Name == requestContext.RouteData.Values["page"].ToString());
