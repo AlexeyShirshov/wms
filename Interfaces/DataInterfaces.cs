@@ -13,5 +13,8 @@ namespace Wms.Data
 		void Delete(T entity);
 	}
 
-
+	public interface IQueryProvider
+	{
+		IQueryable GetEntityQuery(string entityName);
+	}
 }

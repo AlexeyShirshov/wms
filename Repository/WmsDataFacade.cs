@@ -15,7 +15,7 @@ namespace Wms.Repository
     {
         private static IRepositoryProvider _provider;
 
-        public static IQueryable GetEntity(string name)
+        public static IQueryable GetEntityQuery(string name)
         {
             string propName = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(name);
 
