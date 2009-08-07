@@ -11,8 +11,8 @@ namespace Wms.Web.Controllers
 {
     public class EntitiesController : Controller
     {
-		public  WXMLModel EntitiesModel { get; set; }
-		public IQueryProvider QueryProvider { get; set; }
+		public WXMLModel EntitiesModel { get; set; }
+		//public IQueryProvider QueryProvider { get; set; }
 		
 		public EntitiesController() : this(null, null)
 		{
@@ -22,7 +22,7 @@ namespace Wms.Web.Controllers
 		public EntitiesController (WXMLModel entitiesModel, IQueryProvider queryProvider)
 		{
 			EntitiesModel = entitiesModel ?? MvcApplication.Entities;
-			QueryProvider = queryProvider ?? new WebQueryProvider();
+			//QueryProvider = queryProvider ?? new WebQueryProvider();
 		}
         
 		public ActionResult Index()
@@ -33,7 +33,7 @@ namespace Wms.Web.Controllers
 
     	public ActionResult Browse(string type)
     	{
-			return View(QueryProvider.GetEntityQuery(type));
+			return View(Wms.Repository.WmsDataFacade.GetEntityQuery(type));
     	}
 
     	public ActionResult Edit(string type)
