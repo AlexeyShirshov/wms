@@ -96,6 +96,9 @@ namespace Wms.Repository
             cls.AddField("_changed", () => new List<object>());
             cls.AddField("_deleted", () => new List<object>());
             
+            var tableType = new CodeTypeReference(typeof(System.Data.Linq.Table<>));
+            tableType.TypeArguments.Add(new CodeTypeReference("T"));
+
             cls
                 .AddMethod(MemberAttributes.Public | MemberAttributes.Final, (ParamArray<object> entities) => "Add",
                     Emit.stmt((List<object> _changed, object[] entities) => _changed.AddRange(entities)))
@@ -108,24 +111,42 @@ namespace Wms.Repository
                         Emit.@foreach("entity", ()=>CodeDom.@this.Field<IEnumerable<object>>("_changed"),
                             Emit.stmt((object entity)=>CodeDom.@this.Call("SyncEntity")(CodeDom.VarRef("ctx"), entity, false))
                         ),
-                        Emit.stmt(()=>CodeDom.@this.Field<List<object>>("_changed").Clear()),
                         Emit.@foreach("entity", () => CodeDom.@this.Field<IEnumerable<object>>("_deleted"),
                             Emit.stmt((object entity) => CodeDom.@this.Call("SyncEntity")(CodeDom.VarRef("ctx"), entity, true))
                         ),
-                        Emit.stmt(() => CodeDom.@this.Field<List<object>>("_deleted").Clear()),
-                        Emit.stmt(() => CodeDom.VarRef("ctx").Call("SubmitChanges"))
+                        Emit.stmt(() => CodeDom.VarRef("ctx").Call("SubmitChanges")),
+                        Emit.@foreach("entity", ()=>CodeDom.@this.Field<IEnumerable<object>>("_changed"),
+                            Emit.stmt((object entity)=>CodeDom.@this.Call("AcceptChanges")(entity))
+                        ),
+                        Emit.stmt(()=>CodeDom.@this.Field<List<object>>("_changed").Clear()),
+                        Emit.@foreach("entity", () => CodeDom.@this.Field<IEnumerable<object>>("_deleted"),
+                            Emit.stmt((object entity)=>CodeDom.@this.Call("AcceptChanges")(entity))
+                        ),
+                        Emit.stmt(() => CodeDom.@this.Field<List<object>>("_deleted").Clear())
                     )
                 ).Implements(typeof(IModificationTracker))
                 .AddMethod(MemberAttributes.Private, () => "Dispose").Implements(typeof(IDisposable))
+                .AddMethod(MemberAttributes.Private, (object entity)=>"AcceptChanges",
+                    Emit.declare("mi", (object entity)=>entity.GetType().GetMethod("AcceptChanges")),
+                    Emit.@if(()=>CodeDom.VarRef("mi") != null,
+                        Emit.stmt((MethodInfo mi, object entity)=>mi.Invoke(entity, null))
+                    )
+                )
                 .AddMethod(MemberAttributes.Private, (DynType ctx, object entity, bool delete) => "SyncEntity" + ctx.SetType(_ctxName),
                     Emit.@foreach("mi", () => CodeDom.@this.Call<Type>("GetType")().GetMethods(BindingFlags.NonPublic | BindingFlags.Static),
                         Emit.@if((bool delete, MethodInfo mi, object entity) =>
                             ((delete && mi.Name == "_DelEntity") || (!delete && mi.Name == "_SyncEntity")) && mi.GetParameters().Count() == 2 && mi.GetParameters().Last().ParameterType == entity.GetType(),
-                            //Emit.stmt((MethodInfo mi, object entity) => mi.Invoke(null, BindingFlags.Static, null, new object[] { CodeDom.VarRef("ctx"), entity }, null)),
-                            Emit.@return()
+                            Emit.stmt((MethodInfo mi, object entity) => mi.Invoke(null, BindingFlags.Static, null, new object[] { CodeDom.VarRef("ctx"), entity }, null)),
+                            Emit.exitFor()
                         )
                     )
                 )
+                .AddMethod(MemberAttributes.Private | MemberAttributes.Static, (DynType p, DynType action, DynType table) => "SyncEntity" + p.SetType("T") + action.SetType("ActionEnum") + table.SetType(tableType),
+                    Emit.ifelse(()=>CodeDom.VarRef("action") == CodeDom.Field(new CodeTypeReference("ActionEnum"), "Insert"),
+                        CodeDom.CombineStmts(Emit.stmt(()=>CodeDom.VarRef("table").Call("InsertOnSubmit")(CodeDom.VarRef("p")))),
+                        Emit.@return()
+                    )
+                ).Generic("T", typeof(object))
             ;
 
             string debug = c.GenerateCode(CodeDomGenerator.Language.CSharp);

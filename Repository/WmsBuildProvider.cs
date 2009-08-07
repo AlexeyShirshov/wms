@@ -32,8 +32,12 @@ namespace Wms
         public override void GenerateCode(AssemblyBuilder assemblyBuilder)
         {
             base.GenerateCode(assemblyBuilder);
+            WXMLModel model = null;
 
-            WXMLModel model = WXMLModel.LoadFromXml(new XmlTextReader(_fileName));
+            using (XmlReader xr = new XmlTextReader(_fileName))
+            {
+                model = WXMLModel.LoadFromXml(xr);
+            }
 
             IRepositoryProvider prov = WmsDataFacade.GetRepositoryProvider();
 
