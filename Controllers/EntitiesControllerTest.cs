@@ -10,7 +10,6 @@ using Moq;
 using Wms.Tests.Fakes;
 using Wms.Web.Controllers;
 using WXML.Model;
-using IQueryProvider = Wms.Data.IQueryProvider;
 
 namespace Wms.Tests.Controllers
 {
