@@ -16,11 +16,24 @@ namespace Wms
     [BuildProviderAppliesTo(BuildProviderAppliesTo.Code)]
     public class WmsBuildProvider : BuildProvider
     {
+    	
+		private readonly string _fileName;
+		
+		public WmsBuildProvider(string fileName)
+		{
+			_fileName = String.IsNullOrEmpty(fileName) ? HostingEnvironment.MapPath(@"~/App_Data/Meta/entities.xml") : fileName;
+		}
+
+		public WmsBuildProvider() : this(null)
+		{
+			
+		}
+
         public override void GenerateCode(AssemblyBuilder assemblyBuilder)
         {
             base.GenerateCode(assemblyBuilder);
 
-            WXMLModel model = WXMLModel.LoadFromXml(new XmlTextReader(HostingEnvironment.MapPath(@"~/App_Data/Meta/entities.xml")));
+            WXMLModel model = WXMLModel.LoadFromXml(new XmlTextReader(_fileName));
 
             IRepositoryProvider prov = WmsDataFacade.GetRepositoryProvider();
 

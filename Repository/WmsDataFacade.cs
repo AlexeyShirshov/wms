@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using Wms.Data;
 using WXML.Model;
 using WXML.CodeDom;
 using System.Reflection;
@@ -61,4 +62,5 @@ namespace Wms.Repository
             _provider = (IRepositoryProvider)Activator.CreateInstance(pt, (object)t);
         }
     }
+
 }

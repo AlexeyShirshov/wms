@@ -12,4 +12,6 @@ namespace Wms.Data
 		void Save(T entity);
 		void Delete(T entity);
 	}
+
+
 }
