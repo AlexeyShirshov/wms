@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Wms.Repository;
 using Wms.Tests.Controllers;
 using Wms.Web;

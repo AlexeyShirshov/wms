@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Wms.Web;
 
 namespace Wms.Tests
