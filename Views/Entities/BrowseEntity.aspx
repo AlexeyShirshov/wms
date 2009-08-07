@@ -14,7 +14,7 @@
     <% Next %>
     </tr>
     
-    <% For Each item In Wms.Repository.WmsDataFacade.GetEntity(Model.Name)%>
+    <% For Each item In Wms.Repository.WmsDataFacade.GetEntityQuery(Model.Name)%>
     <tr>
         <td><%=item.ID%></td>
         <td><%=item.Name%></td>
