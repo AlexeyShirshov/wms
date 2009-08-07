@@ -10,9 +10,21 @@ namespace Wms.Web.Controllers
 {
     public class EntitiesController : Controller
     {
-        public ActionResult Index()
+		private WXMLModel _entittiesModel;
+		private 
+		public EntitiesController() : this(null)
+		{
+			
+		}
+
+		public EntitiesController (WXMLModel entitiesModel)
+		{
+			_entittiesModel = entitiesModel ?? MvcApplication.Entities;
+		}
+        
+		public ActionResult Index()
         {
-            return View(MvcApplication.Entities);
+            return View();
         }
 
 		public ActionResult BrowseEntity2(string id)
@@ -27,5 +39,39 @@ namespace Wms.Web.Controllers
 		}
 
 
+    	public ActionResult Browse(string type)
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public ActionResult Edit(string type)
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public ActionResult Edit(string type, int id)
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public ActionResult Create()
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public ActionResult Create(string type)
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public ActionResult Delete(string type, int id)
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public ActionResult Delete(string type)
+    	{
+    		throw new NotImplementedException();
+    	}
     }
 }
