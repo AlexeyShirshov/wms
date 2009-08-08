@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WXML.CodeDom;
 using WXML.Model;
 using LinqCodeGenerator;
 using System.Reflection;
@@ -63,16 +64,18 @@ namespace Wms.Repository
 
         public IEnumerable<System.CodeDom.CodeCompileUnit> CreateCompileUnits(WXMLModel model)
         {
-            CodeCompileUnit modificationTracketUnit = GenerateModificationTracker(model);
+            WXMLCodeDomGeneratorSettings settings = new WXML.CodeDom.WXMLCodeDomGeneratorSettings();
 
-            LinqCodeDomGenerator gen = new LinqCodeDomGenerator(model, new WXML.CodeDom.WXMLCodeDomGeneratorSettings());
+            CodeCompileUnit modificationTracketUnit = GenerateModificationTracker(model, settings);
+
+            LinqCodeDomGenerator gen = new LinqCodeDomGenerator(model, settings);
 
             LinqToCodedom.CodeDomGenerator.Language lang = LinqToCodedom.CodeDomGenerator.Language.CSharp;
 
             return new CodeCompileUnit[] { gen.GetCompileUnit(lang), modificationTracketUnit};
         }
 
-        private CodeCompileUnit GenerateModificationTracker(WXMLModel model)
+        private CodeCompileUnit GenerateModificationTracker(WXMLModel model, WXMLCodeDomGeneratorSettings setting)
         {
             var c = new CodeDomGenerator();
 
@@ -144,10 +147,47 @@ namespace Wms.Repository
                 .AddMethod(MemberAttributes.Private | MemberAttributes.Static, (DynType p, DynType action, DynType table) => "SyncEntity" + p.SetType("T") + action.SetType("ActionEnum") + table.SetType(tableType),
                     Emit.ifelse(()=>CodeDom.VarRef("action") == CodeDom.Field(new CodeTypeReference("ActionEnum"), "Insert"),
                         CodeDom.CombineStmts(Emit.stmt(()=>CodeDom.VarRef("table").Call("InsertOnSubmit")(CodeDom.VarRef("p")))),
-                        Emit.@return()
+                        Emit.ifelse(()=>CodeDom.VarRef("action") == CodeDom.Field(new CodeTypeReference("ActionEnum"), "Delete"),
+                            CodeDom.CombineStmts(
+                                Emit.stmt(()=>CodeDom.VarRef("table").Call("Attach")(CodeDom.VarRef("p"))),
+                                Emit.stmt(()=>CodeDom.VarRef("table").Call("DeleteOnSubmit")(CodeDom.VarRef("p")))
+                            ),
+                            Emit.stmt(()=>CodeDom.VarRef("table").Call("Attach")(CodeDom.VarRef("p"), true))
+                        )
                     )
                 ).Generic("T", typeof(object))
             ;
+
+            WXML.CodeDom.WXMLCodeDomGeneratorNameHelper n = new WXMLCodeDomGeneratorNameHelper(setting);
+
+            foreach (var entity in model.ActiveEntities)
+            {
+                if (entity.HasSinglePk)
+                {
+                    //string entityName = entity.Name;
+                    string entityProp = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(entity.Name);
+                    string entityType = n.GetEntityClassName(entity, true);
+                    string pkName = entity.PkProperty.Name;
+
+                    cls.AddMethod(MemberAttributes.Static | MemberAttributes.Private,
+                        (DynType ctx, DynType p) => "_DelEntity" + ctx.SetType(_ctxName) + p.SetType(entityType),
+                        Emit.stmt(() => CodeDom.Call(null, "SyncEntity", new CodeTypeReference(entityType))(
+                            CodeDom.VarRef("p"),
+                            CodeDom.Field(new CodeTypeReference("ActionEnum"), "Delete"),
+                            CodeDom.VarRef("ctx").Property(entityProp))
+                        )
+                    )
+                    .AddMethod(MemberAttributes.Static | MemberAttributes.Private,
+                        (DynType ctx, DynType p) => "_SynEntity" + ctx.SetType(_ctxName) + p.SetType(entityType),
+                        Emit.stmt(() => CodeDom.Call(null, "SyncEntity", new CodeTypeReference(entityType))(
+                            CodeDom.VarRef("p"),
+                            CodeDom.VarRef("p").Field<int>(pkName) == 0 ? CodeDom.Field(new CodeTypeReference("ActionEnum"), "Insert") : CodeDom.Field(new CodeTypeReference("ActionEnum"), "Update"),
+                            CodeDom.VarRef("ctx").Property(entityProp))
+                        )
+                    )
+                    ;
+                }
+            }
 
             string debug = c.GenerateCode(CodeDomGenerator.Language.CSharp);
 
