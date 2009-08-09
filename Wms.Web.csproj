@@ -120,6 +120,7 @@
     <Content Include="Views\Shared\Wms.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Meta\EntityArchive\" />
     <Folder Include="Views\Controls\" />
     <Folder Include="Views\Pages\" />
   </ItemGroup>
