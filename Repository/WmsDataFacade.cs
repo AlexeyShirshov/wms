@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Xml;
 using Wms.Data;
 using WXML.Model;
 using WXML.CodeDom;
@@ -63,6 +65,36 @@ namespace Wms.Repository
             Type pt = Type.GetType(ConfigurationManager.AppSettings["repositoryProvider"]);
 
             _provider = (IRepositoryProvider)Activator.CreateInstance(pt, (object)t);
+        }
+
+        public static void ApplyModelChanges(WXMLModel changes)
+        {
+            string path = System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Meta/");
+            string fileName = Path.Combine(path, "entities.xml");
+            WXMLModel model = null;
+            using (XmlReader xr = new XmlTextReader(fileName))
+            {
+                model = WXMLModel.LoadFromXml(xr);
+            }
+            model.Merge(changes);
+            string user = "admin";
+            if (System.Web.HttpContext.Current != null && !string.IsNullOrEmpty(System.Web.HttpContext.Current.User.Identity.Name))
+                user = System.Web.HttpContext.Current.User.Identity.Name;
+
+            File.Copy(fileName, Path.Combine(path, string.Format(@"/EntityArchive/{0}~{1}.xml", user, DateTime.UtcNow.ToString("d", System.Globalization.CultureInfo.InvariantCulture))));
+
+            File.SetAttributes(fileName, File.GetAttributes(fileName) & ~FileAttributes.ReadOnly);
+
+            XmlDocument xdoc = model.GetXmlDocument();
+            xdoc.Save(fileName);
+        }
+
+        public static void ApplyModelChanges(string script)
+        {
+            using (StringReader sr = new StringReader(script))
+            {
+                ApplyModelChanges(WXMLModel.LoadFromXml(new XmlTextReader(sr)));
+            }
         }
     }
 

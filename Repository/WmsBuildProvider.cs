@@ -16,7 +16,6 @@ namespace Wms
     [BuildProviderAppliesTo(BuildProviderAppliesTo.Code)]
     public class WmsBuildProvider : BuildProvider
     {
-    	
 		private readonly string _fileName;
 		
 		public WmsBuildProvider(string fileName)
