@@ -37,7 +37,7 @@ namespace Wms.Tests.Fakes
 
         public Type RepositoryType
         {
-            get { throw new NotImplementedException(); }
+            get { return typeof (FakeRepository); }
         }
 
         public Wms.Repository.IModificationTracker CreateTracker()
