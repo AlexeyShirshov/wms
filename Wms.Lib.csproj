@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Interfaces\DataInterfaces.cs" />
     <Compile Include="MVC\BaseController.cs" />
     <Compile Include="MVC\WmsPage.cs">
