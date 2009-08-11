@@ -16,7 +16,7 @@ namespace Wms.Web.Controllers
     {
 		public WXMLModel EntitiesModel { get; set; }
 		public IQueryProvider QueryProvider { get; set; }
-		private static readonly IEnumerable<Type> AllowedTypes = new List<Type> { typeof(Int32), typeof(String), typeof(Int64), typeof(DateTime) };
+		private static readonly IEnumerable<Type> AllowedTypes = new List<Type> { typeof(Int32), typeof(Int64), typeof(String), typeof(DateTime) };
 		
 		public EntitiesController() : this(null, null)
 		{
@@ -56,11 +56,20 @@ namespace Wms.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Edit(string type, FormCollection form)
 		{
+			EntitiesModel.RemoveEntity(EntitiesModel.GetEntity(type));
+
+			var entityDefinition = new EntityDescription(type, type, "Wms.Data.User", "", EntitiesModel);
+			var propertyDefinition = new PropertyDescription(form["1.Name"]);
+			if (form["1.IsPrimaryKey"] == "checked")
+				propertyDefinition.Attributes = new[] { "PK" };
+			entityDefinition.AddProperty(propertyDefinition);
+			EntitiesModel.AddEntity(entityDefinition);
+			
 			return View();
 		}
-			
 
-    	public ActionResult Edit(string type, int id)
+
+		public ActionResult Edit(string type, int id)
     	{
 			return View("EditInstance");
     	}

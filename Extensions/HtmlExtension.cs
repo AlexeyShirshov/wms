@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Wms.Web;
 
-namespace Cms.Web.Extensions
+namespace Wms.Web.Extensions
 {
 	public static class HtmlExtension
 	{

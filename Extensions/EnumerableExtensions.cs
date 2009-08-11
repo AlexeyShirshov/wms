@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Wms.Web.Extensions
+namespace System.Linq
 {
 	public static class EnumerableExtensions
 	{
