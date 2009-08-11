@@ -99,21 +99,30 @@ namespace Wms.Tests.Controllers
 		}
 
 		[Test]
-		public void Edit_Definition_Saves([Column("Post", "News")] string entityType,[Column("Id", "Ident")] string propertyName)
+		public void Edit_Definition_Saves([Column("Post", "News")] string entityType,
+		                                  [Column("Id", "Ident")] string propertyName)
 		{
-			var form = new FormCollection { {"1.Name", propertyName}, { "1.Type", "Int32" }, {"1.IsPrimaryKey", "checked"}};
-			var result = _controller.Edit(entityType, form);
+			var form = new FormCollection
+			           	{
+			           		{"0.Name", propertyName},
+			           		{"0.Type", "Int32"},
+			           		{"0.IsPrimaryKey", "checked"},
+			           		{"1.Name", "Title"},
+			           		{"1.Type", "String"},
+			           		{"1.IsPrimaryKey", ""}
+			           	};
+			ActionResult result = _controller.Edit(entityType, form);
 
 			Assert.IsInstanceOfType<ViewResult>(result);
 
-			var d = _model.GetEntity(entityType);
+			EntityDescription d = _model.GetEntity(entityType);
 
 			Assert.IsNotNull(d);
-			Assert.AreEqual(1, d.ActiveProperties.Count);
+			Assert.AreEqual(2, d.ActiveProperties.Count);
 			Assert.AreEqual(propertyName, d.PkProperty.Name);
-			Assert.AreEqual(typeof(Int32), d.PkProperty.PropertyType.ClrType);
+			Assert.AreEqual("Title", d.ActiveProperties[1].Name);
 
-			form = new FormCollection { {"1.Name", propertyName}, { "1.Type", "Int32" }, {"1.IsPrimaryKey", ""}};
+			form = new FormCollection {{"0.Name", propertyName}, {"0.Type", "Int32"}, {"0.IsPrimaryKey", ""}};
 
 			result = _controller.Edit(entityType, form);
 
@@ -124,7 +133,7 @@ namespace Wms.Tests.Controllers
 			Assert.IsNotNull(d);
 			Assert.AreEqual(1, d.ActiveProperties.Count);
 			Assert.IsNull(d.PkProperty);
-			Assert.AreEqual(typeof(Int32), d.PkProperty.PropertyType.ClrType);
+			Assert.AreEqual(typeof (Int32), d.PkProperty.PropertyType.ClrType);
 		}
 
 		[Test]
