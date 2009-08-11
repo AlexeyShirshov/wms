@@ -79,6 +79,7 @@
     <Compile Include="Controllers\AdminControllerTest.cs" />
     <Compile Include="Controllers\ControllerTestBase.cs" />
     <Compile Include="Controllers\EntitiesControllerTest.cs" />
+    <Compile Include="Fakes\FakeDataFacade.cs" />
     <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

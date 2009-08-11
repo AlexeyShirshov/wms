@@ -32,11 +32,7 @@ namespace Wms.Tests.Controllers
 		[SetUp]
 		public void Setup()
 		{
-			using (var reader = XmlReader.Create(Path.Combine(TestUtils.TestDataDir, "TestEntities.xml")))
-			{
-				_model = WXMLModel.LoadFromXml(reader);
-			}
-			_controller = new EntitiesController(_model/*, new FakeQueryProvider()*/);
+			_controller = new EntitiesController(new FakeDataFacade());
 		}
 
 		[Test]
