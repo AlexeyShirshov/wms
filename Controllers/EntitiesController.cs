@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Wms.Exceptions;
 using WXML.Model;
+using WXML.Model.Descriptors;
 using IQueryProvider = Wms.Data.IQueryProvider; 
 
 namespace Wms.Web.Controllers
@@ -12,7 +14,7 @@ namespace Wms.Web.Controllers
     public class EntitiesController : Controller
     {
 		public WXMLModel EntitiesModel { get; set; }
-		//public IQueryProvider QueryProvider { get; set; }
+		public IQueryProvider QueryProvider { get; set; }
 		
 		public EntitiesController() : this(null, null)
 		{
@@ -22,7 +24,7 @@ namespace Wms.Web.Controllers
 		public EntitiesController (WXMLModel entitiesModel, IQueryProvider queryProvider)
 		{
 			EntitiesModel = entitiesModel ?? MvcApplication.Entities;
-			//QueryProvider = queryProvider ?? new WebQueryProvider();
+			QueryProvider = queryProvider ?? new WebQueryProvider();
 		}
         
 		public ActionResult Index()
@@ -33,37 +35,47 @@ namespace Wms.Web.Controllers
 
     	public ActionResult Browse(string type)
     	{
-			return View(Wms.Repository.WmsDataFacade.GetEntityQuery(type));
+    		var query = QueryProvider.GetEntityQuery(type);
+			if (query == null)
+				throw new HttpException(404, "Entity type not found");
+    		return View(query);
     	}
 
     	public ActionResult Edit(string type)
     	{
-    		throw new NotImplementedException();
+			var entityDescription = EntitiesModel.GetEntity(type);
+			if (entityDescription == null)
+				throw new HttpException(404, "Entity description not found");
+			return View("EditDescription", entityDescription);
     	}
 
     	public ActionResult Edit(string type, int id)
     	{
-    		throw new NotImplementedException();
+			return View("EditInstance");
     	}
 
     	public ActionResult Create()
     	{
-    		throw new NotImplementedException();
+			return View("CreateDescription");
     	}
 
     	public ActionResult Create(string type)
     	{
-    		throw new NotImplementedException();
+			return View("CreateInstance");
     	}
 
     	public ActionResult Delete(string type, int id)
     	{
-    		throw new NotImplementedException();
+			return RedirectToAction("Index");
     	}
 
     	public ActionResult Delete(string type)
     	{
-    		throw new NotImplementedException();
+			var entityDescription = EntitiesModel.GetEntity(type);
+			if (entityDescription == null)
+				throw new HttpNotFoundException("Entity description");
+			EntitiesModel.RemoveEntity(EntitiesModel.ActiveEntities.First(d => d.Identifier == type));
+			return RedirectToAction("Index");
     	}
     }
 }
