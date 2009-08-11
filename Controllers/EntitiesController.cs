@@ -8,25 +8,25 @@ using Wms.Exceptions;
 using Wms.Web.Models.Entities;
 using WXML.Model;
 using WXML.Model.Descriptors;
-using IQueryProvider = Wms.Data.IQueryProvider; 
+using Wms.Repository;
 
 namespace Wms.Web.Controllers
 {
     public class EntitiesController : Controller
     {
 		public WXMLModel EntitiesModel { get; set; }
-		public IQueryProvider QueryProvider { get; set; }
+		//public IQueryProvider QueryProvider { get; set; }
 		private static readonly IEnumerable<Type> AllowedTypes = new List<Type> { typeof(Int32), typeof(Int64), typeof(String), typeof(DateTime) };
 		
-		public EntitiesController() : this(null, null)
+		public EntitiesController() : this(null/*, null*/)
 		{
 			
 		}
 
-		public EntitiesController (WXMLModel entitiesModel, IQueryProvider queryProvider)
+		public EntitiesController (WXMLModel entitiesModel/*, IQueryProvider queryProvider*/)
 		{
 			EntitiesModel = entitiesModel ?? MvcApplication.Entities;
-			QueryProvider = queryProvider ?? new WebQueryProvider();
+			//QueryProvider = queryProvider ?? new WebQueryProvider();
 		}
         
 		public ActionResult Index()
@@ -37,7 +37,7 @@ namespace Wms.Web.Controllers
 
     	public ActionResult Browse(string type)
     	{
-    		var query = QueryProvider.GetEntityQuery(type);
+    		var query = WmsDataFacade.GetEntityQuery(type);
 			if (query == null)
 				throw new HttpException(404, "Entity type not found");
     		return View(query);
@@ -56,12 +56,12 @@ namespace Wms.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Edit(string type, FormCollection form)
 		{
-			var entityDefinition = new EntityDescription(type, type, "Wms.Data.Internal", "", EntitiesModel);
+			var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", EntitiesModel);
 			for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
 			{
-				var propertyDefinition = new PropertyDescription(form[i + ".Name"]);
+				var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
 				if (!String.IsNullOrEmpty(form[i + ".IsPrimaryKey"]))
-					propertyDefinition.Attributes = new[] { "PK" };
+					propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
 				entityDefinition.AddProperty(propertyDefinition);
 			}
 			

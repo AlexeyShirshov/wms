@@ -9,7 +9,7 @@ namespace Wms.Web.Models.Entities
 {
 	public class EntityDescriptionViewModel
 	{
-		public EntityDescription EntityDescription { get; set; }
+        public EntityDefinition EntityDescription { get; set; }
 		public IEnumerable<string> AllowedTypes { get; set; }
 	}
 }
