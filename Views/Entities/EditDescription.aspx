@@ -11,9 +11,9 @@
 	   {
 		   var property = Model.EntityDescription.ActiveProperties[i]; %>
 	   <tr>
-		<td><%= Html.CheckBox("Prop" + i + "IsPrimaryKey", property.Entity.PkProperties.Contains(property))%></td>
-		<td><%= Html.TextBox("Prop" + i + "Name", property.Name)%></td>
-		<td><%= Html.DropDownList("Prop" + i + "ClrTypeName", new SelectList(Model.AllowedTypes, property.PropertyType.ClrTypeName))%></td>
+		<td><%= Html.CheckBox(i + ".IsPrimaryKey", property.Entity.PkProperties.Contains(property))%></td>
+		<td><%= Html.TextBox(i + ".Name", property.Name)%></td>
+		<td><%= Html.DropDownList(i + ".ClrTypeName", new SelectList(Model.AllowedTypes, property.PropertyType.ClrType.Name))%></td>
 	   </tr>    
     <% } %>
     </table>
