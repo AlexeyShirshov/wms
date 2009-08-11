@@ -74,14 +74,14 @@
             Безопасная распаковка переменных с кастом в энам
             </summary>
         </member>
-        <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntityClassName(WXML.Model.Descriptors.EntityDescription)">
+        <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntityClassName(WXML.Model.Descriptors.EntityDefinition)">
             <summary>
             Gets class name of the entity using settings
             </summary>
             <param name="entity">The entity.</param>
             <returns></returns>
         </member>
-        <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntityClassName(WXML.Model.Descriptors.EntityDescription,System.Boolean)">
+        <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntityClassName(WXML.Model.Descriptors.EntityDefinition,System.Boolean)">
             <summary>
             Gets class name of the entity using settings
             </summary>
@@ -89,7 +89,7 @@
             <param name="qualified">if set to <c>true</c> return qualified name.</param>
             <returns></returns>
         </member>
-        <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntitySchemaDefClassName(WXML.Model.Descriptors.EntityDescription)">
+        <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntitySchemaDefClassName(WXML.Model.Descriptors.EntityDefinition)">
             <summary>
             Gets the name of the schema definition class for entity.
             </summary>
