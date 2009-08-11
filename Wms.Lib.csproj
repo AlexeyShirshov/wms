@@ -86,6 +86,7 @@
     <Compile Include="Repository\IRepositoryProvider.cs" />
     <Compile Include="Repository\Linq\LinqRepositoryProvider.cs" />
     <Compile Include="Repository\PageRepository.cs" />
+    <Compile Include="Repository\WebDataFacade.cs" />
     <Compile Include="Repository\WmsBuildProvider.cs" />
     <Compile Include="Repository\WmsDataFacade.cs" />
     <Compile Include="Web\AspPageGenerator.cs" />

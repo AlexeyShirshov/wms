@@ -15,6 +15,13 @@ namespace Wms.Data
 		void Delete(T entity);
 	}
 
+	public interface IWmsDataFacade
+	{
+		IQueryable GetEntityQuery(string entityName);
+		WXMLModel GetEntityModel();
+		void ApplyModelChanges(WXMLModel model);
+	}
+
     //public interface IQueryProvider
     //{
     //    IQueryable GetEntityQuery(string entityName);
