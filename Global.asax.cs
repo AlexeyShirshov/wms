@@ -33,7 +33,6 @@ namespace Wms.Web
 			RegisterRoutes(RouteTable.Routes);
 			ControllerBuilder.Current.SetControllerFactory(typeof(WmsControllerFactory));
 
-            _model = WXMLModel.LoadFromXml(new XmlTextReader(HostingEnvironment.MapPath(@"~/App_Data/Meta/entities.xml")));
 
             //Wms.Repository.WmsDataFacade.GetRepositoryProvider(
             //    System.IO.Path.GetDirectoryName(this.GetType().Assembly.CodeBase), _model);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Wms.Data;
 using Wms.Exceptions;
 using Wms.Web.Models.Entities;
 using WXML.Model;
@@ -14,30 +15,29 @@ namespace Wms.Web.Controllers
 {
     public class EntitiesController : Controller
     {
-		public WXMLModel EntitiesModel { get; set; }
-		//public IQueryProvider QueryProvider { get; set; }
-		private static readonly IEnumerable<Type> AllowedTypes = new List<Type> { typeof(Int32), typeof(Int64), typeof(String), typeof(DateTime) };
+		public IWmsDataFacade DataFacade { get; set; }
+		private static readonly Type[] AllowedTypes = new[] { typeof(Int32), typeof(Int64), typeof(String), typeof(DateTime) };
 		
-		public EntitiesController() : this(null/*, null*/)
+		public EntitiesController() : this(null)
 		{
 			
 		}
 
-		public EntitiesController (WXMLModel entitiesModel/*, IQueryProvider queryProvider*/)
+		public EntitiesController (IWmsDataFacade dataFacade)
 		{
-			EntitiesModel = entitiesModel ?? MvcApplication.Entities;
+			DataFacade = dataFacade ?? new WebDataFacade();
 			//QueryProvider = queryProvider ?? new WebQueryProvider();
 		}
         
 		public ActionResult Index()
         {
-            return View(EntitiesModel.ActiveEntities);
+            return View(DataFacade.GetEntityModel().ActiveEntities);
         }
 
 
     	public ActionResult Browse(string type)
     	{
-    		var query = WmsDataFacade.GetEntityQuery(type);
+    		var query = DataFacade.GetEntityQuery(type);
 			if (query == null)
 				throw new HttpException(404, "Entity type not found");
     		return View(query);
@@ -46,7 +46,7 @@ namespace Wms.Web.Controllers
 		[ActionName("EditDefinition")]
     	public ActionResult Edit(string type)
     	{
-			var entityDescription = EntitiesModel.GetEntity(type);
+			var entityDescription = DataFacade.GetEntityModel().GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpException(404, "Entity description not found");
 			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name) , EntityDescription = entityDescription } );
@@ -65,8 +65,8 @@ namespace Wms.Web.Controllers
 				entityDefinition.AddProperty(propertyDefinition);
 			}
 			
-			EntitiesModel.RemoveEntity(EntitiesModel.GetEntity(type));
-			EntitiesModel.AddEntity(entityDefinition);
+			DataFacade.GetEntityModel().RemoveEntity(EntitiesModel.GetEntity(type));
+			DataFacade.GetEntityModel().AddEntity(entityDefinition);
 
 			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name), EntityDescription = entityDefinition });
 		}
@@ -94,10 +94,10 @@ namespace Wms.Web.Controllers
 
     	public ActionResult Delete(string type)
     	{
-			var entityDescription = EntitiesModel.GetEntity(type);
+			var entityDescription = DataFacade.GetEntityModel().GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpNotFoundException("Entity description");
-			EntitiesModel.RemoveEntity(EntitiesModel.ActiveEntities.First(d => d.Identifier == type));
+			DataFacade.GetEntityModel().RemoveEntity(DataFacade.GetEntityModel().ActiveEntities.First(d => d.Identifier == type));
 			return RedirectToAction("Index");
     	}
     }
