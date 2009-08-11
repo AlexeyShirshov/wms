@@ -21,8 +21,6 @@ namespace Wms.Tests
 
             WXMLModel model = new WXMLModel();
 
-            //Console.WriteLine(Path.GetFullPath(root + @"\Entities\dfg.xml"));
-
             f.ApplyModelChanges(model);
         }
     }
