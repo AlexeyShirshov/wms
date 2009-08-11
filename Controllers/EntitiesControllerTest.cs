@@ -121,6 +121,7 @@ namespace Wms.Tests.Controllers
 			Assert.AreEqual(2, d.ActiveProperties.Count);
 			Assert.AreEqual(propertyName, d.PkProperty.Name);
 			Assert.AreEqual("Title", d.ActiveProperties[1].Name);
+			Assert.AreEqual(typeof(Int32), d.ActiveProperties[0].PropertyType.ClrType);
 
 			form = new FormCollection {{"0.Name", propertyName}, {"0.Type", "Int32"}, {"0.IsPrimaryKey", ""}};
 
