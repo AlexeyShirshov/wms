@@ -15,17 +15,17 @@ namespace Wms.Data
 		void Delete(T entity);
 	}
 
-	public interface IQueryProvider
-	{
-		IQueryable GetEntityQuery(string entityName);
-	}
+    //public interface IQueryProvider
+    //{
+    //    IQueryable GetEntityQuery(string entityName);
+    //}
 
-	public interface IEntityService
-	{
-		EntityDescription GetDefinitionByIdentifier(string identifier);
-		void Delete(string identifier);
-		void Save(EntityDescription entityDescription);
-		IEnumerable<Type> GetAllowedPropertyTypes();
-		IEnumerable<EntityDescription> GetEntityDefinitions(int start, int count);
-	}
+    //public interface IEntityService
+    //{
+    //    EntityDefinition GetDefinitionByIdentifier(string identifier);
+    //    void Delete(string identifier);
+    //    void Save(EntityDefinition entityDescription);
+    //    IEnumerable<Type> GetAllowedPropertyTypes();
+    //    IEnumerable<EntityDefinition> GetEntityDefinitions(int start, int count);
+    //}
 }

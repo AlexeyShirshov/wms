@@ -6,15 +6,15 @@ using Wms.Repository;
 
 namespace Wms.Web
 {
-	public class WebQueryProvider : Data.IQueryProvider
-	{
-		#region Implementation of IQueryProvider
+    //public class WebQueryProvider : Data.IQueryProvider
+    //{
+    //    #region Implementation of IQueryProvider
 
-		public IQueryable GetEntityQuery(string entityName)
-		{
-			return WmsDataFacade.GetEntityQuery(entityName);
-		}
+    //    public IQueryable GetEntityQuery(string entityName)
+    //    {
+    //        return WmsDataFacade.GetEntityQuery(entityName);
+    //    }
 
-		#endregion
-	}
+    //    #endregion
+    //}
 }
