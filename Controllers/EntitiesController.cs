@@ -56,13 +56,13 @@ namespace Wms.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Edit(string type, FormCollection form)
 		{
-			var entityDefinition = new EntityDescription(type, type, "Wms.Data.User", "", EntitiesModel);
+			var entityDefinition = new EntityDescription(type, type, "Wms.Data.Internal", "", EntitiesModel);
 			for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
 			{
 				var propertyDefinition = new PropertyDescription(form[i + ".Name"]);
-				if (form[i + ".IsPrimaryKey"] == "checked")
+				if (!String.IsNullOrEmpty(form[i + ".IsPrimaryKey"]))
 					propertyDefinition.Attributes = new[] { "PK" };
-				entityDefinition.ActiveProperties.Add(propertyDefinition);
+				entityDefinition.AddProperty(propertyDefinition);
 			}
 			
 			EntitiesModel.RemoveEntity(EntitiesModel.GetEntity(type));
