@@ -73,6 +73,7 @@
     <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\FacadeTest.cs" />
     <Compile Include="Utils\TestUtils.cs" />
     <Compile Include="WmsControllerFactoryTest.cs" />
   </ItemGroup>
@@ -88,12 +89,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Moq\Moq.dll" />
+    <Content Include="Repository\Meta\entities.xml" />
+    <Content Include="Repository\Meta\types.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Repository\Meta\OrmObjectsSchema.xsd" />
+    <None Include="Repository\Meta\OrmObjectsSchema.xsx">
+      <DependentUpon>OrmObjectsSchema.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <Folder Include="Repository\Meta\EntityArchive\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
