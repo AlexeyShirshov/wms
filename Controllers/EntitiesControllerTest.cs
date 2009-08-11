@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 using MbUnit.Framework;
 using Moq;
 using Wms.Tests.Fakes;
 using Wms.Web.Controllers;
 using WXML.Model;
+using WXML.Model.Descriptors;
 
 namespace Wms.Tests.Controllers
 {
@@ -21,10 +24,10 @@ namespace Wms.Tests.Controllers
 		[SetUp]
 		public void Setup()
 		{
-			_model = new WXMLModel();
-
+			Console.WriteLine(Environment.CurrentDirectory);
+			
+			_model = WXMLModel.LoadFromXml(XmlReader.Create(Path.Combine(TestUtils.TestDataDir, "TestEntities.xml")));
 			_controller = new EntitiesController(_model, new FakeQueryProvider());
-
 		}
 
 		[Test]
@@ -73,6 +76,11 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
+
+			var ed = result.ViewData.Model as EntityDescription;
+
+			Assert.IsNotNull(ed);
+			Assert.AreEqual("Post", ed.Identifier);
 		}
 
 		[Test]
@@ -111,17 +119,38 @@ namespace Wms.Tests.Controllers
 		[Test]
 		public void Delete_Instance_Redirects()
 		{
-			var result = _controller.Delete("Post", 2) as RedirectResult;
+			var result = _controller.Delete("Post", 2) as RedirectToRouteResult;
 
 			Assert.IsNotNull(result);
+
+			result.ExecuteResult(GetFakeControllerContext("Entities", "Delete"));
+
+			Assert.AreEqual("Entities", result.RouteValues["controller"]);
+			Assert.AreEqual("Browse", result.RouteValues["action"]);
+			Assert.AreEqual("Post", result.RouteValues["type"]);
+		}
+
+		private ControllerContext GetFakeControllerContext(string controller, string action)
+		{
+			var ctx = new Mock<ControllerContext>();
+			return ctx.Object;
 		}
 
 		[Test]
 		public void Delete_Definition_Redirects()
 		{
-			var result = _controller.Delete("News") as RedirectResult;
+			var result = _controller.Delete("News") as RedirectToRouteResult;
 
+			result.ExecuteResult(GetFakeControllerContext("Entities", "Delete"));
 			Assert.IsNotNull(result);
+			Assert.AreEqual("Entities", result.RouteValues["controller"]);
+			Assert.AreEqual("Index", result.RouteValues["action"]);
+		}
+
+		[Test]
+		public void Delete_Definition_Handles_Non_Existing_Type()
+		{
+			Assert.Throws<HttpException>(() => _controller.Delete("Nothing"));
 		}
 	}
 }

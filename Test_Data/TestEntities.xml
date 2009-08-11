@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<oos:WXMLModel defaultNamespace="Wms.Data" xmlns:oos="http://wise-orm.com/WXMLSchema.xsd">
+  <oos:Linq enable="true" contextName="WmsRepository" contextClassBehaviour="BaseClass" />
+  <oos:SourceFragments>
+    <oos:SourceFragment id="tblPost" name="Posts" selector="Internal" />
+    <oos:SourceFragment id="tblNews" name="News" selector="Internal" />
+  </oos:SourceFragments>
+  <oos:Types>
+  <oos:Type id="tInt32">
+    <oos:ClrType name="System.Int32" />
+  </oos:Type>  
+  <oos:Type id="tString">
+    <oos:ClrType name="System.String" />
+  </oos:Type>
+  </oos:Types>
+  <oos:Entities>
+    <oos:Entity id="Post" name="Post" namespace="Wms.Data.User">
+      <oos:SourceFragments>
+        <oos:SourceFragment ref="tblPost" />
+      </oos:SourceFragments>
+      <oos:Properties>
+        <oos:Property propertyName="ID" attributes="PrimaryKey" table="tblPost" fieldName="id" typeRef="tInt32" dbTypeName="int" dbTypeNullable="false" />
+        <oos:Property propertyName="Name" table="tblPost" fieldName="name" typeRef="tString" dbTypeName="nvarchar" dbTypeSize="100" dbTypeNullable="false" />
+        <oos:Property propertyName="Url" table="tblPost" fieldName="url" typeRef="tString" dbTypeName="nvarchar" dbTypeSize="1000" dbTypeNullable="false" />
+      </oos:Properties>
+    </oos:Entity>
+    <oos:Entity id="News" name="News" namespace="Wms.Data.User">
+      <oos:SourceFragments>
+        <oos:SourceFragment ref="tblNews" />
+      </oos:SourceFragments>
+      <oos:Properties>
+        <oos:Property propertyName="ID" attributes="PrimaryKey" table="tblNews" fieldName="id" typeRef="tInt32" dbTypeName="int" dbTypeNullable="false" />
+        <oos:Property propertyName="Name" table="tblNews" fieldName="name" typeRef="tString" dbTypeName="nvarchar" dbTypeSize="100" dbTypeNullable="false" />
+        <oos:Property propertyName="Url" table="tblNews" fieldName="url" typeRef="tString" dbTypeName="nvarchar" dbTypeSize="1000" dbTypeNullable="false" />
+      </oos:Properties>
+    </oos:Entity>
+  </oos:Entities>
+</oos:WXMLModel>

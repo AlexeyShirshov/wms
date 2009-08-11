@@ -16,11 +16,8 @@ namespace Wms.Tests.Fakes
 
 		public IQueryable GetEntityQuery(string entityName)
 		{
-			if(String.Equals(entityName, "Post", StringComparison.InvariantCultureIgnoreCase))
-				return _postList.AsQueryable();
-			throw new InvalidOperationException();
+			return String.Equals(entityName, "Post", StringComparison.InvariantCultureIgnoreCase) ? _postList.AsQueryable() : null;
 		}
-
 	}
 
     public class FakeRepositoryProvider : Wms.Repository.IRepositoryProvider

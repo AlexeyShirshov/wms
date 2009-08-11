@@ -13,7 +13,7 @@ using Wms.Web.Controllers;
 using Moq;
 using Wms.Web.Models.Admin;
 
-namespace Wms.Tests
+namespace Wms.Tests.Controllers
 {
 	[TestFixture]
 	public class AdminControllerTest

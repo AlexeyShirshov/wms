@@ -14,5 +14,6 @@ namespace Wms.Tests.Controllers
 		{
 			return new T();
 		}
+
 	}
 }
