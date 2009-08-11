@@ -96,9 +96,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.3.2-vsdoc2.js" />
     <Content Include="Scripts\jquery-1.3.2.js" />
-    <Content Include="Views\Entities\BrowseEntity.aspx" />
     <Content Include="Views\Admin\Controls.aspx" />
-    <Content Include="Views\Entities\BrowseEntity2.aspx" />
     <Content Include="Views\Admin\CreateControl.aspx" />
     <Content Include="Views\Admin\CreatePage.aspx" />
     <Content Include="Views\Admin\Pages.aspx" />
