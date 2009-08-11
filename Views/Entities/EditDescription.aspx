@@ -3,7 +3,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>EditDescription</h2>    
+    <h2><%= Model.Identifier %></h2>    
     <table>
     <% foreach(var property in Model.ActiveProperties)
 	   { %>
