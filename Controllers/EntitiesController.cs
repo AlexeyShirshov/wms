@@ -41,6 +41,7 @@ namespace Wms.Web.Controllers
     		return View(query);
     	}
 
+		[ActionName("EditDefinition")]
     	public ActionResult Edit(string type)
     	{
 			var entityDescription = EntitiesModel.GetEntity(type);

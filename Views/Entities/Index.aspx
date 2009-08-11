@@ -8,7 +8,10 @@
     <% foreach (var item in Model) { %>
         <tr>
             <td>
-                <%= Html.ActionLink(item.Name, "Browse", new { id = item.Identifier }) %>
+                <%= Html.ActionLink(item.Name, "Browse", new { type = item.Identifier }) %>
+            </td>
+            <td>
+				<%= Html.ActionLink("Edit definition", "EditDefinition", new { type= item.Identifier }) %>
             </td>
         </tr>
     
