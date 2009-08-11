@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Xml;
 using MbUnit.Framework;
 using Moq;
@@ -24,9 +25,10 @@ namespace Wms.Tests.Controllers
 		[SetUp]
 		public void Setup()
 		{
-			Console.WriteLine(Environment.CurrentDirectory);
-			
-			_model = WXMLModel.LoadFromXml(XmlReader.Create(Path.Combine(TestUtils.TestDataDir, "TestEntities.xml")));
+			using (var reader = XmlReader.Create(Path.Combine(TestUtils.TestDataDir, "TestEntities.xml")))
+			{
+				_model = WXMLModel.LoadFromXml(reader);
+			}
 			_controller = new EntitiesController(_model, new FakeQueryProvider());
 		}
 
@@ -65,8 +67,12 @@ namespace Wms.Tests.Controllers
 
 			var model = result.ViewData.Model;
 
-			Assert.IsInstanceOfType<IEnumerable>(result.ViewData.Model);
+			Assert.IsInstanceOfType<IEnumerable<EntityDescription>>(result.ViewData.Model);
 			Assert.IsNotNull(result.ViewData.Model);
+
+			var edList = model as IEnumerable<EntityDescription>;
+
+			Assert.GreaterThan(edList.Count(), 0);
 		}
 
 		[Test]
@@ -99,12 +105,11 @@ namespace Wms.Tests.Controllers
 		}
 
 		[Test]
-		public void Create_Definition_Returns_Model()
+		public void Create_Definition_Returns_View()
 		{
-			var result = _controller.Create() as ViewResult;
+			var result = _controller.Create();
 
-			Assert.IsNotNull(result);
-			Assert.IsNotNull(result.ViewData.Model);
+			Assert.IsInstanceOfType<ViewResult>(result);
 		}
 
 		[Test]
@@ -123,29 +128,32 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsNotNull(result);
 
-			result.ExecuteResult(GetFakeControllerContext("Entities", "Delete"));
+			result.ExecuteResult(GetFakeControllerContext(_controller));
 
 			Assert.AreEqual("Entities", result.RouteValues["controller"]);
 			Assert.AreEqual("Browse", result.RouteValues["action"]);
 			Assert.AreEqual("Post", result.RouteValues["type"]);
 		}
 
-		private ControllerContext GetFakeControllerContext(string controller, string action)
+		private ControllerContext GetFakeControllerContext(ControllerBase controller)
 		{
-			var ctx = new Mock<ControllerContext>();
-			return ctx.Object;
+			var httpContextMock = new Mock<HttpContextBase>();
+			return new ControllerContext(httpContextMock.Object, new RouteData(), controller);
 		}
 
 		[Test]
-		public void Delete_Definition_Redirects()
+		public void Delete_Definition_Deletes()
 		{
 			var result = _controller.Delete("News") as RedirectToRouteResult;
 
-			result.ExecuteResult(GetFakeControllerContext("Entities", "Delete"));
-			Assert.IsNotNull(result);
-			Assert.AreEqual("Entities", result.RouteValues["controller"]);
-			Assert.AreEqual("Index", result.RouteValues["action"]);
+			Assert.IsFalse(_model.ActiveEntities.Any(e => e.Identifier == "News"), "Entity description not deleted");
+
+			//result.ExecuteResult(GetFakeControllerContext(_controller));
+			//Assert.IsNotNull(result);
+			//Assert.AreEqual("Entities", result.RouteValues["controller"]);
+			//Assert.AreEqual("Index", result.RouteValues["action"]);
 		}
+		
 
 		[Test]
 		public void Delete_Definition_Handles_Non_Existing_Type()
