@@ -59,12 +59,16 @@ namespace Wms.Web.Controllers
 			EntitiesModel.RemoveEntity(EntitiesModel.GetEntity(type));
 
 			var entityDefinition = new EntityDescription(type, type, "Wms.Data.User", "", EntitiesModel);
-			var propertyDefinition = new PropertyDescription(form["1.Name"]);
-			if (form["1.IsPrimaryKey"] == "checked")
-				propertyDefinition.Attributes = new[] { "PK" };
-			entityDefinition.AddProperty(propertyDefinition);
+			for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
+			{
+				var propertyDefinition = new PropertyDescription(form[i + ".Name"]);
+				if (form[i + ".IsPrimaryKey"] == "checked")
+					propertyDefinition.Attributes = new[] { "PK" };
+				entityDefinition.AddProperty(propertyDefinition);
+			}
+
 			EntitiesModel.AddEntity(entityDefinition);
-			
+
 			return View();
 		}
 
