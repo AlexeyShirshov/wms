@@ -99,10 +99,32 @@ namespace Wms.Tests.Controllers
 		}
 
 		[Test]
-		public void Edit_Definition_Saves_And_Redirects()
+		public void Edit_Definition_Saves([Column("Post", "News")] string entityType,[Column("Id", "Ident")] string propertyName)
 		{
-			var form = new FormCollection();
-			var result = _controller.Edit("Post", form);
+			var form = new FormCollection { {"1.Name", propertyName}, { "1.Type", "Int32" }, {"1.IsPrimaryKey", "checked"}};
+			var result = _controller.Edit(entityType, form);
+
+			Assert.IsInstanceOfType<ViewResult>(result);
+
+			var d = _model.GetEntity(entityType);
+
+			Assert.IsNotNull(d);
+			Assert.AreEqual(1, d.ActiveProperties.Count);
+			Assert.AreEqual(propertyName, d.PkProperty.Name);
+			Assert.AreEqual(typeof(Int32), d.PkProperty.PropertyType.ClrType);
+
+			form = new FormCollection { {"1.Name", propertyName}, { "1.Type", "Int32" }, {"1.IsPrimaryKey", ""}};
+
+			result = _controller.Edit(entityType, form);
+
+			Assert.IsInstanceOfType<ViewResult>(result);
+
+			d = _model.GetEntity(entityType);
+
+			Assert.IsNotNull(d);
+			Assert.AreEqual(1, d.ActiveProperties.Count);
+			Assert.IsNull(d.PkProperty);
+			Assert.AreEqual(typeof(Int32), d.PkProperty.PropertyType.ClrType);
 		}
 
 		[Test]

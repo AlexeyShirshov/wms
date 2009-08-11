@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AspPageGeneratorTest.cs" />
+    <Compile Include="Binders\EntityDescriptionBinderTest.cs" />
     <Compile Include="Controllers\AdminControllerTest.cs" />
     <Compile Include="Controllers\ControllerTestBase.cs" />
     <Compile Include="Controllers\EntitiesControllerTest.cs" />
