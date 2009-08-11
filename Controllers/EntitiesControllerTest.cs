@@ -12,6 +12,7 @@ using MbUnit.Framework;
 using Moq;
 using Wms.Tests.Fakes;
 using Wms.Web.Controllers;
+using Wms.Web.Models.Entities;
 using WXML.Model;
 using WXML.Model.Descriptors;
 
@@ -21,6 +22,12 @@ namespace Wms.Tests.Controllers
 	public class EntitiesControllerTest : ControllerTestBase<EntitiesController>
 	{
 		private WXMLModel _model;
+
+		private ControllerContext GetFakeControllerContext(ControllerBase controller)
+		{
+			var httpContextMock = new Mock<HttpContextBase>();
+			return new ControllerContext(httpContextMock.Object, new RouteData(), controller);
+		}
 
 		[SetUp]
 		public void Setup()
@@ -83,10 +90,19 @@ namespace Wms.Tests.Controllers
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
 
-			var ed = result.ViewData.Model as EntityDescription;
+			var ed = result.ViewData.Model as EntityDescriptionViewModel;
 
 			Assert.IsNotNull(ed);
-			Assert.AreEqual("Post", ed.Identifier);
+			Assert.AreEqual("Post", ed.EntityDescription.Identifier);
+
+			Assert.GreaterThan(ed.AllowedTypes.Count(), 0);
+		}
+
+		[Test]
+		public void Edit_Definition_Saves_And_Redirects()
+		{
+			var form = new FormCollection();
+			var result = _controller.Edit("Post", form);
 		}
 
 		[Test]
@@ -133,12 +149,6 @@ namespace Wms.Tests.Controllers
 			Assert.AreEqual("Entities", result.RouteValues["controller"]);
 			Assert.AreEqual("Browse", result.RouteValues["action"]);
 			Assert.AreEqual("Post", result.RouteValues["type"]);
-		}
-
-		private ControllerContext GetFakeControllerContext(ControllerBase controller)
-		{
-			var httpContextMock = new Mock<HttpContextBase>();
-			return new ControllerContext(httpContextMock.Object, new RouteData(), controller);
 		}
 
 		[Test]
