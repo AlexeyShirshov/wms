@@ -36,7 +36,7 @@ namespace Wms.Tests.Controllers
 			{
 				_model = WXMLModel.LoadFromXml(reader);
 			}
-			_controller = new EntitiesController(_model, new FakeQueryProvider());
+			_controller = new EntitiesController(_model/*, new FakeQueryProvider()*/);
 		}
 
 		[Test]
@@ -74,10 +74,10 @@ namespace Wms.Tests.Controllers
 
 			var model = result.ViewData.Model;
 
-			Assert.IsInstanceOfType<IEnumerable<EntityDescription>>(result.ViewData.Model);
+            Assert.IsInstanceOfType<IEnumerable<EntityDefinition>>(result.ViewData.Model);
 			Assert.IsNotNull(result.ViewData.Model);
 
-			var edList = model as IEnumerable<EntityDescription>;
+            var edList = model as IEnumerable<EntityDefinition>;
 
 			Assert.GreaterThan(edList.Count(), 0);
 		}
@@ -115,7 +115,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsInstanceOfType<ViewResult>(result);
 
-			EntityDescription d = _model.GetEntity(entityType);
+            EntityDefinition d = _model.GetEntity(entityType);
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(2, d.ActiveProperties.Count);

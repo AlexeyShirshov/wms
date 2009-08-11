@@ -5,20 +5,20 @@ using System.Text;
 
 namespace Wms.Tests.Fakes
 {
-	public class FakeQueryProvider : Data.IQueryProvider
-	{
-		private readonly List<Post> _postList = new List<Post>();
+    //public class FakeQueryProvider : Data.IQueryProvider
+    //{
+    //    private readonly List<Post> _postList = new List<Post>();
 
-		public FakeQueryProvider()
-		{
-			_postList.Add(new Post { Id = 1, Title = "Post#1", Text = "This is the first post" });
-		}
+    //    public FakeQueryProvider()
+    //    {
+    //        _postList.Add(new Post { Id = 1, Title = "Post#1", Text = "This is the first post" });
+    //    }
 
-		public IQueryable GetEntityQuery(string entityName)
-		{
-			return String.Equals(entityName, "Post", StringComparison.InvariantCultureIgnoreCase) ? _postList.AsQueryable() : null;
-		}
-	}
+    //    public IQueryable GetEntityQuery(string entityName)
+    //    {
+    //        return String.Equals(entityName, "Post", StringComparison.InvariantCultureIgnoreCase) ? _postList.AsQueryable() : null;
+    //    }
+    //}
 
     public class FakeRepositoryProvider : Wms.Repository.IRepositoryProvider
     {
