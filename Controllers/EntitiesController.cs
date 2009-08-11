@@ -68,7 +68,7 @@ namespace Wms.Web.Controllers
 			EntitiesModel.RemoveEntity(EntitiesModel.GetEntity(type));
 			EntitiesModel.AddEntity(entityDefinition);
 
-			return View();
+			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name), EntityDescription = entityDefinition });
 		}
 
 
