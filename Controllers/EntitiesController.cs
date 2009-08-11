@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Wms.Exceptions;
+using Wms.Web.Models.Entities;
 using WXML.Model;
 using WXML.Model.Descriptors;
 using IQueryProvider = Wms.Data.IQueryProvider; 
@@ -15,6 +16,7 @@ namespace Wms.Web.Controllers
     {
 		public WXMLModel EntitiesModel { get; set; }
 		public IQueryProvider QueryProvider { get; set; }
+		private static readonly IEnumerable<Type> AllowedTypes = new List<Type> { typeof(Int32), typeof(String), typeof(Int64), typeof(DateTime) };
 		
 		public EntitiesController() : this(null, null)
 		{
@@ -47,8 +49,16 @@ namespace Wms.Web.Controllers
 			var entityDescription = EntitiesModel.GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpException(404, "Entity description not found");
-			return View("EditDescription", entityDescription);
+			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name) , EntityDescription = entityDescription } );
     	}
+
+		[ActionName("EditDefinition")]
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Edit(string type, FormCollection form)
+		{
+			return View();
+		}
+			
 
     	public ActionResult Edit(string type, int id)
     	{
