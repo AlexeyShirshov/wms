@@ -12,7 +12,7 @@ namespace Wms.Repository
 	public class WebDataFacade : IWmsDataFacade
 	{
 		private readonly WmsDataFacade _dataFacade = new WmsDataFacade();
-		private WXMLModel _entityModel;
+		private readonly WXMLModel _entityModel;
 		public WebDataFacade()
 		{
             _entityModel = WXMLModel.LoadFromXml(new XmlTextReader(HostingEnvironment.MapPath(@"~/App_Data/Meta/entities.xml")));
