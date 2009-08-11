@@ -91,17 +91,20 @@ namespace Wms.Repository
             if (System.Web.HttpContext.Current != null && !string.IsNullOrEmpty(System.Web.HttpContext.Current.User.Identity.Name))
                 user = System.Web.HttpContext.Current.User.Identity.Name;
 
-            File.Copy(fileName, Path.GetFullPath(_path + string.Format(@"\EntityArchive\{0}~{1}~{2}.xml", user, 
-                DateTime.UtcNow.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
-                Environment.TickCount))
-            );
+            lock (typeof(WmsDataFacade))
+            {
+                File.Copy(fileName, Path.GetFullPath(_path + string.Format(@"\EntityArchive\{0}~{1}~{2}.xml", user,
+                    DateTime.UtcNow.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
+                    Math.Round((DateTime.Now - DateTime.Today).TotalSeconds)))
+                );
 
-            FileAttributes attr = File.GetAttributes(fileName);
-            if ((attr & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                File.SetAttributes(fileName, attr & ~FileAttributes.ReadOnly);
+                FileAttributes attr = File.GetAttributes(fileName);
+                if ((attr & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    File.SetAttributes(fileName, attr & ~FileAttributes.ReadOnly);
 
-            XmlDocument xdoc = model.GetXmlDocument();
-            xdoc.Save(fileName);
+                XmlDocument xdoc = model.GetXmlDocument();
+                xdoc.Save(fileName);
+            }
         }
 
         public void ApplyModelChanges(string script)
