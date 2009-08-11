@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Xml;
 using MbUnit.Framework;
 using Moq;
+using Wms.Data;
 using Wms.Tests.Fakes;
 using Wms.Web.Controllers;
 using Wms.Web.Models.Entities;
@@ -21,7 +22,7 @@ namespace Wms.Tests.Controllers
 	[TestFixture]
 	public class EntitiesControllerTest : ControllerTestBase<EntitiesController>
 	{
-		private WXMLModel _model;
+		private IWmsDataFacade _dataFacade;
 
 		private ControllerContext GetFakeControllerContext(ControllerBase controller)
 		{
@@ -32,7 +33,8 @@ namespace Wms.Tests.Controllers
 		[SetUp]
 		public void Setup()
 		{
-			_controller = new EntitiesController(new FakeDataFacade());
+			_dataFacade = new FakeDataFacade();
+			_controller = new EntitiesController(_dataFacade);
 		}
 
 		[Test]
@@ -111,7 +113,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsInstanceOfType<ViewResult>(result);
 
-            EntityDefinition d = _model.GetEntity(entityType);
+            EntityDefinition d = _dataFacade.GetEntityModel().GetEntity(entityType);
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(2, d.ActiveProperties.Count);
@@ -125,7 +127,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsInstanceOfType<ViewResult>(result);
 
-			d = _model.GetEntity(entityType);
+			d = _dataFacade.GetEntityModel().GetEntity(entityType);
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(1, d.ActiveProperties.Count);
@@ -184,7 +186,7 @@ namespace Wms.Tests.Controllers
 		{
 			var result = _controller.Delete("News") as RedirectToRouteResult;
 
-			Assert.IsFalse(_model.ActiveEntities.Any(e => e.Identifier == "News"), "Entity description not deleted");
+			Assert.IsFalse(_dataFacade.GetEntityModel().ActiveEntities.Any(e => e.Identifier == "News"), "Entity description not deleted");
 
 			//result.ExecuteResult(GetFakeControllerContext(_controller));
 			//Assert.IsNotNull(result);
