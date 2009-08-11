@@ -1,18 +1,11 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<WXML.Model.WXMLModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<EntityDescription>>" %>
+<%@ Import Namespace="WXML.Model.Descriptors"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-    <title>Index</title>
-</head>
-<body>
+    <h2>Entities</h2>
     <table>
-        <tr>
-            <th>Entities</th>
-        </tr>
-
-    <% foreach (var item in Model.ActiveEntities) { %>
+    <% foreach (var item in Model) { %>
         <tr>
             <td>
                 <%= Html.ActionLink(item.Name, "BrowseEntity", new { id = item.Identifier }) %>
@@ -27,6 +20,4 @@
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
 
-</body>
-</html>
-
+</asp:Content>

@@ -101,8 +101,6 @@
     <Content Include="Views\Entities\BrowseEntity2.aspx" />
     <Content Include="Views\Admin\CreateControl.aspx" />
     <Content Include="Views\Admin\CreatePage.aspx" />
-    <Content Include="Views\Entities\Index.aspx" />
-    <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Admin\Pages.aspx" />
     <Content Include="Views\Shared\Page.aspx" />
     <Content Include="Web.config" />
@@ -121,6 +119,8 @@
       <DependentUpon>OrmObjectsSchema.xsd</DependentUpon>
     </None>
     <Content Include="Content\Wms.css" />
+    <Content Include="Views\Admin\Index.aspx" />
+    <Content Include="Views\Entities\Index.aspx" />
     <Content Include="Views\Shared\Wms.Master" />
   </ItemGroup>
   <ItemGroup>
