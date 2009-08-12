@@ -103,10 +103,10 @@ namespace Wms.Tests.Controllers
 			var form = new FormCollection
 			           	{
 			           		{"0.Name", propertyName},
-			           		{"0.Type", "Int32"},
+			           		{"0.ClrTypeName", "Int32"},
 			           		{"0.IsPrimaryKey", "checked"},
 			           		{"1.Name", "Title"},
-			           		{"1.Type", "String"},
+			           		{"1.ClrTypeName", "String"},
 			           		{"1.IsPrimaryKey", ""}
 			           	};
 			ActionResult result = _controller.Edit(entityType, form);
