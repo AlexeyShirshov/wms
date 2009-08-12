@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using WXML.Model.Descriptors;
 
 namespace Wms.Web
 {
@@ -41,6 +42,12 @@ namespace Wms.Web
 	public interface IControlModel
 	{
 		object Data { get; set; }
+	}
+
+	public interface IAdminPageGenerator
+	{
+		void GetEditPage(EntityDefinition entityDefinition, TextWriter tw);
+		void GetCreatePage(EntityDefinition entityDefinition, TextWriter tw);
 	}
 
 }
