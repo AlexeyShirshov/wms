@@ -56,7 +56,7 @@ namespace Wms.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Edit(string type, FormCollection form)
 		{
-			var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", EntitiesModel);
+			var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
 			for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
 			{
 				var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
@@ -65,7 +65,7 @@ namespace Wms.Web.Controllers
 				entityDefinition.AddProperty(propertyDefinition);
 			}
 			
-			DataFacade.GetEntityModel().RemoveEntity(EntitiesModel.GetEntity(type));
+			DataFacade.GetEntityModel().RemoveEntity(DataFacade.GetEntityModel().GetEntity(type));
 			DataFacade.GetEntityModel().AddEntity(entityDefinition);
 
 			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name), EntityDescription = entityDefinition });
