@@ -184,8 +184,9 @@ namespace Wms.Tests.Controllers
 		[Test]
 		public void Delete_Definition_Deletes()
 		{
-			var result = _controller.Delete("News") as RedirectToRouteResult;
+			var result = _controller.Delete("News");
 
+			Assert.IsInstanceOfType<RedirectToRouteResult>(result);
 			Assert.IsFalse(_dataFacade.GetEntityModel().ActiveEntities.Any(e => e.Identifier == "News"), "Entity description not deleted");
 
 			//result.ExecuteResult(GetFakeControllerContext(_controller));
