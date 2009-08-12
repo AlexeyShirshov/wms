@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<EntityDescription>>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<EntityDefinition>>" %>
 <%@ Import Namespace="WXML.Model.Descriptors"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

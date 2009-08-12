@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,7 +27,6 @@ namespace Wms.Web.Controllers
 		public EntitiesController (IWmsDataFacade dataFacade)
 		{
 			DataFacade = dataFacade ?? new WebDataFacade();
-			//QueryProvider = queryProvider ?? new WebQueryProvider();
 		}
         
 		public ActionResult Index()
@@ -62,6 +62,11 @@ namespace Wms.Web.Controllers
 				var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
 				if (!String.IsNullOrEmpty(form[i + ".IsPrimaryKey"]))
 					propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
+				string typeName = form[i + ".ClrTypeName"];
+
+				Debug.WriteLine("Type Name =" + typeName);
+
+				propertyDefinition.PropertyType = new TypeDefinition(typeName, Type.GetType("System." + typeName));
 				entityDefinition.AddProperty(propertyDefinition);
 			}
 			
