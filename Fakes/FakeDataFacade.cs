@@ -13,6 +13,7 @@ namespace Wms.Tests.Fakes
 	{
 		private WXMLModel _model;
 		private readonly List<Post> _postList = new List<Post>();
+		private int _saveCount;
 
 		public FakeDataFacade()
 		{
@@ -38,6 +39,7 @@ namespace Wms.Tests.Fakes
 		public void ApplyModelChanges(WXMLModel model)
 		{
 			_model = model;
+			_saveCount++;
 		}
 
 		#endregion
