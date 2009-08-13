@@ -121,7 +121,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(2, d.ActiveProperties.Count);
-			Assert.AreEqual(propertyName, d.PkProperty.Name);
+			Assert.AreEqual(propertyName, d.PkProperties.Single().Name);
 			Assert.AreEqual("Title", d.ActiveProperties[1].Name);
 			Assert.AreEqual(typeof(Int32), d.ActiveProperties[0].PropertyType.ClrType);
 
@@ -142,8 +142,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(1, d.ActiveProperties.Count);
-			Assert.IsNull(d.PkProperty);
-			Assert.AreEqual(typeof(Int32), d.PkProperty.PropertyType.ClrType);
+			Assert.IsNull(d.PkProperties.SingleOrDefault());
 		}
 
 		[Test]
