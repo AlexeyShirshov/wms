@@ -167,7 +167,7 @@ namespace Wms.Repository
                     //string entityName = entity.Name;
                     string entityProp = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(entity.Name);
                     string entityType = n.GetEntityClassName(entity, true);
-                    string pkName = entity.PkProperty.Name;
+                    string pkName = entity.PkProperties.Single().Name;
 
                     cls.AddMethod(MemberAttributes.Static | MemberAttributes.Private,
                         (DynType ctx, DynType p) => "_DelEntity" + ctx.SetType(_ctxName) + p.SetType(entityType),
