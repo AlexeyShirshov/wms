@@ -19,10 +19,12 @@ using WXML.Model.Descriptors;
 
 namespace Wms.Tests.Controllers
 {
+	// ReSharper disable InconsistentNaming
+
 	[TestFixture]
 	public class EntitiesControllerTest : ControllerTestBase<EntitiesController>
 	{
-		private IWmsDataFacade _dataFacade;
+		private FakeDataFacade _dataFacade;
 
 		private ControllerContext GetFakeControllerContext(ControllerBase controller)
 		{
@@ -104,7 +106,7 @@ namespace Wms.Tests.Controllers
 			           	{
 			           		{"0.Name", propertyName},
 			           		{"0.ClrTypeName", "Int32"},
-			           		{"0.IsPrimaryKey", "checked"},
+			           		{"0.IsPrimaryKey", "true,false"},
 			           		{"1.Name", "Title"},
 			           		{"1.ClrTypeName", "String"},
 			           		{"1.IsPrimaryKey", ""}
@@ -112,6 +114,8 @@ namespace Wms.Tests.Controllers
 			ActionResult result = _controller.Edit(entityType, form);
 
 			Assert.IsInstanceOfType<ViewResult>(result);
+
+			Assert.AreEqual(1, _dataFacade.SaveCount);
 
             EntityDefinition d = _dataFacade.GetEntityModel().GetEntity(entityType);
 
@@ -121,18 +125,25 @@ namespace Wms.Tests.Controllers
 			Assert.AreEqual("Title", d.ActiveProperties[1].Name);
 			Assert.AreEqual(typeof(Int32), d.ActiveProperties[0].PropertyType.ClrType);
 
-			form = new FormCollection {{"0.Name", propertyName}, {"0.Type", "Int32"}, {"0.IsPrimaryKey", ""}};
+		}
 
-			result = _controller.Edit(entityType, form);
+		[Test]
+		public void Edit_Definition_Saves_With_No_PK([Column("Post", "News")] string entityType, [Column("Id", "Ident")] string propertyName)
+		{
+			var form = new FormCollection { { "0.Name", propertyName }, { "0.Type", "Int32" }, { "0.IsPrimaryKey", "false" }, { "0.ClrTypeName", "Int32" } };
+
+			var result = _controller.Edit(entityType, form);
 
 			Assert.IsInstanceOfType<ViewResult>(result);
 
-			d = _dataFacade.GetEntityModel().GetEntity(entityType);
+			Assert.AreEqual(1, _dataFacade.SaveCount);
+
+			var d = _dataFacade.GetEntityModel().GetEntity(entityType);
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(1, d.ActiveProperties.Count);
 			Assert.IsNull(d.PkProperty);
-			Assert.AreEqual(typeof (Int32), d.PkProperty.PropertyType.ClrType);
+			Assert.AreEqual(typeof(Int32), d.PkProperty.PropertyType.ClrType);
 		}
 
 		[Test]

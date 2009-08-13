@@ -13,7 +13,8 @@ namespace Wms.Tests.Fakes
 	{
 		private WXMLModel _model;
 		private readonly List<Post> _postList = new List<Post>();
-		private int _saveCount;
+		
+		public int SaveCount { get; private set; }
 
 		public FakeDataFacade()
 		{
@@ -22,7 +23,7 @@ namespace Wms.Tests.Fakes
 				_model = WXMLModel.LoadFromXml(reader);
 			}
 			_postList.Add(new Post { Id = 1, Title = "Post#1", Text = "This is the first post" });
-
+			SaveCount = 0;
 		}
 		#region Implementation of IWmsDataFacade
 
@@ -39,7 +40,7 @@ namespace Wms.Tests.Fakes
 		public void ApplyModelChanges(WXMLModel model)
 		{
 			_model = model;
-			_saveCount++;
+			SaveCount++;
 		}
 
 		#endregion
