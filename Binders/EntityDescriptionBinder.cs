@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WXML.Model.Descriptors;
 
 namespace Wms.Web.Binders
 {
@@ -14,7 +15,7 @@ namespace Wms.Web.Binders
 
 		public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 		#endregion

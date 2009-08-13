@@ -120,7 +120,7 @@
     </None>
     <Content Include="Content\Wms.css" />
     <Content Include="Views\Admin\Index.aspx" />
-    <Content Include="Views\Entities\EditDescription.aspx" />
+    <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />
     <Content Include="Views\Shared\Wms.Master" />
   </ItemGroup>

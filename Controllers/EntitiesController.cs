@@ -17,11 +17,18 @@ namespace Wms.Web.Controllers
     public class EntitiesController : Controller
     {
 		public IWmsDataFacade DataFacade { get; set; }
-		private static readonly Type[] AllowedTypes = new[] { typeof(Int32), typeof(Int64), typeof(String), typeof(DateTime) };
 		
 		public EntitiesController() : this(null)
 		{
 			
+		}
+		
+		private IEnumerable<TypeDefinition> AllowedTypes
+		{
+			get
+			{
+				return DataFacade.GetEntityModel().Types;
+			}
 		}
 
 		public EntitiesController (IWmsDataFacade dataFacade)
@@ -49,32 +56,38 @@ namespace Wms.Web.Controllers
 			var entityDescription = DataFacade.GetEntityModel().GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpException(404, "Entity description not found");
-			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name) , EntityDescription = entityDescription } );
+			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.Name) , EntityDescription = entityDescription } );
     	}
 
 		[ActionName("EditDefinition")]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Edit(string type, FormCollection form)
 		{
-			var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
-			for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
-			{
-				var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
-				if (!String.IsNullOrEmpty(form[i + ".IsPrimaryKey"]))
-					propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
-				string typeName = form[i + ".ClrTypeName"];
+			EntityDefinition entityDefinition = GetEntityDefinition(type, form);
 
-				Debug.WriteLine("Type Name =" + typeName);
-
-				propertyDefinition.PropertyType = new TypeDefinition(typeName, Type.GetType("System." + typeName));
-				entityDefinition.AddProperty(propertyDefinition);
-			}
-			
 			DataFacade.GetEntityModel().RemoveEntity(DataFacade.GetEntityModel().GetEntity(type));
 			DataFacade.GetEntityModel().AddEntity(entityDefinition);
 
-			return View("EditDescription", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.Name), EntityDescription = entityDefinition });
+			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.Name), EntityDescription = entityDefinition });
 		}
+
+    	private EntityDefinition GetEntityDefinition(string type, FormCollection form)
+    	{
+    		var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
+    		for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
+    		{
+    			var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
+    			if (!String.IsNullOrEmpty(form[i + ".IsPrimaryKey"]))
+    				propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
+    			string typeName = form[i + ".ClrTypeName"];
+
+    			Debug.WriteLine("Type Name =" + typeName);
+
+				propertyDefinition.PropertyType = AllowedTypes.First(t => t.ClrType.Name == typeName);
+    			entityDefinition.AddProperty(propertyDefinition);
+    		}
+    		return entityDefinition;
+    	}
 
 
 		public ActionResult Edit(string type, int id)
