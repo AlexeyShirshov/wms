@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Wms.Data;
 using Wms.Exceptions;
+using Wms.Web.Extensions;
 using Wms.Web.Models.Entities;
 using WXML.Model;
 using WXML.Model.Descriptors;
@@ -67,17 +69,20 @@ namespace Wms.Web.Controllers
 
 			DataFacade.GetEntityModel().RemoveEntity(DataFacade.GetEntityModel().GetEntity(type));
 			DataFacade.GetEntityModel().AddEntity(entityDefinition);
+			DataFacade.ApplyModelChanges(DataFacade.GetEntityModel());
 
 			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.Name), EntityDescription = entityDefinition });
 		}
 
-    	private EntityDefinition GetEntityDefinition(string type, FormCollection form)
+    	private EntityDefinition GetEntityDefinition(string type, NameValueCollection form)
     	{
+			DebugExtensions.WriteCollection(form);
+
     		var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
     		for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
     		{
     			var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
-    			if (!String.IsNullOrEmpty(form[i + ".IsPrimaryKey"]))
+    			if (form[i + ".IsPrimaryKey"].StartsWith("true"))
     				propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
     			string typeName = form[i + ".ClrTypeName"];
 

@@ -7,7 +7,7 @@
 			function() {
 				$('#addPropertyLink').click(
 					function() {
-						$('#placeholder').append('test');
+						$('#grid').append('test');
 						return false;
 					}
 				)
@@ -20,15 +20,20 @@
     <h2><%= Model.EntityDescription.Identifier %></h2>        
     <% using (Html.BeginForm())
 	   { %>
+	   <div id='grid'>
     <% for (int i = 0; i < Model.EntityDescription.ActiveProperties.Count; i++)
 	   {
 		   var property = Model.EntityDescription.ActiveProperties[i]; %>
 		
+		<div id='line<%= i %>'>
 		<%= Html.CheckBox(i + ".IsPrimaryKey", property.Entity.PkProperties.Contains(property))%>
 		<%= Html.TextBox(i + ".Name", property.Name)%>
 		<%= Html.DropDownList(i + ".ClrTypeName", new SelectList(Model.AllowedTypes, property.PropertyType.ClrType.Name))%>
-		
+		</div>
+				
+
     <% } %>
+		</div>
 		<div id='placeholder' />
 		<p><input type="submit" value="Save" /></p>
 		<p><a href="#" id="addPropertyLink">Add property</a></p>
