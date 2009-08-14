@@ -6,12 +6,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Entities</h2>
-    <span class="my">
     <table>
     <% foreach (var item in Model) { %>
         <tr>
             <td>
-                <%= Html.ActionLink(item.Name, "Browse", new { type = item.Identifier }) %>
+                <span class="my"><%= Html.ActionLink(item.Name, "Browse", new { type = item.Identifier }) %></span>
             </td>
             <td>
 				<%= Html.ActionLink("Edit definition", "EditDefinition", new { type= item.Identifier }) %>
@@ -21,7 +20,6 @@
     <% } %>
 
     </table>
-    </span>
 
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
