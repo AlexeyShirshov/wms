@@ -89,8 +89,7 @@ namespace Wms.Web.Controllers
     		var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
     		for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
     		{
-                var curProp = DataFacade.GetEntityModel().GetEntity(type).GetCompleteProperties()
-                    .Single(item=>item.PropertyAlias == form["propID." + i]);
+                var curProp = DataFacade.GetEntityModel().GetEntity(type).GetProperty(form["propID." + i]);
 
                 var propertyDefinition = new PropertyDefinition(form[i + ".Name"])
                 {
