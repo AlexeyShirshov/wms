@@ -121,6 +121,7 @@
     </None>
     <Content Include="Content\Custom.css" />
     <Content Include="Content\Wms.css" />
+    <Content Include="css\tables\css-tables-gallery.css" />
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />

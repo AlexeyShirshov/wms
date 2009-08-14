@@ -19,7 +19,15 @@ namespace Wms.Web.Controllers
     public class EntitiesController : Controller
     {
 		public IWmsDataFacade DataFacade { get; set; }
-		
+
+        private WXMLModel EntitiesModel
+        {
+            get
+            {
+                return DataFacade.GetEntityModel();
+            }
+        }
+
 		public EntitiesController() : this(null)
 		{
 			
@@ -58,7 +66,7 @@ namespace Wms.Web.Controllers
 			var entityDescription = DataFacade.GetEntityModel().GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpException(404, "Entity description not found");
-			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.Name) , EntityDescription = entityDescription } );
+			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()) , EntityDescription = entityDescription } );
     	}
 
 		[ActionName("EditDefinition")]
@@ -71,7 +79,7 @@ namespace Wms.Web.Controllers
 			DataFacade.GetEntityModel().AddEntity(entityDefinition);
 			DataFacade.ApplyModelChanges(DataFacade.GetEntityModel());
 
-			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.Name), EntityDescription = entityDefinition });
+			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()), EntityDescription = entityDefinition });
 		}
 
     	private EntityDefinition GetEntityDefinition(string type, NameValueCollection form)
@@ -81,14 +89,19 @@ namespace Wms.Web.Controllers
     		var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
     		for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
     		{
-    			var propertyDefinition = new PropertyDefinition(form[i + ".Name"]);
+                var curProp = DataFacade.GetEntityModel().GetEntity(type).GetProperty(form["propID." + i]);
+                var propertyDefinition = new PropertyDefinition(form[i + ".Name"])
+                {
+                    PropertyAlias = curProp.PropertyAlias
+                };
+
     			if (form[i + ".IsPrimaryKey"].StartsWith("true"))
     				propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
     			string typeName = form[i + ".ClrTypeName"];
 
     			Debug.WriteLine("Type Name =" + typeName);
 
-				propertyDefinition.PropertyType = AllowedTypes.First(t => t.ClrType.Name == typeName);
+				propertyDefinition.PropertyType = AllowedTypes.First(t => t.ClrType.ToString() == typeName);
     			entityDefinition.AddProperty(propertyDefinition);
     		}
     		return entityDefinition;
