@@ -121,7 +121,17 @@
     </None>
     <Content Include="Content\Custom.css" />
     <Content Include="Content\Wms.css" />
+    <Content Include="css\tables\cnc.css" />
+    <Content Include="css\tables\coffee-with-milk.css" />
     <Content Include="css\tables\css-tables-gallery.css" />
+    <Content Include="css\tables\cwtable.css" />
+    <Content Include="css\tables\greyscale.css" />
+    <Content Include="css\tables\labreport.css" />
+    <Content Include="css\tables\niko.css" />
+    <Content Include="css\tables\orangebrownie.css" />
+    <Content Include="css\tables\plainold.css" />
+    <Content Include="css\tables\tablestyle.css" />
+    <Content Include="css\tables\winterblues.css" />
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />
