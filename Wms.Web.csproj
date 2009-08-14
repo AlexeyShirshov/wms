@@ -119,6 +119,7 @@
     <None Include="App_Data\Meta\OrmObjectsSchema.xsx">
       <DependentUpon>OrmObjectsSchema.xsd</DependentUpon>
     </None>
+    <Content Include="Content\Custom.css" />
     <Content Include="Content\Wms.css" />
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
