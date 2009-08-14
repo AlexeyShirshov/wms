@@ -13,8 +13,9 @@ using System.Configuration;
 
 namespace Wms.Repository
 {
-    public class WmsDataFacade
+    public class WmsDataFacade : IWmsDataFacade
     {
+        private WXMLModel _model;
         private string _path;
         private static IRepositoryProvider _provider;
 
@@ -81,11 +82,7 @@ namespace Wms.Repository
         public void ApplyModelChanges(WXMLModel changes)
         {
             string fileName = Path.Combine(_path, "entities.xml");
-            WXMLModel model = null;
-            using (XmlReader xr = new XmlTextReader(fileName))
-            {
-                model = WXMLModel.LoadFromXml(xr);
-            }
+            WXMLModel model = WXMLModel.LoadFromXml(fileName);
             model.Merge(changes);
             string user = "admin";
             if (System.Web.HttpContext.Current != null && !string.IsNullOrEmpty(System.Web.HttpContext.Current.User.Identity.Name))
@@ -113,6 +110,21 @@ namespace Wms.Repository
             {
                 ApplyModelChanges(WXMLModel.LoadFromXml(new XmlTextReader(sr)));
             }
+        }
+
+        public WXMLModel GetEntityModel()
+        {
+            if (_model == null)
+            {
+                string fileName = Path.Combine(_path, "entities.xml");
+                _model = WXMLModel.LoadFromXml(fileName);
+            }
+            return _model;
+        }
+
+        IQueryable IWmsDataFacade.GetEntityQuery(string name)
+        {
+            return WmsDataFacade.GetEntityQuery(name);
         }
     }
 
