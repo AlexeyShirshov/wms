@@ -21,7 +21,7 @@ namespace Wms.Web.Data
 
 		public static IPageGenerator GetPageGenerator()
 		{
-			return new AspPageGenerator(HostingEnvironment.MapPath("/Views/Shared"));
+			return new AspPageGenerator();
 		}
 
 		public static IRepository<IControl> GetControlRepository()
