@@ -9,10 +9,6 @@ namespace Wms.Web
 {
 	public class AspPageGenerator : IPageGenerator
 	{
-		private readonly string _rootFolder;
-
-
-
 		#region Implementation of IPageGenerator
 		public void Generate(IPage page, TextWriter writer)
 		{
