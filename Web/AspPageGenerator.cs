@@ -11,14 +11,6 @@ namespace Wms.Web
 	{
 		private readonly string _rootFolder;
 
-		public AspPageGenerator(string rootFolder)
-		{
-			if(String.IsNullOrEmpty(rootFolder))
-			{
-				throw new ArgumentException("rootFolder can't be null or empty", "rootFolder");
-			}
-			_rootFolder = rootFolder;
-		}
 
 
 		#region Implementation of IPageGenerator
