@@ -16,39 +16,29 @@ using Wms.Repository;
 
 namespace Wms.Web.Controllers
 {
-    public class EntitiesController : Controller
+    public class EntitiesController : EntityControllerBase
     {
-		public IWmsDataFacade DataFacade { get; set; }
-
-        private WXMLModel EntitiesModel
-        {
-            get
-            {
-                return DataFacade.GetEntityModel();
-            }
-        }
-
-		public EntitiesController() : this(null)
-		{
-			
-		}
 		
 		private IEnumerable<TypeDefinition> AllowedTypes
 		{
 			get
 			{
-				return DataFacade.GetEntityModel().Types;
+				return DataFacade.EntityModel.Types;
 			}
 		}
 
-		public EntitiesController (IWmsDataFacade dataFacade)
-		{
-			DataFacade = dataFacade ?? new WmsDataFacade();
-		}
+        public EntitiesController(IWmsDataFacade dataFacade) : base(dataFacade) { }
         
-		public ActionResult Index()
+        public EntitiesController() : this(null)
         {
-            return View(DataFacade.GetEntityModel().ActiveEntities);
+        }
+
+
+
+
+        public ActionResult Index()
+        {
+            return View(DataFacade.EntityModel.ActiveEntities);
         }
 
 
@@ -63,7 +53,7 @@ namespace Wms.Web.Controllers
 		[ActionName("EditDefinition")]
     	public ActionResult Edit(string type)
     	{
-			var entityDescription = DataFacade.GetEntityModel().GetEntity(type);
+			var entityDescription = DataFacade.EntityModel.GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpException(404, "Entity description not found");
 			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()) , EntityDescription = entityDescription } );
@@ -75,9 +65,9 @@ namespace Wms.Web.Controllers
 		{
 			EntityDefinition entityDefinition = GetEntityDefinition(type, form);
 
-			DataFacade.GetEntityModel().RemoveEntity(DataFacade.GetEntityModel().GetEntity(type));
-			DataFacade.GetEntityModel().AddEntity(entityDefinition);
-			DataFacade.ApplyModelChanges(DataFacade.GetEntityModel());
+			DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.GetEntity(type));
+			DataFacade.EntityModel.AddEntity(entityDefinition);
+			DataFacade.ApplyModelChanges(DataFacade.EntityModel);
 
 			return View("EditDefinition", new EntityDescriptionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()), EntityDescription = entityDefinition });
 		}
@@ -86,10 +76,10 @@ namespace Wms.Web.Controllers
     	{
 			DebugExtensions.WriteCollection(form);
 
-    		var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.GetEntityModel());
+    		var entityDefinition = new EntityDefinition(type, type, "Wms.Data.Internal", "", DataFacade.EntityModel);
     		for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
     		{
-                var curProp = DataFacade.GetEntityModel().GetEntity(type).GetProperty(form["propID." + i]);
+                var curProp = DataFacade.EntityModel.GetEntity(type).GetProperty(form["propID." + i]);
 
                 var propertyDefinition = new PropertyDefinition(form[i + ".Name"])
                 {
@@ -131,10 +121,10 @@ namespace Wms.Web.Controllers
 
     	public ActionResult Delete(string type)
     	{
-			var entityDescription = DataFacade.GetEntityModel().GetEntity(type);
+			var entityDescription = DataFacade.EntityModel.GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpNotFoundException("Entity description");
-			DataFacade.GetEntityModel().RemoveEntity(DataFacade.GetEntityModel().ActiveEntities.First(d => d.Identifier == type));
+			DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.ActiveEntities.First(d => d.Identifier == type));
 			return RedirectToAction("Index");
     	}
     }

@@ -14,7 +14,6 @@
 			}
 		)
 	</script>
-	<link href="<%=Request.ApplicationPath.TrimEnd('/')%>/css/tables/css-tables-gallery.css" rel="stylesheet" type="text/css" />
 </asp:content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -38,7 +37,7 @@
 		
 		<tr id="line<%= i %>" class='<%=(i % 2) == 0?"":"odd"%>'>
 		<td><%= Html.Hidden("propID."+i, property.PropertyAlias)%>
-		<%= Html.CheckBox(i + ".IsPrimaryKey", property.Entity.PkProperties.Contains(property))%></td>
+		<%= Html.CheckBox(i + ".IsPrimaryKey", property.Entity.GetPkProperties().Contains(property) %>
 		<td><%= Html.TextBox(i + ".Name", property.Name)%></td>
 		<td><%= Html.DropDownList(i + ".ClrTypeName", new SelectList(Model.AllowedTypes, property.PropertyType.ClrType.ToString()))%></td>
 		</tr>
