@@ -117,7 +117,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.AreEqual(1, _dataFacade.SaveCount);
 
-            EntityDefinition d = _dataFacade.GetEntityModel().GetEntity(entityType);
+            EntityDefinition d = _dataFacade.EntityModel.GetEntity(entityType);
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(2, d.ActiveProperties.Count);
@@ -138,7 +138,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.AreEqual(1, _dataFacade.SaveCount);
 
-			var d = _dataFacade.GetEntityModel().GetEntity(entityType);
+			var d = _dataFacade.EntityModel.GetEntity(entityType);
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(1, d.ActiveProperties.Count);
@@ -197,7 +197,7 @@ namespace Wms.Tests.Controllers
 			var result = _controller.Delete("News");
 
 			Assert.IsInstanceOfType<RedirectToRouteResult>(result);
-			Assert.IsFalse(_dataFacade.GetEntityModel().ActiveEntities.Any(e => e.Identifier == "News"), "Entity description not deleted");
+			Assert.IsFalse(_dataFacade.EntityModel.ActiveEntities.Any(e => e.Identifier == "News"), "Entity description not deleted");
 
 			//result.ExecuteResult(GetFakeControllerContext(_controller));
 			//Assert.IsNotNull(result);

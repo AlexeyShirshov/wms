@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{869360AD-CAD7-4C4C-A1D0-96F3A81F0535}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -12,10 +12,14 @@
     <AssemblyName>Wms.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>%24/wms/Cms.Proto.Tests</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>https://tfs04.codeplex.com</SccAuxPath>
-    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,8 +39,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gallio, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
-    <Reference Include="MbUnit, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="Gallio, Version=3.0.6.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="MbUnit, Version=3.0.6.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -69,6 +73,7 @@
     <Compile Include="Controllers\AdminControllerTest.cs" />
     <Compile Include="Controllers\ControllerTestBase.cs" />
     <Compile Include="Controllers\EntitiesControllerTest.cs" />
+    <Compile Include="Controllers\PropertyControllerTest.cs" />
     <Compile Include="Fakes\FakeDataFacade.cs" />
     <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />

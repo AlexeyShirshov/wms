@@ -32,9 +32,9 @@ namespace Wms.Tests.Fakes
 			return String.Equals("post", entityName, StringComparison.InvariantCultureIgnoreCase) ? _postList.AsQueryable() : null;
 		}
 
-		public WXMLModel GetEntityModel()
+		public WXMLModel EntityModel
 		{
-			return _model;
+            get { return _model; }
 		}
 
 		public void ApplyModelChanges(WXMLModel model)
