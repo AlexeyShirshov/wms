@@ -158,9 +158,9 @@ namespace Wms.Repository
                 ).Generic("T", typeof(object))
             ;
 
-            WXML.CodeDom.WXMLCodeDomGeneratorNameHelper n = new WXMLCodeDomGeneratorNameHelper(setting);
+            WXMLCodeDomGeneratorNameHelper n = new WXMLCodeDomGeneratorNameHelper(setting);
 
-            foreach (var entity in model.ActiveEntities)
+            foreach (var entity in model.GetActiveEntities())
             {
                 if (entity.HasSinglePk)
                 {
