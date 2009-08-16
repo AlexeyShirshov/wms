@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web;
@@ -10,6 +11,7 @@ using Wms.Tests.Fakes;
 using Wms.Web.Models;
 using Wms.Web.Controllers;
 using Moq;
+using WXML.Model.Descriptors;
 
 namespace Wms.Tests.Controllers
 {
@@ -42,6 +44,15 @@ namespace Wms.Tests.Controllers
 
             Assert.IsInstanceOfType<PropertyDefinitionViewModel>(viewResult.ViewData.Model);
             Assert.IsNotNull(viewResult.ViewData.Model);
+        }
+
+        [Test]
+        public void Edit_Saves_Property()
+        {
+            var form = new FormCollection() {{"Name", "Identifier"}, {"Type", "Int64"}, {"IsPrimaryKey", "false"}};
+            var result = _controller.Edit("Post", "Name", form);
+
+            Assert.IsInstanceOfType<ViewResult>(result);
         }
 
     }
