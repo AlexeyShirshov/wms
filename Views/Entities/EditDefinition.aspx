@@ -55,8 +55,4 @@
 		<div id='placeholder' />
 		<p><input type="submit" value="Save" /></p>
 	<% } %>
-	<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td>d</td><td>df</td></tr>
-	<tr><td>dsfd</td><td>dfd</td></tr>
-	</table>
 </asp:Content>

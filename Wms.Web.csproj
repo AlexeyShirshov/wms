@@ -138,6 +138,7 @@
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />
+    <Content Include="Views\Property\Edit.aspx" />
     <Content Include="Views\Shared\Wms.Master" />
   </ItemGroup>
   <ItemGroup>
