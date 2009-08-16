@@ -7,9 +7,9 @@ using WXML.Model.Descriptors;
 
 namespace Wms.Web.Models.Entities
 {
-	public class EntityDescriptionViewModel
+	public class EntityDefinitionViewModel
 	{
-        public EntityDefinition EntityDescription { get; set; }
+        public EntityDefinition EntityDefinition { get; set; }
 		public IEnumerable<string> AllowedTypes { get; set; }
 	}
 }

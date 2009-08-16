@@ -86,7 +86,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin\PageEditorModel.cs" />
-    <Compile Include="Models\Entities\EntityDescriptionViewModel.cs" />
+    <Compile Include="Models\Entities\EntityDefinitionViewModel.cs" />
     <Compile Include="Models\Entities\PropertyDefinitionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -138,6 +138,7 @@
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />
+    <Content Include="Views\Property\Create.aspx" />
     <Content Include="Views\Property\Edit.aspx" />
     <Content Include="Views\Shared\Wms.Master" />
   </ItemGroup>

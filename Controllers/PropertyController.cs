@@ -32,38 +32,44 @@ namespace Wms.Web.Controllers
             return View();
         }
 
-        public ActionResult Edit(string type, string propertyName)
+        public ActionResult Edit(string entityId, string propertyId)
         {
-            return View(GetPropertyDefinitionViewModel(type, propertyName));
+            return View(GetPropertyDefinitionViewModel(entityId, propertyId));
         }
 
-        private PropertyDefinitionViewModel GetPropertyDefinitionViewModel(string type, string propertyName)
+        private PropertyDefinitionViewModel GetPropertyDefinitionViewModel(string entityId, string propertyId)
         {
             var model = new PropertyDefinitionViewModel();
             model.AllowedTypes = DataFacade.EntityModel.GetTypes().Select(t => t.Identifier);
             model.PropertyDefinition =
-                DataFacade.EntityModel.GetEntity(type).GetProperties().First(p => p.Identifier == propertyName);
+                DataFacade.EntityModel.GetEntity(entityId).GetProperties().First(p => p.Identifier == propertyId);
             return model;
         }
 
-        [AcceptVerbs(HttpVerbs.Put)]
-        public ActionResult Edit(string type, string propertyName, FormCollection form)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Edit(string entityId, string propertyId, FormCollection form)
         {
-            var ed = DataFacade.EntityModel.GetEntity(type);
+            var ed = DataFacade.EntityModel.GetEntity(entityId);
             
             if(ed == null)
                 throw new HttpNotFoundException("entity");
 
-            var property = ed.GetProperties().FirstOrDefault(p => p.Identifier == propertyName);
+            var property = ed.GetProperties().FirstOrDefault(p => p.Identifier == propertyId);
 
             if (property == null)
                 throw new HttpNotFoundException("property");
 
             UpdateModel(property, GetValueProvider(form));
-
-            DataFacade.ApplyModelChanges(DataFacade.EntityModel);
-
-            return View(GetPropertyDefinitionViewModel(type, propertyName));
+            
+            try
+            {
+                DataFacade.ApplyModelChanges(DataFacade.EntityModel);
+            }
+            catch(Exception e)
+            {
+                ModelState.AddModelError("_FORM", e.Message);
+            }
+            return View(GetPropertyDefinitionViewModel(entityId, propertyId));
         }
 
         private IDictionary<string, ValueProviderResult> GetValueProvider(NameValueCollection form)
@@ -82,5 +88,38 @@ namespace Wms.Web.Controllers
             return result;
         }
 
+        public ActionResult Create(string entityId)
+        {
+            var ed = DataFacade.EntityModel.GetEntity(entityId);
+            if (ed == null)
+                throw new HttpNotFoundException("entity");
+
+            return View(new PropertyDefinitionViewModel { EntityDefinition = ed, AllowedTypes = DataFacade.EntityModel.GetTypes().Select(t => t.Identifier)});
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Create(string entityId, FormCollection form)
+        {
+            var entity = DataFacade.EntityModel.GetEntity(entityId);
+            if(entity == null)
+                throw new HttpNotFoundException("entity");
+
+            var property = new PropertyDefinition(entity, form["Name"]);
+
+            UpdateModel(property, GetValueProvider(form));
+
+            entity.AddProperty(property);
+
+            try
+            {
+                DataFacade.ApplyModelChanges(DataFacade.EntityModel);
+            }
+            catch(Exception e)
+            {
+                ModelState.AddModelError("_FORM", e.Message);
+                return View();
+            }
+            return RedirectToAction("Edit", "Entities", new {entityId = entity.Identifier});
+        }
     }
 }

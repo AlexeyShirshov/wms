@@ -14,7 +14,8 @@ namespace Wms.Web.Controllers
 		public override IController CreateController(RequestContext requestContext, string controllerName)
 		{
 			if (String.Equals(controllerName, "admin", StringComparison.InvariantCultureIgnoreCase)
-				|| String.Equals(controllerName, "entities", StringComparison.InvariantCultureIgnoreCase))
+				|| String.Equals(controllerName, "entities", StringComparison.InvariantCultureIgnoreCase)
+                || String.Equals(controllerName, "property", StringComparison.InvariantCultureIgnoreCase))
 				return base.CreateController(requestContext, controllerName);
 
 			var controller = base.CreateController(requestContext, "Page") as CmsController;

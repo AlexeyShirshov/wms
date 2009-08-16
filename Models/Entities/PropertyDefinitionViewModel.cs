@@ -18,5 +18,6 @@ namespace Wms.Web.Models
     {
         public PropertyDefinition PropertyDefinition { get; set; }
         public IEnumerable<string> AllowedTypes { get; set; }
+        public EntityDefinition EntityDefinition { get; set;  }
     }
 }

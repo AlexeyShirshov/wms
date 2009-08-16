@@ -1,4 +1,5 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<EntityDescriptionViewModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<EntityDefinitionViewModel>" %>
+<%@ Import Namespace="WXML.Model"%>
 <%@ Import Namespace="Wms.Web.Models.Entities"%>
 
 <asp:content id="Content2" contentplaceholderid="Head" runat="server" >
@@ -17,42 +18,31 @@
 </asp:content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2><%= Model.EntityDescription.Identifier %></h2>        
+    <h2><%= Model.EntityDefinition.Identifier %></h2>        
     <% using (Html.BeginForm())
-	   { %>
-	   <div id="table">
-	   <table id="grid" cellpadding="0" cellspacing="0" border="0">
-	   <caption>sdlfk</caption>
-	   <thead>
-	   <tr>	   
-	    <th></th>
-	    <th>Name</th>
-	    <th>Type</th>
-	   </tr>
-	   </thead>
-    <% for (int i = 0; i < Model.EntityDescription.GetActiveProperties().Count(); i++)
-	   {
-	   
-		   var property = Model.EntityDescription.GetActiveProperties().Skip(i).First(); %>
-		
-		<tr id="line<%= i %>" class='<%=(i % 2) == 0?"":"odd"%>'>
-		<td><%= Html.Hidden("propID."+i, property.PropertyAlias)%>
-		<%= Html.CheckBox(i + ".IsPrimaryKey", property.HasAttribute(WXML.Model.Field2DbRelations.PK))%></td>
-		<td><%= Html.TextBox(i + ".Name", property.Name)%></td>
-		<td><%= Html.DropDownList(i + ".ClrTypeName", new SelectList(Model.AllowedTypes, property.PropertyType.ClrType.ToString()))%></td>
-		</tr>
-
-    <% } %>
-        <tfoot>
+ { %>
+    <table>
+        <% foreach (var pd in Model.EntityDefinition.GetProperties())
+           { %>
         <tr>
-            <td colspan="3">
-            <a href="#" id="addPropertyLink">Add property</a>
+            <td>
+                <%= Html.CheckBox("IsPrimaryKey", pd.Attributes == Field2DbRelations.PrimaryKey)%>
+            </td>
+            <td>
+                <%= pd.Name%>
+            </td>
+            <td>
+                <%= pd.PropertyType.Identifier%>
+            </td>
+            <td>
+                <%= Html.PropertyEditLink("Edit", pd)%>
+                <%= Html.PropertyDeleteLink("Delete", pd)%>
             </td>
         </tr>
-        </tfoot>
-		</table>
-		</div>
-		<div id='placeholder' />
-		<p><input type="submit" value="Save" /></p>
-	<% } %>
+        <% } %>
+    </table>
+     
+ <% } %>
+    <%= Html.CreatePropertyLink("Add property", Model.EntityDefinition) %>
+    
 </asp:Content>
