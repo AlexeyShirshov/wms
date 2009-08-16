@@ -119,7 +119,25 @@ namespace Wms.Web.Controllers
                 ModelState.AddModelError("_FORM", e.Message);
                 return View();
             }
-            return RedirectToAction("Edit", "Entities", new {entityId = entity.Identifier});
+            return RedirectToAction("EditDefinition", "Entities", new {entityId = entity.Identifier});
+        }
+
+        public ActionResult Delete(string entityId, string propertyId)
+        {
+            var entity = DataFacade.EntityModel.GetEntity(entityId);
+            
+            if (entity == null)
+                throw new HttpNotFoundException("entity");
+
+            var property = entity.GetProperties().FirstOrDefault(p => p.Identifier == propertyId);
+
+            if (property == null)
+                throw new HttpNotFoundException("property");
+
+            entity.RemoveProperty(property);
+            DataFacade.ApplyModelChanges(DataFacade.EntityModel);
+
+            return RedirectToAction("EditDefinition", "Entities", new {entityId = entityId});
         }
     }
 }

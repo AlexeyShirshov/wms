@@ -96,22 +96,18 @@ namespace Wms.Web.Controllers
     	}
 
 
-		public ActionResult Edit(string type, int id)
-    	{
-			return View("EditInstance");
-    	}
 
     	public ActionResult Create()
     	{
 			return View("CreateDescription");
     	}
 
-    	public ActionResult Create(string type)
+    	public ActionResult CreateInstance(string entityId)
     	{
 			return View("CreateInstance");
     	}
 
-    	public ActionResult Delete(string type, int id)
+    	public ActionResult DeleteInstance(string entityId, int instanceId)
     	{
 			return RedirectToAction("Index");
     	}
@@ -124,5 +120,10 @@ namespace Wms.Web.Controllers
             DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.GetActiveEntities().First(d => d.Identifier == entityId));
 			return RedirectToAction("Index");
     	}
+
+        public ActionResult EditInstance(string entitiId, int instanceId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
