@@ -18,13 +18,12 @@ namespace Wms.Tests
 			var page = new Page { Name = "Test", Url = "test", Contents = "Test page" };
 			const string expected = @"<%@ Page Language=""C#"" Inherits=""Wms.Mvc.WmsPage""%>Test page";
 
-			string s;
-			using (var sw = new StringWriter())
+		    using (var sw = new StringWriter())
 			{
                 generator.Generate(page, sw);
-				s = sw.ToString();
+				string s = sw.ToString();
+                Assert.AreEqual(expected, s);
 			}
-			Assert.AreEqual(expected, s);
 		}
 
 		[Test]
@@ -34,13 +33,12 @@ namespace Wms.Tests
 			var control = new Control { Name = "TestControl", Contents = "Test control" };
 			const string expected = @"<%@ Control Language=""C#"" Inherits=""System.Web.Mvc.ViewUserControl<Wms.Web.IControlModel>"" %>Test control";
 
-			string s;
-			using (var sw = new StringWriter())
+		    using (var sw = new StringWriter())
 			{
 				generator.Generate(control, sw);
-				s = sw.ToString();
+				string s = sw.ToString();
+                Assert.AreEqual(expected, s);
 			}
-			Assert.AreEqual(expected, s);
 		}
 
 
