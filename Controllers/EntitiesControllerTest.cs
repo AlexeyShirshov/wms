@@ -154,7 +154,7 @@ namespace Wms.Tests.Controllers
 		[Test]
 		public void Edit_Instance_Returns_Model()
 		{
-			var result = _controller.Edit("Post", 1) as ViewResult;
+			var result = _controller.EditInstance("Post", 1) as ViewResult;
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
@@ -171,7 +171,7 @@ namespace Wms.Tests.Controllers
 		[Test]
 		public void Create_Instance_Returns_Model()
 		{
-			var result = _controller.Create("Post") as ViewResult;
+			var result = _controller.CreateInstance("Post") as ViewResult;
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
@@ -180,7 +180,7 @@ namespace Wms.Tests.Controllers
 		[Test]
 		public void Delete_Instance_Redirects()
 		{
-			var result = _controller.Delete("Post", 2) as RedirectToRouteResult;
+			var result = _controller.DeleteInstance("Post", 2) as RedirectToRouteResult;
 
 			Assert.IsNotNull(result);
 
