@@ -18,7 +18,7 @@ namespace Wms.Data
 	public interface IWmsDataFacade
 	{
 		IQueryable GetEntityQuery(string entityName);
-		WXMLModel GetEntityModel();
+        WXMLModel EntityModel { get;  }
 		void ApplyModelChanges(WXMLModel model);
 	}
 

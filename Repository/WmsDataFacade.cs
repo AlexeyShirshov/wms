@@ -112,14 +112,17 @@ namespace Wms.Repository
             }
         }
 
-        public WXMLModel GetEntityModel()
+        public WXMLModel EntityModel
         {
-            if (_model == null)
+            get
             {
-                string fileName = Path.Combine(_path, "entities.xml");
-                _model = WXMLModel.LoadFromXml(fileName);
+                if (_model == null)
+                {
+                    string fileName = Path.Combine(_path, "entities.xml");
+                    _model = WXMLModel.LoadFromXml(fileName);
+                }
+                return _model;
             }
-            return _model;
         }
 
         IQueryable IWmsDataFacade.GetEntityQuery(string name)
