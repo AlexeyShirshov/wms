@@ -90,10 +90,10 @@ namespace Wms.Tests.Controllers
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
 
-			var ed = result.ViewData.Model as EntityDescriptionViewModel;
+			var ed = result.ViewData.Model as EntityDefinitionViewModel;
 
 			Assert.IsNotNull(ed);
-			Assert.AreEqual("Post", ed.EntityDescription.Identifier);
+			Assert.AreEqual("Post", ed.EntityDefinition.Identifier);
 
 			Assert.GreaterThan(ed.AllowedTypes.Count(), 0);
 		}

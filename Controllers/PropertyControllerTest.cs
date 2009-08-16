@@ -53,7 +53,40 @@ namespace Wms.Tests.Controllers
             var result = _controller.Edit("Post", "Name", form);
 
             Assert.IsInstanceOfType<ViewResult>(result);
+            Assert.AreEqual(1, _dataFacade.SaveCount);
         }
+
+        [Test]
+        public void Create_Returns_View()
+        {
+            var result = _controller.Create("Post");
+
+            Assert.IsInstanceOfType<ViewResult>(result);
+            Assert.IsNotNull(result);
+
+            var viewResult = result as ViewResult;
+            var model = viewResult.ViewData.Model;
+
+            Assert.IsInstanceOfType<PropertyDefinitionViewModel>(model);
+            Assert.IsNotNull(model);
+
+            var pdvModel = model as PropertyDefinitionViewModel;
+
+            Assert.IsNotNull(pdvModel.EntityDefinition);
+            Assert.GreaterThan(pdvModel.AllowedTypes.Count(), 0);
+        }
+
+        [Test]
+        public void Create_Saves_Property_And_Redirects()
+        {
+            var form = new FormCollection {{"Name", "Area"}, {"Type", "tString"}, {"IsPrimaryKey", "false"}};
+            var result = _controller.Create("Post", form);
+
+            Assert.IsInstanceOfType<RedirectToRouteResult>(result);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, _dataFacade.SaveCount);
+        }
+
 
     }
 }
