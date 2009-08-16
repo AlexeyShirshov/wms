@@ -30,14 +30,14 @@
 	    <th>Type</th>
 	   </tr>
 	   </thead>
-    <% for (int i = 0; i < Model.EntityDescription.ActiveProperties.Count; i++)
+    <% for (int i = 0; i < Model.EntityDescription.GetActiveProperties().Count(); i++)
 	   {
 	   
-		   var property = Model.EntityDescription.ActiveProperties[i]; %>
+		   var property = Model.EntityDescription.GetActiveProperties().Skip(i).First(); %>
 		
 		<tr id="line<%= i %>" class='<%=(i % 2) == 0?"":"odd"%>'>
 		<td><%= Html.Hidden("propID."+i, property.PropertyAlias)%>
-		<%= Html.CheckBox(i + ".IsPrimaryKey", property.Entity.GetPkProperties().Contains(property) %>
+		<%= Html.CheckBox(i + ".IsPrimaryKey", property.HasAttribute(WXML.Model.Field2DbRelations.PK))%></td>
 		<td><%= Html.TextBox(i + ".Name", property.Name)%></td>
 		<td><%= Html.DropDownList(i + ".ClrTypeName", new SelectList(Model.AllowedTypes, property.PropertyType.ClrType.ToString()))%></td>
 		</tr>

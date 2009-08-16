@@ -23,7 +23,7 @@ namespace Wms.Web.Controllers
 		{
 			get
 			{
-				return DataFacade.EntityModel.Types;
+                return DataFacade.EntityModel.GetTypes();
 			}
 		}
 
@@ -33,12 +33,9 @@ namespace Wms.Web.Controllers
         {
         }
 
-
-
-
         public ActionResult Index()
         {
-            return View(DataFacade.EntityModel.ActiveEntities);
+            return View(DataFacade.EntityModel.GetActiveEntities());
         }
 
 
@@ -124,7 +121,7 @@ namespace Wms.Web.Controllers
 			var entityDescription = DataFacade.EntityModel.GetEntity(type);
 			if (entityDescription == null)
 				throw new HttpNotFoundException("Entity description");
-			DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.ActiveEntities.First(d => d.Identifier == type));
+            DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.GetActiveEntities().First(d => d.Identifier == type));
 			return RedirectToAction("Index");
     	}
     }

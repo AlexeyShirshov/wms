@@ -40,7 +40,7 @@ namespace Wms.Web.Controllers
         private PropertyDefinitionViewModel GetPropertyDefinitionViewModel(string type, string propertyName)
         {
             var model = new PropertyDefinitionViewModel();
-            model.AllowedTypes = DataFacade.EntityModel.Types.Select(t => t.Identifier);
+            model.AllowedTypes = DataFacade.EntityModel.GetTypes().Select(t => t.Identifier);
             model.PropertyDefinition =
                 DataFacade.EntityModel.GetEntity(type).GetProperties().First(p => p.Identifier == propertyName);
             return model;
@@ -73,7 +73,7 @@ namespace Wms.Web.Controllers
             result.Add("Attributes", new ValueProviderResult(form["IsPrimaryKey"].StartsWith("true") ? Field2DbRelations.PrimaryKey : Field2DbRelations.None,
                 form["IsPrimaryKey"], CultureInfo.CurrentCulture));
 
-            var td = DataFacade.EntityModel.Types.FirstOrDefault(t => t.Identifier == form["Type"]);
+            var td = DataFacade.EntityModel.GetTypes().FirstOrDefault(t => t.Identifier == form["Type"]);
             if(td != null)
             {
                 result.Add("PropertyType", new ValueProviderResult(td, form["Type"], CultureInfo.CurrentCulture));
