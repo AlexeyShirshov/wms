@@ -104,9 +104,11 @@ namespace Wms.Tests.Controllers
 		{
 			var form = new FormCollection
 			           	{
-			           		{"0.Name", propertyName},
+			           		{"PropID.0", propertyId},
+                            {"0.Name", propertyName},
 			           		{"0.ClrTypeName", "Int32"},
 			           		{"0.IsPrimaryKey", "true,false"},
+                            {"PropID.1", propertyId},
 			           		{"1.Name", "Title"},
 			           		{"1.ClrTypeName", "String"},
 			           		{"1.IsPrimaryKey", ""}
