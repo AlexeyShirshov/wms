@@ -100,12 +100,12 @@ namespace Wms.Tests.Controllers
 
 		[Test]
 		public void Edit_Definition_Saves([Column("Post", "News")] string entityType,
-		                                  [Column("Id", "Ident")] string propertyName)
+		                                  [Column("Id", "Ident")] string propertyId)
 		{
 			var form = new FormCollection
 			           	{
 			           		{"PropID.0", propertyId},
-                            {"0.Name", propertyName},
+                            {"0.Name", propertyId},
 			           		{"0.ClrTypeName", "Int32"},
 			           		{"0.IsPrimaryKey", "true,false"},
                             {"PropID.1", propertyId},
@@ -123,7 +123,7 @@ namespace Wms.Tests.Controllers
 
 			Assert.IsNotNull(d);
 			Assert.AreEqual(2, d.GetActiveProperties().Count());
-			Assert.AreEqual(propertyName, d.GetPkProperties().Single().Name);
+			Assert.AreEqual(propertyId, d.GetPkProperties().Single().Name);
 			Assert.AreEqual("Title", d.GetActiveProperties().Skip(1).First().Name);
 			Assert.AreEqual(typeof(Int32), d.GetActiveProperties().First().PropertyType.ClrType);
 
@@ -213,5 +213,6 @@ namespace Wms.Tests.Controllers
 		{
 			Assert.Throws<HttpException>(() => _controller.Delete("Nothing"));
 		}
+
 	}
 }
