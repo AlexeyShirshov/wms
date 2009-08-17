@@ -84,6 +84,8 @@ namespace Wms.Web.Controllers
             {
                 result.Add("PropertyType", new ValueProviderResult(td, form["Type"], CultureInfo.CurrentCulture));
             }
+
+			result.Add("Name", new ValueProviderResult(form["Name"], form["Name"], CultureInfo.CurrentCulture));
             
             return result;
         }
