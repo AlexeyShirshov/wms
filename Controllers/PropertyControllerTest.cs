@@ -49,12 +49,13 @@ namespace Wms.Tests.Controllers
         [Test]
         public void Edit_Saves_Property()
         {
-            var form = new FormCollection() {{"Name", "Identifier"}, {"Type", "Int64"}, {"IsPrimaryKey", "false"}};
-            var result = _controller.Edit("Post", "Name", form);
+            var form = new FormCollection {{"Name", "Identifier"}, {"Type", "Int64"}, {"IsPrimaryKey", "false"}};
+            var result = _controller.Edit("Post", "Url", form);
 
             Assert.IsInstanceOfType<ViewResult>(result);
             Assert.AreEqual(1, _dataFacade.SaveCount);
-        }
+			Assert.AreEqual("Identifier", _dataFacade.EntityModel.GetEntity("Post").GetProperty("Url").Name);
+		}
 
         [Test]
         public void Create_Returns_View()

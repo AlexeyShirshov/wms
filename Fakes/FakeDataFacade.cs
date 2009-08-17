@@ -9,7 +9,7 @@ using WXML.Model;
 
 namespace Wms.Tests.Fakes
 {
-	class FakeDataFacade : IWmsDataFacade
+	internal class FakeDataFacade : IWmsDataFacade
 	{
 		private WXMLModel _model;
 		private readonly List<Post> _postList = new List<Post>();

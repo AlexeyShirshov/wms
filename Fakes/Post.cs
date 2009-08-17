@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Wms.Tests.Fakes
 {
-	public class Post
+	internal class Post
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }
