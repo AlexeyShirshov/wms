@@ -8,6 +8,7 @@ using WXML.Model.Descriptors;
 using LinqToCodedom;
 using LinqToCodedom.Extensions;
 using System.CodeDom;
+using System.Web.UI;
 
 namespace Wms.Web
 {
@@ -17,7 +18,7 @@ namespace Wms.Web
 
 		public void GenerateCreateView(EntityDefinition ed, TextWriter tw)
 		{
-			throw new NotImplementedException();
+			GenerateGenericView(tw, ed, false);
 		}
 
 		public void GenerateBrowseView(EntityDefinition ed, TextWriter tw)
@@ -27,7 +28,26 @@ namespace Wms.Web
 
 		public void GenerateEditView(EntityDefinition ed, TextWriter tw)
 		{
-			throw new NotImplementedException();
+			GenerateGenericView(tw, ed, true);
+		}
+
+		private static void GenerateGenericView(TextWriter tw, EntityDefinition ed, bool isEditView)
+		{
+			var hw = new HtmlTextWriter(tw);
+			hw.RenderBeginTag(HtmlTextWriterTag.Form);
+			foreach (PropertyDefinition pd in ed.GetProperties())
+			{
+				hw.RenderBeginTag(HtmlTextWriterTag.P);
+				hw.WriteLine(pd.Name);
+				hw.WriteLine(GetEditControl(pd, isEditView));
+				hw.RenderEndTag();
+			}
+			hw.AddAttribute("type", "submit");
+			hw.AddAttribute("value", "save");
+			hw.RenderBeginTag("input");
+			hw.RenderEndTag();
+			hw.RenderEndTag();
+			hw.Flush();
 		}
 
 		public void GenerateController(EntityDefinition ed, TextWriter tw)
@@ -37,16 +57,20 @@ namespace Wms.Web
 				.AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
 				.Implements(typeof(System.Web.Mvc.Controller));
 
-			Console.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
-
-			var ass = generator.Compile();
-
-			Console.WriteLine(ass.FullName);
-
 			tw.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
 		}
 
 
 		#endregion
+
+		public static string GetEditControl(PropertyDefinition propertyDefinition, bool isEditView)
+		{
+			if (propertyDefinition.PropertyType.ClrType == typeof(bool))
+				return String.Format(@"<%= Html.CheckBox(""{0}""{1}) %>", propertyDefinition.Name,
+					isEditView ? @",Model." + propertyDefinition.Name : String.Empty);
+
+			return String.Format(@"<%= Html.TextBox(""{0}""{1}) %>", propertyDefinition.Name,
+					isEditView ? @",Model." + propertyDefinition.Name : String.Empty);
+		}
 	}
 }
