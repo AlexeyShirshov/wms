@@ -74,6 +74,7 @@
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\HttpNotFoundException.cs" />
     <Compile Include="Interfaces\DataInterfaces.cs" />
+    <Compile Include="Interfaces\IViewGenerator.cs" />
     <Compile Include="Interfaces\IXmlModelWrapper.cs" />
     <Compile Include="MVC\BaseController.cs" />
     <Compile Include="MVC\WmsPage.cs">
@@ -92,6 +93,7 @@
     <Compile Include="Web\AspPageGenerator.cs" />
     <Compile Include="Web\Control.cs" />
     <Compile Include="Web\Page.cs" />
+    <Compile Include="Web\ViewGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
