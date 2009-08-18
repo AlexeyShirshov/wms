@@ -9,6 +9,7 @@ using LinqToCodedom;
 using LinqToCodedom.Extensions;
 using System.CodeDom;
 using System.Web.UI;
+using WXML.Model;
 
 namespace Wms.Web
 {
@@ -65,12 +66,16 @@ namespace Wms.Web
 
 		public static string GetEditControl(PropertyDefinition propertyDefinition, bool isEditView)
 		{
+			string htmlAttributes = String.Empty;
+			if ((propertyDefinition.Attributes & Field2DbRelations.ReadOnly ) > 0)
+				htmlAttributes = @", new { disabled = ""disabled"" }";
+			
 			if (propertyDefinition.PropertyType.ClrType == typeof(bool))
-				return String.Format(@"<%= Html.CheckBox(""{0}""{1}) %>", propertyDefinition.Name,
-					isEditView ? @",Model." + propertyDefinition.Name : String.Empty);
+				return String.Format(@"<%= Html.CheckBox(""{0}""{1}{2}) %>", propertyDefinition.Name,
+					isEditView ? @",Model." + propertyDefinition.Name : String.Empty, htmlAttributes);
 
-			return String.Format(@"<%= Html.TextBox(""{0}""{1}) %>", propertyDefinition.Name,
-					isEditView ? @",Model." + propertyDefinition.Name : String.Empty);
+			return String.Format(@"<%= Html.TextBox(""{0}""{1}{2}) %>", propertyDefinition.Name,
+					isEditView ? @",Model." + propertyDefinition.Name : String.Empty, htmlAttributes);
 		}
 	}
 }
