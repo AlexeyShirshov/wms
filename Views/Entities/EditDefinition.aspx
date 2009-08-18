@@ -3,18 +3,6 @@
 <%@ Import Namespace="Wms.Web.Models.Entities"%>
 
 <asp:content id="Content2" contentplaceholderid="Head" runat="server" >
-	<script type="text/javascript">
-		$(document).ready(
-			function() {
-				$('#addPropertyLink').click(
-					function() {
-						$('#grid').append('test');
-						return false;
-					}
-				)
-			}
-		)
-	</script>
 </asp:content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -22,11 +10,21 @@
     <% using (Html.BeginForm())
  { %>
     <table>
+		<tr>
+			<td>PK</td>
+			<td>Required</td>
+			<td>Name</td>
+			<td>Type</td>
+			<td>&nbsp;</td>
+		</tr>
         <% foreach (var pd in Model.EntityDefinition.GetProperties())
            { %>
         <tr>
             <td>
-                <%= Html.CheckBox("IsPrimaryKey", pd.Attributes == Field2DbRelations.PrimaryKey)%>
+                <%= Html.CheckBox("IsPrimaryKey", (pd.Attributes & Field2DbRelations.PrimaryKey) > 0, new {disabled = "disabled")%>
+            </td>
+            <td>
+				<%= Html.CheckBox("IsRequired", pd.PropertyType.IsNullableType, new {disabled = "disabled" ) %>
             </td>
             <td>
                 <%= pd.Name%>
