@@ -80,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\FacadeTest.cs" />
     <Compile Include="Utils\TestUtils.cs" />
+    <Compile Include="ViewGeneratorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cms.Proto.Web\Wms.Web.csproj">
