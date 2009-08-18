@@ -12,6 +12,9 @@
   <oos:Type id="tString">
     <oos:ClrType name="System.String" />
   </oos:Type>
+    <oos:Type id="tBoolean">
+      <oos:ClrType name="System.Boolean" />
+    </oos:Type>
   </oos:Types>
   <oos:Entities>
     <oos:Entity id="Post" name="Post" namespace="Wms.Data.User">
