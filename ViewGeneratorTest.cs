@@ -101,7 +101,11 @@ namespace Wms.Tests
 			var pd = new PropertyDefinition("Name") { PropertyType = new TypeDefinition("tString", typeof(string)) };
 			string result = ViewGenerator.GetEditControl(pd, false);
 
-            Assert.AreEqual(@"<%= Html.TextBox(""Name"") %>", result);
+            StringAssert.EqualToWhiteSpace(@"<%= Html.TextBox(""Name"") %>", result);
+
+			result = ViewGenerator.GetEditControl(pd, true);
+
+			StringAssert.EqualToWhiteSpace(@"<%= Html.TextBox(""Name"", Model.Name) %>", result);
 
 		}
 
@@ -112,14 +116,11 @@ namespace Wms.Tests
 			var sw = new StringWriter();
 			string result = ViewGenerator.GetEditControl(pd, false);
 
-			Assert.AreEqual(@"<%= Html.CheckBox(""Flag"") %>", result);
+			result = ViewGenerator.GetEditControl(pd, true);
+
+			StringAssert.EqualToWhiteSpace(@"<%=Html.CheckBox(""Flag"",Model.Flag)%>", result);
 		}
 
-		[Test]
-		public void Can_Generate_Checkbox()
-		{
-			
-		}
 
 		private static Type GetControllerType(string sourceCode, string controllerType)
 		{

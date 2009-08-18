@@ -19,4 +19,14 @@ namespace Wms.Tests
 			Assert.IsTrue(File.Exists(path));
 		}
 	}
+
+	public static class StringAssert
+	{
+		public static void EqualToWhiteSpace(string expected, string actual)
+		{
+			Assert.AreEqual(expected.Replace(" ", "").Replace("\t", ""), actual.Replace(" ", "").Replace("\t", ""));
+		}
+	}
+
+
 }
