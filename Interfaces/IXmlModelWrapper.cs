@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Wms.Interfaces
@@ -24,12 +25,12 @@ namespace Wms.Interfaces
 		string Name { get; set; }
 		ITypeDefinition Type { get; set; }
 		bool IsPrimaryKey { get; set; }
-
+		Expression<Func<object>> DefaultValue { get; set; }
 	}
 
 	interface IXmlModelWrapper
 	{
-		IEnumerable<ITypeDefinition> GetTypes();
+		IEnumerable<ITypeDefinition> Types { get; }
 		IList<IEntityDefinition> Entities { get; }
 	}
 }
