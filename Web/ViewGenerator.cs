@@ -10,6 +10,7 @@ using LinqToCodedom.Extensions;
 using System.CodeDom;
 using System.Web.UI;
 using WXML.Model;
+using System.Reflection;
 
 namespace Wms.Web
 {
@@ -45,11 +46,18 @@ namespace Wms.Web
 		public void GenerateController(EntityDefinition ed, TextWriter tw)
 		{
 			var generator = new CodeDomGenerator();
-			var controller  = generator.AddReference("System.Web.Mvc.dll")
+            var controller = generator.AddReference(
+                //typeof(System.Web.Mvc.Controller).Assembly.CodeBase)
+                @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll")
 				.AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
 				.Implements(typeof(System.Web.Mvc.Controller));
 
 			tw.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
+
+            Assembly a = generator.Compile();
+            
+            if (a == null)
+                throw new ApplicationException("Облом");
 		}
 
 
