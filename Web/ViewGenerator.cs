@@ -32,23 +32,14 @@ namespace Wms.Web
 			GenerateGenericView(tw, ed, true);
 		}
 
+
 		private static void GenerateGenericView(TextWriter tw, EntityDefinition ed, bool isEditView)
 		{
-			var hw = new HtmlTextWriter(tw);
-			hw.RenderBeginTag(HtmlTextWriterTag.Form);
-			foreach (PropertyDefinition pd in ed.GetProperties())
-			{
-				hw.RenderBeginTag(HtmlTextWriterTag.P);
-				hw.WriteLine(pd.Name);
-				hw.WriteLine(GetEditControl(pd, isEditView));
-				hw.RenderEndTag();
-			}
-			hw.AddAttribute("type", "submit");
-			hw.AddAttribute("value", "save");
-			hw.RenderBeginTag("input");
-			hw.RenderEndTag();
-			hw.RenderEndTag();
-			hw.Flush();
+			var hb = new HtmlBuilder(tw);
+			hb.Tag("form", h => ed.GetProperties()
+				.Aggregate(h, (h1, p) => h1.Begin("p").Text(p.Name).Text(GetEditControl(p, isEditView)).End())
+				.Tag("input", new { type="submit", value="save" }));
+			hb.GetWriter().Flush();
 		}
 
 		public void GenerateController(EntityDefinition ed, TextWriter tw)
