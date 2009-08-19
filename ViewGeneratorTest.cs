@@ -15,6 +15,7 @@ using Wms.Tests.Fakes;
 using Wms.Web;
 using WXML.Model.Descriptors;
 using Microsoft.CSharp;
+using LinqToCodedom;
 
 namespace Wms.Tests
 {
@@ -55,7 +56,7 @@ namespace Wms.Tests
 			var sw = new StringWriter();
 
 			generator.GenerateController(GetEntityDefinition(), sw);
-            Type controllerType = GetControllerType(sw.ToString(), "Wms.Controllers.PostController");
+            Type controllerType = GetControllerType2(sw.ToString(), "Wms.Controllers.PostController");
 
             Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
@@ -141,7 +142,7 @@ namespace Wms.Tests
             var cdp = new CSharpCodeProvider(d);
 
             Console.WriteLine(sourceCode);
-
+            
             var opts = new CompilerParameters();
             //opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.CodeBase);
             opts.ReferencedAssemblies.Add(@"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll");
@@ -152,6 +153,16 @@ namespace Wms.Tests
 			var resultAssembly  = cdp.CompileAssemblyFromSource(opts, sourceCode);
 			return resultAssembly.CompiledAssembly.GetType(controllerType);
 		}
+
+        private static Type GetControllerType2(string sourceCode, string controllerType)
+        {
+            return CodeDomGenerator.Compile(null, CodeDomGenerator.Language.CSharp, 
+                new string[]{
+                    @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll"
+                },
+                new CodeSnippetCompileUnit(sourceCode)
+            ).GetType(controllerType);
+        }
 
         private static EntityDefinition  GetEntityDefinition()
 		{
