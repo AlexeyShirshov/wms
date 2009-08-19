@@ -38,7 +38,7 @@ namespace Wms.Web
 			var hb = new HtmlBuilder(tw);
 			hb.Tag("form", h => ed.GetProperties()
 				.Aggregate(h, (h1, p) => h1.Begin("p").Text(p.Name).Text(GetEditControl(p, isEditView)).End())
-				.Tag("input", new { type="submit", value="save" }));
+				.Tag("input", new { type = "submit", value = "save" }));
 			hb.GetWriter().Flush();
 		}
 

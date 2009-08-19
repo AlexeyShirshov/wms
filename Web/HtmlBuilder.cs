@@ -82,6 +82,14 @@ namespace Wms.Web
 			return _hw;
 		}
 
+		public HtmlBuilder Tag(string tag, Func<HtmlBuilder, HtmlBuilder> f)
+		{
+			Begin(tag);
+			f(this);
+			End();
+			return this;
+		}
+
 		private static IDictionary<string, string> ObjectToDictionary(object o)
 		{
 			var d = new Dictionary<string, string>();
