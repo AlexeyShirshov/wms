@@ -14,6 +14,7 @@ using MbUnit.Framework.ContractVerifiers;
 using Wms.Tests.Fakes;
 using Wms.Web;
 using WXML.Model.Descriptors;
+using Microsoft.CSharp;
 
 namespace Wms.Tests
 {
@@ -54,22 +55,9 @@ namespace Wms.Tests
 			var sw = new StringWriter();
 
 			generator.GenerateController(GetEntityDefinition(), sw);
+            Type controllerType = GetControllerType(sw.ToString(), "Wms.Controllers.PostController");
 
-			string sourceCode = sw.ToString();
-			var cdp = CodeDomProvider.CreateProvider("cs");
-			
-			Console.WriteLine(sourceCode);
-
-			var result  = cdp.CompileAssemblyFromSource(new CompilerParameters(), sourceCode.Split('\n'));
-
-			foreach (var e in result.Errors)
-			{
-				Console.WriteLine(e.ToString());
-			}
-            
-			Type controllerType = result.CompiledAssembly.GetType("PostController");
-
-			Assert.IsNotNull(controllerType);
+            Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
 		}
 		
@@ -146,7 +134,26 @@ namespace Wms.Tests
 		}
 
 
-		private static EntityDefinition  GetEntityDefinition()
+		private static Type GetControllerType(string sourceCode, string controllerType)
+		{
+            var d = new Dictionary<string, string>();
+            d["CompilerVersion"] = "v3.5";
+            var cdp = new CSharpCodeProvider(d);
+
+            Console.WriteLine(sourceCode);
+
+            var opts = new CompilerParameters();
+            //opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.CodeBase);
+            opts.ReferencedAssemblies.Add(@"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll");
+            opts.ReferencedAssemblies.Add(@"System.dll");
+            opts.ReferencedAssemblies.Add(@"System.Core.dll");
+            opts.GenerateInMemory = true;
+            opts.GenerateExecutable = false;
+			var resultAssembly  = cdp.CompileAssemblyFromSource(opts, sourceCode);
+			return resultAssembly.CompiledAssembly.GetType(controllerType);
+		}
+
+        private static EntityDefinition  GetEntityDefinition()
 		{
 			var ed = new FakeDataFacade().EntityModel.GetEntity("Post");
 			var pd = new PropertyDefinition("Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
