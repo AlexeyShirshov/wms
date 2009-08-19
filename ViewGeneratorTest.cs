@@ -134,10 +134,10 @@ namespace Wms.Tests
 
 		private static EntityDefinition  GetEntityDefinition()
 		{
-			var entityDefinition = new FakeDataFacade().EntityModel.GetEntity("Post");
+			var ed = new FakeDataFacade().EntityModel.GetEntity("Post");
 			var pd = new PropertyDefinition("Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
-			entityDefinition.AddProperty(pd);
-			return entityDefinition;
+			ed.AddProperty(pd);
+			return ed;
 		}
 	}
 }
