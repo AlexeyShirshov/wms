@@ -56,7 +56,23 @@ namespace Wms.Tests
 			var sw = new StringWriter();
 
 			generator.GenerateController(GetEntityDefinition(), sw);
-            Type controllerType = GetControllerType2(sw.ToString(), "Wms.Controllers.PostController");
+			string sourceCode = sw.ToString();
+			var d = new Dictionary<string, string>();
+			d["CompilerVersion"] = "v3.5";
+			var cdp = new CSharpCodeProvider(d);
+
+			Console.WriteLine(sourceCode);
+            
+			var opts = new CompilerParameters();
+			//opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.CodeBase);
+			opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.Location);
+			opts.ReferencedAssemblies.Add(@"System.dll");
+			opts.ReferencedAssemblies.Add(@"System.Core.dll");
+			opts.GenerateInMemory = true;
+			opts.GenerateExecutable = false;
+			var resultAssembly  = cdp.CompileAssemblyFromSource(opts, sourceCode);
+
+			Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
 
             Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
@@ -135,26 +151,7 @@ namespace Wms.Tests
 		}
 
 
-		private static Type GetControllerType(string sourceCode, string controllerType)
-		{
-            var d = new Dictionary<string, string>();
-            d["CompilerVersion"] = "v3.5";
-            var cdp = new CSharpCodeProvider(d);
-
-            Console.WriteLine(sourceCode);
-            
-            var opts = new CompilerParameters();
-            //opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.CodeBase);
-            opts.ReferencedAssemblies.Add(@"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll");
-            opts.ReferencedAssemblies.Add(@"System.dll");
-            opts.ReferencedAssemblies.Add(@"System.Core.dll");
-            opts.GenerateInMemory = true;
-            opts.GenerateExecutable = false;
-			var resultAssembly  = cdp.CompileAssemblyFromSource(opts, sourceCode);
-			return resultAssembly.CompiledAssembly.GetType(controllerType);
-		}
-
-        private static Type GetControllerType2(string sourceCode, string controllerType)
+		private static Type GetControllerType2(string sourceCode, string controllerType)
         {
             return CodeDomGenerator.Compile(null, CodeDomGenerator.Language.CSharp, 
                 new string[]{
