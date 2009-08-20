@@ -21,7 +21,7 @@
            { %>
         <tr>
             <td>
-                <%= Html.CheckBox("IsPrimaryKey", (pd.Attributes & Field2DbRelations.PrimaryKey) > 0, new {disabled = "disabled")%>
+                <%= Html.CheckBox("IsPrimaryKey", (pd.Attributes & Field2DbRelations.PrimaryKey) > 0, new { disabled = "disabled" })%>
             </td>
             <td>
 				<%= Html.CheckBox("IsRequired", pd.PropertyType.IsNullableType, new {disabled = "disabled"} ) %>
