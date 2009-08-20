@@ -56,12 +56,12 @@ namespace Wms.Web
             var rt = WmsDataFacade.GetRepositoryProvider().RepositoryType;
 
 		    var controller = generator
-		        .AddReference(typeof(Controller).Assembly.Location)
-                .AddReference("System.dll")
-                .AddReference("System.Web.dll")
-                .AddReference(rt.Assembly.Location)
-                .AddReference("System.Data.Linq.dll")
-                .AddReference("System.Core.dll")
+                //.AddReference(typeof(Controller).Assembly.Location)
+                //.AddReference("System.dll")
+                //.AddReference("System.Web.dll")
+                //.AddReference(rt.Assembly.Location)
+                //.AddReference("System.Data.Linq.dll")
+                //.AddReference("System.Core.dll")
 		        .AddNamespace("Wms.Controllers")
                 .AddClass(ed.Identifier + "Controller").Inherits(typeof (Controller));
 
