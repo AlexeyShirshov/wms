@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
 using LinqToCodedom.Generator;
 using Wms.Data;
 using Wms.Interfaces;
+using Wms.Repository;
 using WXML.Model.Descriptors;
 using LinqToCodedom;
 using LinqToCodedom.Extensions;
@@ -51,10 +53,32 @@ namespace Wms.Web
 			var generator = new CodeDomGenerator();
 
 			var location = Assembly.LoadWithPartialName("System.Web.Mvc").Location;
-		    var controller = generator.AddReference(location).AddReference("System.dll").AddReference("System.Web.dll")
+		    var controller = generator
+		        .AddReference(location)
+                .AddReference("System.dll")
+                .AddReference("System.Web.dll")
+                .AddReference(typeof (IWmsDataFacade).Assembly.Location)
+                .AddReference("System.Data.Linq.dll")
+                .AddReference("System.Core.dll")
 		        .AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
-		        .Implements(typeof (System.Web.Mvc.Controller))
-		        .AddFields(Define.Field(typeof (IWmsDataFacade), MemberAttributes.Private, "_dataFacade"));
+		        .Implements(typeof (Controller));
+
+		    var facadeField = Define.Field(typeof (IWmsDataFacade), MemberAttributes.Private, "_dataFacade");
+
+		    controller.AddFields(facadeField);
+
+		    controller.AddCtor(Emit.assignField("_dataFacade", () => new WmsDataFacade()));
+
+		    var index = controller.AddMethod(MemberAttributes.Public, typeof (ActionResult), () => "Index",
+		                                     Emit.declare("model",
+		                                                  () =>
+		                                                  CodeDom.@this.Field<IWmsDataFacade>("_dataFacade").GetEntityQuery(
+		                                                      ed.Name)));
+
+		    index.Statements.Add(Emit.@return(() => CodeDom.@this.Call("View")));
+            
+		    Console.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
+		    generator.Compile();
 
 		    return generator.GetCompileUnit(CodeDomGenerator.Language.CSharp);
 		}
