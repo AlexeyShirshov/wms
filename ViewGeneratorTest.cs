@@ -16,6 +16,7 @@ using Wms.Web;
 using WXML.Model.Descriptors;
 using Microsoft.CSharp;
 using LinqToCodedom;
+using Wms.Repository;
 
 namespace Wms.Tests
 {
@@ -56,13 +57,13 @@ namespace Wms.Tests
 
 			var ccu = generator.GenerateController(GetEntityDefinition());
 
-			var cdp = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", "3.5"}});
-			var opts = new CompilerParameters {GenerateInMemory = true, GenerateExecutable = false};
-    	    var resultAssembly  = cdp.CompileAssemblyFromDom(opts, ccu);
+            //var cdp = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", "3.5"}});
+            //var opts = new CompilerParameters {GenerateInMemory = true, GenerateExecutable = false};
+            //var resultAssembly  = cdp.CompileAssemblyFromDom(opts, ccu);
 
-            Assert.AreEqual(0, resultAssembly.Errors.Count);
+            //Assert.AreEqual(0, resultAssembly.Errors.Count);
 
-			Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
+            Type controllerType = GetControllerType(ccu, "Wms.Controllers.PostController"); //resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
 
             Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
@@ -135,11 +136,25 @@ namespace Wms.Tests
 		}
 
 
+        private static Type GetControllerType(CodeCompileUnit unit, string controllerType)
+        {
+            return CodeDomGenerator.Compile(null, CodeDomGenerator.Language.CSharp,
+                new string[]{
+                    @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll",
+                    WmsDataFacade.GetRepositoryProvider().RepositoryType.Assembly.Location,
+                    "System.Core.dll"
+                },
+                unit
+            ).GetType(controllerType);
+        }
+
 		private static Type GetControllerType2(string sourceCode, string controllerType)
         {
             return CodeDomGenerator.Compile(null, CodeDomGenerator.Language.CSharp, 
                 new string[]{
-                    @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll"
+                    @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll",
+                    WmsDataFacade.GetRepositoryProvider().RepositoryType.Assembly.Location,
+                    "System.Core.dll"
                 },
                 new CodeSnippetCompileUnit(sourceCode)
             ).GetType(controllerType);

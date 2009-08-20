@@ -80,6 +80,7 @@
     <Compile Include="Controllers\InstanceControllerTest.cs" />
     <Compile Include="Controllers\PropertyControllerTest.cs" />
     <Compile Include="Fakes\FakeDataFacade.cs" />
+    <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\FacadeTest.cs" />
