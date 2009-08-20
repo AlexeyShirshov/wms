@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LinqToCodedom.Generator;
+using Wms.Data;
 using Wms.Interfaces;
 using WXML.Model.Descriptors;
 using LinqToCodedom;
@@ -40,27 +42,21 @@ namespace Wms.Web
 			hb.Tag("form", h => ed.GetProperties()
 				.Aggregate(h, (h1, p) => h1.Begin("p").Text(p.Name).Text(GetEditControl(p, isEditView)).End())
 				.Tag("input", new { type = "submit", value = "save" }));
-
-			hb.Begin("asd").
 			
 			hb.GetWriter().Flush();
 		}
 
-		public void GenerateController(EntityDefinition ed, TextWriter tw)
+		public CodeCompileUnit GenerateController(EntityDefinition ed)
 		{
 			var generator = new CodeDomGenerator();
 
 			var location = Assembly.LoadWithPartialName("System.Web.Mvc").Location;
-			var controller = generator.AddReference(location)
-				.AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
-				.Implements(typeof(System.Web.Mvc.Controller));
+		    var controller = generator.AddReference(location).AddReference("System.dll").AddReference("System.Web.dll")
+		        .AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
+		        .Implements(typeof (System.Web.Mvc.Controller))
+		        .AddFields(Define.Field(typeof (IWmsDataFacade), MemberAttributes.Private, "_dataFacade"));
 
-			tw.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
-
-            Assembly a = generator.Compile();
-            
-            if (a == null)
-                throw new ApplicationException("Облом");
+		    return generator.GetCompileUnit(CodeDomGenerator.Language.CSharp);
 		}
 
 
