@@ -12,9 +12,6 @@ namespace Wms.Web
 	{
 		public void Page_Load(object sender, System.EventArgs e)
 		{
-            StringBuilder sb = new StringBuilder();
-            new ViewGenerator().GenerateController(new EntityDefinition("sdfsd", null, null, null, new WXMLModel()), new StringWriter(sb));
-            
             // Change the current path so that the Routing handler can correctly interpret
 			// the request, then restore the original path so that the OutputCache module
 			// can correctly process the response (if caching is enabled).
