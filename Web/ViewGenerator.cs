@@ -63,20 +63,17 @@ namespace Wms.Web
 		        .AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
 		        .Implements(typeof (Controller));
 
-		    var facadeField = Define.Field(typeof (IWmsDataFacade), MemberAttributes.Private, "_dataFacade");
-
-		    controller.AddFields(facadeField);
+            controller.AddField(typeof(IWmsDataFacade), MemberAttributes.Private, "_dataFacade");
 
 		    controller.AddCtor(Emit.assignField("_dataFacade", () => new WmsDataFacade()));
 
 		    var index = controller.AddMethod(MemberAttributes.Public, typeof (ActionResult), () => "Index",
-		                                     Emit.declare("model",
-		                                                  () =>
-		                                                  CodeDom.@this.Field<IWmsDataFacade>("_dataFacade").GetEntityQuery(
-		                                                      ed.Name)));
+                 Emit.declare("model", () => 
+                     CodeDom.@this.Field<IWmsDataFacade>("_dataFacade").GetEntityQuery(ed.Name)
+                 ),
+                 Emit.@return(() => CodeDom.@this.Call<ActionResult>("View")(CodeDom.VarRef("model")))
+            );
 
-		    index.Statements.Add(Emit.@return(() => CodeDom.@this.Call<ActionResult>("View")(CodeDom.VarRef("model"))));
-            
 		    Console.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
 		    generator.Compile();
 
