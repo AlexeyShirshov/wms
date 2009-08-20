@@ -75,7 +75,7 @@ namespace Wms.Web
 		                                                  CodeDom.@this.Field<IWmsDataFacade>("_dataFacade").GetEntityQuery(
 		                                                      ed.Name)));
 
-		    index.Statements.Add(Emit.@return(() => CodeDom.@this.Call("View")));
+		    index.Statements.Add(Emit.@return(() => CodeDom.@this.Call<ActionResult>("View")(CodeDom.VarRef("model"))));
             
 		    Console.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
 		    generator.Compile();
