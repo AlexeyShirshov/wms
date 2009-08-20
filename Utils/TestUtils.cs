@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,9 +8,20 @@ using MbUnit.Framework;
 
 namespace Wms.Tests
 {
-	public class TestUtils
+	public static class TestUtils
 	{
 		public static string TestDataDir { get { return @"..\..\Test_Data"; }}
+
+        public static void PrintDictionary(this IDictionary d)
+        {
+            if(d == null)
+                return;
+
+            foreach (var key in d.Keys)
+            {
+                Console.WriteLine("[{0},{1}", key, d[key]);
+            }
+        }
 	}
 	
 	public static class FileAssert
@@ -27,6 +39,8 @@ namespace Wms.Tests
 			Assert.AreEqual(expected.Replace(" ", "").Replace("\t", ""), actual.Replace(" ", "").Replace("\t", ""));
 		}
 	}
+
+
 
 
 }

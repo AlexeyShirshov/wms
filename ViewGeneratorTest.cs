@@ -53,24 +53,14 @@ namespace Wms.Tests
 		public void Can_Generate_Controller()
 		{
 			var generator = new ViewGenerator();
-			var sw = new StringWriter();
 
-			generator.GenerateController(GetEntityDefinition(), sw);
-			string sourceCode = sw.ToString();
-			var d = new Dictionary<string, string>();
-			d["CompilerVersion"] = "v3.5";
-			var cdp = new CSharpCodeProvider(d);
+			var ccu = generator.GenerateController(GetEntityDefinition());
 
-			Console.WriteLine(sourceCode);
-            
-			var opts = new CompilerParameters();
-			//opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.CodeBase);
-			opts.ReferencedAssemblies.Add(typeof(System.Web.Mvc.Controller).Assembly.Location);
-			opts.ReferencedAssemblies.Add(@"System.dll");
-			opts.ReferencedAssemblies.Add(@"System.Core.dll");
-			opts.GenerateInMemory = true;
-			opts.GenerateExecutable = false;
-			var resultAssembly  = cdp.CompileAssemblyFromSource(opts, sourceCode);
+			var cdp = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", "3.5"}});
+			var opts = new CompilerParameters {GenerateInMemory = true, GenerateExecutable = false};
+    	    var resultAssembly  = cdp.CompileAssemblyFromDom(opts, ccu);
+
+            Assert.AreEqual(0, resultAssembly.Errors.Count);
 
 			Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
 
@@ -82,18 +72,14 @@ namespace Wms.Tests
 		public void Can_Generate_Browse_Action()
 		{
 			var generator = new ViewGenerator();
-			var sw = new StringWriter();
 
-			generator.GenerateController(GetEntityDefinition(), sw);
+            var ccu = generator.GenerateController(GetEntityDefinition());
 
-			string sourceCode = sw.ToString();
-			var cdp = CodeDomProvider.CreateProvider("cs");
-			
-			Console.WriteLine(sourceCode);
+            var cdp = new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "3.5" } });
+            var opts = new CompilerParameters { GenerateInMemory = true, GenerateExecutable = false };
+            var resultAssembly = cdp.CompileAssemblyFromDom(opts, ccu);
 
-			var resultAssembly  = cdp.CompileAssemblyFromSource(new CompilerParameters(), sourceCode.Split('\n'));
-			var controllerType = resultAssembly.CompiledAssembly.GetType("PostController");
-
+            Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
 			var browseAction = controllerType.GetMethods().FirstOrDefault(mi => mi.Name == "Browse");
 
 			Assert.IsNotNull(browseAction);
@@ -106,16 +92,14 @@ namespace Wms.Tests
 			var generator = new ViewGenerator();
 			var sw = new StringWriter();
 
-			generator.GenerateController(GetEntityDefinition(), sw);
+            var ccu = generator.GenerateController(GetEntityDefinition());
 
-			string sourceCode = sw.ToString();
-			var cdp = CodeDomProvider.CreateProvider("cs");
-			
-			Console.WriteLine(sourceCode);
+            var cdp = new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "3.5" } });
+            var opts = new CompilerParameters { GenerateInMemory = true, GenerateExecutable = false };
+            var resultAssembly = cdp.CompileAssemblyFromDom(opts, ccu);
 
-			var resultAssembly  = cdp.CompileAssemblyFromSource(new CompilerParameters(), sourceCode.Split('\n'));
-			var controllerType = resultAssembly.CompiledAssembly.GetType("PostController");
-			var controller = Activator.CreateInstance(controllerType);
+            Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
+		    var controller = Activator.CreateInstance(controllerType, new object[] {});
 			var browseAction = controllerType.GetMethods().FirstOrDefault(mi => mi.Name == "Browse");
 			var result = browseAction.Invoke(controller, new object[] { }) as ViewResult;
 
