@@ -40,15 +40,18 @@ namespace Wms.Web
 			hb.Tag("form", h => ed.GetProperties()
 				.Aggregate(h, (h1, p) => h1.Begin("p").Text(p.Name).Text(GetEditControl(p, isEditView)).End())
 				.Tag("input", new { type = "submit", value = "save" }));
+
+			hb.Begin("asd").
+			
 			hb.GetWriter().Flush();
 		}
 
 		public void GenerateController(EntityDefinition ed, TextWriter tw)
 		{
 			var generator = new CodeDomGenerator();
-            var controller = generator.AddReference(
-                //typeof(System.Web.Mvc.Controller).Assembly.CodeBase)
-                @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll")
+
+			var location = Assembly.LoadWithPartialName("System.Web.Mvc").Location;
+			var controller = generator.AddReference(location)
 				.AddNamespace("Wms.Controllers").AddClass(ed.Identifier + "Controller")
 				.Implements(typeof(System.Web.Mvc.Controller));
 
