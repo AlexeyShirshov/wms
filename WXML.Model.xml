@@ -96,11 +96,6 @@
             <param name="entity">The entity.</param>
             <returns></returns>
         </member>
-        <member name="T:WXML.CodeDom.WXMLCodeDomGenerator.Delegates.UpdateSetValueMethodDelegates">
-            <summary>
-            void UpdateSetValueMethodDelegate(CodeMemberField field, PropertyDescription propertyDesc, CodeMemberMethod setvalueMethod);
-            </summary>
-        </member>
         <member name="F:WXML.Model.EntityBehaviuor.Default">
             <summary>
             Default behaviour when generator creates default classes(entity and schema) with full method set.
