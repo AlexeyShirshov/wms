@@ -106,7 +106,7 @@ namespace Wms.Web.Controllers
             if(entity == null)
                 throw new HttpNotFoundException("entity");
 
-            var property = new PropertyDefinition(entity, form["Name"]);
+            var property = new ScalarPropertyDefinition(entity, form["Name"]);
 
             UpdateModel(property, GetValueProvider(form));
 
