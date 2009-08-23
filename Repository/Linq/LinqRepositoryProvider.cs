@@ -162,7 +162,7 @@ namespace Wms.Repository
 
             foreach (var entity in model.GetActiveEntities())
             {
-                if (entity.HasSinglePk)
+                if (entity.GetPkProperties().Count() == 1)
                 {
                     //string entityName = entity.Name;
                     string entityProp = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(entity.Name);
