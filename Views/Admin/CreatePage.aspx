@@ -7,10 +7,10 @@
 <head runat="server">
     <title>Create</title>
     
-    <script src="/Scripts/jquery-1.3.2.js" type="text/javascript"></script>
+    <script src="/js/jquery-1.3.2.js" type="text/javascript"></script>
     <% if (false)
 	   { %>
-    <script src="../../Scripts/jquery-1.3.2-vsdoc2.js" type="text/javascript"></script>
+    <script src="../../js/jquery-1.3.2-vsdoc2.js" type="text/javascript"></script>
     <% } %>
     
 </head>

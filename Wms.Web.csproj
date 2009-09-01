@@ -12,10 +12,10 @@
     <AssemblyName>Wms.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <SccProjectName>%24/wms/Cms.Proto.Web</SccProjectName>
+    <!--<SccProjectName>%24/wms/Cms.Proto.Web</SccProjectName>
     <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>https://tfs04.codeplex.com</SccAuxPath>
-    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>-->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MvcContrib, Version=1.0.0.916, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -97,8 +101,8 @@
     </Content>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.3.2-vsdoc2.js" />
-    <Content Include="Scripts\jquery-1.3.2.js" />
+    <Content Include="js\jquery-1.3.2-vsdoc2.js" />
+    <Content Include="js\jquery-1.3.2.js" />
     <Content Include="Views\Admin\Controls.aspx" />
     <Content Include="Views\Admin\CreateControl.aspx" />
     <Content Include="Views\Admin\CreatePage.aspx" />
@@ -121,6 +125,8 @@
     </None>
     <Content Include="Content\Custom.css" />
     <Content Include="Content\Wms.css" />
+    <Content Include="css\jquery.treeTable.css" />
+    <Content Include="css\jquery.treeview.css" />
     <Content Include="css\tables\cnc.css" />
     <Content Include="css\tables\coffee-with-milk.css" />
     <Content Include="css\tables\css-tables-gallery.css" />
@@ -132,6 +138,30 @@
     <Content Include="css\tables\plainold.css" />
     <Content Include="css\tables\tablestyle.css" />
     <Content Include="css\tables\winterblues.css" />
+    <Content Include="i\toggle-collapse-dark.png" />
+    <Content Include="i\toggle-collapse-light.png" />
+    <Content Include="i\toggle-expand-dark.png" />
+    <Content Include="i\toggle-expand-light.png" />
+    <Content Include="i\TreeView\file.gif" />
+    <Content Include="i\TreeView\folder-closed.gif" />
+    <Content Include="i\TreeView\folder.gif" />
+    <Content Include="i\TreeView\minus.gif" />
+    <Content Include="i\TreeView\plus.gif" />
+    <Content Include="i\TreeView\treeview-black-line.gif" />
+    <Content Include="i\TreeView\treeview-black.gif" />
+    <Content Include="i\TreeView\treeview-default-line.gif" />
+    <Content Include="i\TreeView\treeview-default.gif" />
+    <Content Include="i\TreeView\treeview-famfamfam-line.gif" />
+    <Content Include="i\TreeView\treeview-famfamfam.gif" />
+    <Content Include="i\TreeView\treeview-gray-line.gif" />
+    <Content Include="i\TreeView\treeview-gray.gif" />
+    <Content Include="i\TreeView\treeview-red-line.gif" />
+    <Content Include="i\TreeView\treeview-red.gif" />
+    <Content Include="js\jquery.treeTable.js" />
+    <Content Include="js\TreeView\jquery.treeview.async.js" />
+    <Content Include="js\TreeView\jquery.treeview.js" />
+    <Content Include="js\TreeView\jquery.treeview.min.js" />
+    <Content Include="js\TreeView\jquery.treeview.pack.js" />
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />
