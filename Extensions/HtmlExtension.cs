@@ -47,5 +47,17 @@ namespace Wms.Web.Extensions
         {
             return html.ActionLink(linkText, "Create", "Property", new {entityId = entityDefinition.Identifier}, null);
         }
+
+        public static void RenderView(this HtmlHelper html, string id, string name, object model)
+        {
+            //html.ViewContext.HttpContext.Response.Write("<div style='border: solid 1px red;float:both;'>");
+            html.RenderPartial(name, model);
+            //html.ViewContext.HttpContext.Response.Write("</div>");
+
+           xxx(new {key=1}); 
+        }
+
+        private static void xxx<T>(T ds)
+        { }
 	}
 }

@@ -1,7 +1,8 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<EntityDefinitionViewModel>" Trace="true" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Wms.Master" Inherits="System.Web.Mvc.ViewPage<EntityDefinitionViewModel>" %>
 <%@ Import Namespace="WXML.Model"%>
 <%@ Import Namespace="Wms.Web.Models.Entities"%>
 <%@ Import Namespace="MvcContrib.UI.Grid" %>
+<%@ Import Namespace="Wms.Web.Extensions"%>
 
 <asp:content id="Content2" contentplaceholderid="Head" runat="server" >
 </asp:content>
@@ -55,7 +56,34 @@
          })
      %>
      
+     <%-- =Html.DropDownList("newsCount", new SelectListItem[]{
+           new SelectListItem(){Value="10", Text="10", Selected=Model.NewsCount==10}, 
+           new SelectListItem(){Value="20", Text="20", Selected=Model.NewsCount==20},
+           new SelectListItem(){Value="40", Text="40", Selected=Model.NewsCount==40}
+     }) --%>     
+     
+     <ul>
+     <% foreach (var pd in Model.EntityDefinition.GetProperties())
+        { %>
+     <li><%=pd.Identifier %> - <strong><%=pd.Name %></strong></li>
+     <% } %>      
+     </ul>
+           
  <% } %>
     <%= Html.CreatePropertyLink("Add property", Model.EntityDefinition) %>
-    
+<br />
+<% Html.RenderView("ctrl1","ViewUserControl1", null); %>    
+<% Html.RenderView("ctrl1","ViewUserControl1", null); %>    
+<% Html.RenderView("ctrl1","ViewUserControl1", null); %>    
+sdflsfmhl
+<table border="1">
+<tr>
+<td><% Html.RenderView("ctrl1","ViewUserControl1", null); %></td>
+<td><% Html.RenderView("ctrl1","ViewUserControl1", null); %></td>
+</tr>
+<tr>
+<td><% Html.RenderView("ctrl1","ViewUserControl2", null); %></td>
+<td><% Html.RenderView("ctrl1","ViewUserControl1", null); %></td>
+</tr>
+</table>
 </asp:Content>

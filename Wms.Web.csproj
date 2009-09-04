@@ -163,11 +163,13 @@
     <Content Include="js\TreeView\jquery.treeview.min.js" />
     <Content Include="js\TreeView\jquery.treeview.pack.js" />
     <Content Include="Views\Admin\Index.aspx" />
+    <Content Include="Views\Shared\ViewUserControl1.ascx" />
     <Content Include="Views\Entities\EditDefinition.aspx" />
     <Content Include="Views\Entities\Index.aspx" />
     <Content Include="Views\Property\Create.aspx" />
     <Content Include="Views\Property\Edit.aspx" />
     <Content Include="Views\Shared\Wms.Master" />
+    <Content Include="Views\Shared\ViewUserControl2.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Meta\EntityArchive\" />
