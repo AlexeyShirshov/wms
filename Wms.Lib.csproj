@@ -69,7 +69,6 @@
   <ItemGroup>
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\HttpNotFoundException.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Interfaces\DataInterfaces.cs" />
     <Compile Include="Interfaces\IViewGenerator.cs" />
     <Compile Include="Interfaces\IXmlModelWrapper.cs" />
@@ -94,6 +93,7 @@
     <Compile Include="Web\ViewGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Helpers\" />
     <Folder Include="Services\" />
   </ItemGroup>
