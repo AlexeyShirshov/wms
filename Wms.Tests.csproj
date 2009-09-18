@@ -75,6 +75,7 @@
     <Compile Include="Controllers\EntitiesControllerTest.cs" />
     <Compile Include="Controllers\InstanceControllerTest.cs" />
     <Compile Include="Controllers\PropertyControllerTest.cs" />
+    <Compile Include="DefaultClassLoaderTest.cs" />
     <Compile Include="Fakes\FakeDataFacade.cs" />
     <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />
