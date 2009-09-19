@@ -16,6 +16,10 @@
     <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>https://tfs04.codeplex.com</SccAuxPath>
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>-->
+    <SccProjectName>%24/wms/Cms.Proto.Web</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://tfs04.codeplex.com</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LinqCodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f65f9710e31746a0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\LinqCodeGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="MvcContrib, Version=1.0.0.916, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\MvcContrib.dll</HintPath>
@@ -61,10 +69,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
-    <Reference Include="WXML.Model, Version=1.0.3501.24252, Culture=neutral, PublicKeyToken=cf54b99ac03d848c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\WXML.Model.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binders\EntityDescriptionBinder.cs" />

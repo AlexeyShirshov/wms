@@ -78,7 +78,7 @@ namespace Wms.Web.Controllers
     		{
                 var curProp = DataFacade.EntityModel.GetEntity(entityId).GetProperty(form["propID." + i]);
 
-                var propertyDefinition = new ScalarPropertyDefinition(form[i + ".Name"])
+                var propertyDefinition = new ScalarPropertyDefinition(entityDefinition, form[i + ".Name"])
                 {
                     PropertyAlias = curProp.PropertyAlias
                 };
