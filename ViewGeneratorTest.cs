@@ -112,7 +112,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_TextBox()
 		{
-            var pd = new ScalarPropertyDefinition("Name") { PropertyType = new TypeDefinition("tString", typeof(string)) };
+            var pd = new ScalarPropertyDefinition(null, "Name") { PropertyType = new TypeDefinition("tString", typeof(string)) };
 			string result = ViewGenerator.GetEditControl(pd, false);
 
             StringAssert.EqualToWhiteSpace(@"<%= Html.TextBox(""Name"") %>", result);
@@ -126,7 +126,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_CheckBox()
 		{
-            var pd = new ScalarPropertyDefinition("Flag") { PropertyType = new TypeDefinition("tBool", typeof(bool)) };
+            var pd = new ScalarPropertyDefinition(null, "Flag") { PropertyType = new TypeDefinition("tBool", typeof(bool)) };
 			var sw = new StringWriter();
 			string result = ViewGenerator.GetEditControl(pd, false);
 
@@ -163,7 +163,7 @@ namespace Wms.Tests
         private static EntityDefinition  GetEntityDefinition()
 		{
 			var ed = new FakeDataFacade().EntityModel.GetEntity("Post");
-            var pd = new ScalarPropertyDefinition("Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
+            var pd = new ScalarPropertyDefinition(null, "Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
 			ed.AddProperty(pd);
 			return ed;
 		}
