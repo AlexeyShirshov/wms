@@ -18,7 +18,7 @@ namespace Wms.Tests.Fakes
 
 		public FakeDataFacade()
 		{
-			using (var reader = XmlReader.Create(Path.Combine(TestUtils.TestDataDir, "TestEntities.xml")))
+			using (var reader = XmlReader.Create(@"..\..\Test_Data\TestEntities.xml"))
 			{
 				_model = WXMLModel.LoadFromXml(reader);
 			}

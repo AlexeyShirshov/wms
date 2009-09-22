@@ -23,6 +23,8 @@ namespace Wms.Tests
 	[TestFixture]
 	public class ViewGeneratorTest
 	{
+		private const string AssemblyName = "Test";
+		
 		[Test]
 		public void Can_Generate_Edit_View()
 		{
@@ -76,11 +78,16 @@ namespace Wms.Tests
 
             var ccu = generator.GenerateController(GetEntityDefinition());
 
-            var cdp = new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "3.5" } });
-            var opts = new CompilerParameters { GenerateInMemory = true, GenerateExecutable = false };
-            var resultAssembly = cdp.CompileAssemblyFromDom(opts, ccu);
+			var cl = new DefaultClassLoader();
+			cl.Load(ccu, "Test");
 
-            Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
+			//var cdp = new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "3.5" } });
+			//var opts = new CompilerParameters { GenerateInMemory = true, GenerateExecutable = false };
+			//var resultAssembly = cdp.CompileAssemblyFromDom(opts, ccu);
+
+			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName );
+
+			//Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
 			var browseAction = controllerType.GetMethods().FirstOrDefault(mi => mi.Name == "Browse");
 
 			Assert.IsNotNull(browseAction);
