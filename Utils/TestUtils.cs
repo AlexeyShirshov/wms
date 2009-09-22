@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using MbUnit.Framework;
+using Microsoft.Practices.Unity;
+using Wms.Data;
 
 namespace Wms.Tests
 {
@@ -22,6 +24,16 @@ namespace Wms.Tests
                 Console.WriteLine("[{0},{1}", key, d[key]);
             }
         }
+
+		public static IUnityContainer FakeContainer
+		{
+			get
+			{
+				var container = new UnityContainer();
+				container.RegisterType(typeof(IWmsDataFacade), typeof(Fakes.FakeDataFacade));
+				return container;
+			}
+		}
 	}
 	
 	public static class FileAssert
@@ -39,6 +51,8 @@ namespace Wms.Tests
 			Assert.AreEqual(expected.Replace(" ", "").Replace("\t", ""), actual.Replace(" ", "").Replace("\t", ""));
 		}
 	}
+
+	
 
 
 

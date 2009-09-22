@@ -28,7 +28,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_Edit_View()
 		{
-			var generator = new ViewGenerator();
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
 			var sw = new StringWriter();
 
 			generator.GenerateEditView(GetEntityDefinition(), sw);
@@ -41,7 +41,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_Create_View()
 		{
-			var generator = new ViewGenerator();
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
 			var sw = new StringWriter();
 
 			generator.GenerateCreateView(GetEntityDefinition(), sw);
@@ -55,7 +55,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_Controller()
 		{
-			var generator = new ViewGenerator();
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
 			var ccu = generator.GenerateController(GetEntityDefinition());
 
@@ -65,50 +65,48 @@ namespace Wms.Tests
 
             //Assert.AreEqual(0, resultAssembly.Errors.Count);
 
-            Type controllerType = GetControllerType(ccu, "Wms.Controllers.PostController"); //resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
-
+			new DefaultClassLoader().Load(ccu, AssemblyName); 
+			Type controllerType = Type.GetType("Wms.Controllers.PostController," + AssemblyName );
             Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
 		}
+
+
+		
 		
 		[Test]
-		public void Can_Generate_Browse_Action()
+		public void Generates_Proper_Actions([Column("Index", "Create", "Edit")] string action)
 		{
-			var generator = new ViewGenerator();
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
             var ccu = generator.GenerateController(GetEntityDefinition());
 
 			var cl = new DefaultClassLoader();
 			cl.Load(ccu, "Test");
 
-			//var cdp = new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "3.5" } });
-			//var opts = new CompilerParameters { GenerateInMemory = true, GenerateExecutable = false };
-			//var resultAssembly = cdp.CompileAssemblyFromDom(opts, ccu);
-
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName );
 
-			//Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
-			var browseAction = controllerType.GetMethods().FirstOrDefault(mi => mi.Name == "Browse");
+			var browseAction = controllerType.GetMethods().FirstOrDefault(mi => mi.Name == action);
 
-			Assert.IsNotNull(browseAction);
-			Assert.IsTrue(browseAction.ReturnType.IsAssignableFrom(typeof(ActionResult)));
+			Assert.IsNotNull(browseAction, action);
+			Assert.IsTrue(browseAction.ReturnType.IsAssignableFrom(typeof(ActionResult)), action);
 		}
 
 		[Test]
 		public void Browse_Action_Returns_Model()
 		{
-			var generator = new ViewGenerator();
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
 			var sw = new StringWriter();
 
             var ccu = generator.GenerateController(GetEntityDefinition());
+			
+			new DefaultClassLoader().Load(ccu, AssemblyName);
+			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
+			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
 
-            var cdp = new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "3.5" } });
-            var opts = new CompilerParameters { GenerateInMemory = true, GenerateExecutable = false };
-            var resultAssembly = cdp.CompileAssemblyFromDom(opts, ccu);
 
-            Type controllerType = resultAssembly.CompiledAssembly.GetType("Wms.Controllers.PostController");
-		    var controller = Activator.CreateInstance(controllerType, new object[] {});
-			var browseAction = controllerType.GetMethods().FirstOrDefault(mi => mi.Name == "Browse");
+		    //var controller = Activator.CreateInstance(AssemblyName, "Wms.Controllers.PostController", new object[] { TestUtils.FakeContainer } );
+			var browseAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Index");
 			var result = browseAction.Invoke(controller, new object[] { }) as ViewResult;
 
 			Assert.IsNotNull(result);
@@ -142,37 +140,18 @@ namespace Wms.Tests
 			StringAssert.EqualToWhiteSpace(@"<%=Html.CheckBox(""Flag"",Model.Flag)%>", result);
 		}
 
-
-        private static Type GetControllerType(CodeCompileUnit unit, string controllerType)
-        {
-            return CodeDomGenerator.Compile(null, CodeDomGenerator.Language.CSharp,
-                new string[]{
-                    @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll",
-                    WmsDataFacade.GetRepositoryProvider().RepositoryType.Assembly.Location,
-                    "System.Core.dll"
-                },
-                unit
-            ).GetType(controllerType);
-        }
-
-		private static Type GetControllerType2(string sourceCode, string controllerType)
-        {
-            return CodeDomGenerator.Compile(null, CodeDomGenerator.Language.CSharp, 
-                new string[]{
-                    @"C:\WINDOWS\assembly\GAC_MSIL\System.Web.Mvc\1.0.0.0__31bf3856ad364e35\System.Web.Mvc.dll",
-                    WmsDataFacade.GetRepositoryProvider().RepositoryType.Assembly.Location,
-                    "System.Core.dll"
-                },
-                new CodeSnippetCompileUnit(sourceCode)
-            ).GetType(controllerType);
-        }
-
         private static EntityDefinition  GetEntityDefinition()
 		{
 			var ed = new FakeDataFacade().EntityModel.GetEntity("Post");
             var pd = new ScalarPropertyDefinition(null, "Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
 			ed.AddProperty(pd);
 			return ed;
+		}
+
+		[Test]
+		public void Supports_Complex_PK()
+		{
+			Assert.Fail("Write the test!");
 		}
 	}
 }
