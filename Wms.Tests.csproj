@@ -53,8 +53,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TeamSystem.Data.UnitTesting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -87,6 +90,7 @@
     <Compile Include="Fakes\FakeDataFacade.cs" />
     <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />
+    <Compile Include="Misc\Research.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\FacadeTest.cs" />
     <Compile Include="Utils\TestUtils.cs" />
@@ -116,7 +120,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Misc\" />
     <Folder Include="Repository\Meta\EntityArchive\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
