@@ -4,21 +4,37 @@
     <name>LinqCodeGenerator</name>
   </assembly>
   <members>
-    <member name="T:CommandLine.Utility.Arguments">
+    <member name="F:WXML.CodeDom.LanguageSpecificHacks.DerivedGenericMembersRequireConstraits">
       <summary>
-            Arguments class
-            Valid parameters forms:
-            {-,/,--}param{ ,=,:}((",')value(",'))
+            Generic члены производных классов требует наличия констрейтов
             </summary>
-      <example>
-            -param1 value1 --param2 /param3:"Test-:-work" /param4=happy -param5 '--=nice=--'
-            </example>
     </member>
-    <member name="M:CommandLine.Utility.Arguments.#ctor(System.String[])">
+    <member name="F:WXML.CodeDom.LanguageSpecificHacks.MethodsInsteadParametrizedProperties">
       <summary>
-            Creates Arguments class
+            Генерировать методы вместо параметризованых пропертей
             </summary>
-      <param name="Args">command line array (separated by space)</param>
+    </member>
+    <member name="F:WXML.CodeDom.LanguageSpecificHacks.SafeUnboxToEnum">
+      <summary>
+            Безопасная распаковка переменных с кастом в энам
+            </summary>
+    </member>
+    <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntityClassName(WXML.Model.Descriptors.EntityDefinition,System.Boolean)">
+      <summary>
+            Gets class name of the entity using settings
+            </summary>
+      <param name="entity">The entity.</param>
+      <param name="qualified">if set to <c>true</c> return qualified name.</param>
+      <returns>
+      </returns>
+    </member>
+    <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntitySchemaDefClassName(WXML.Model.Descriptors.EntityDefinition)">
+      <summary>
+            Gets the name of the schema definition class for entity.
+            </summary>
+      <param name="entity">The entity.</param>
+      <returns>
+      </returns>
     </member>
     <member name="P:WXML.Model.WXMLModelWriterSettings.IncludeBehaviour">
       <summary>
@@ -69,38 +85,6 @@
       <summary>
             Place or not all include files in separate folder.(doesn't work with <see cref="F:WXML.Model.IncludeGenerationBehaviour.Inline" /> and <see cref="F:WXML.Model.IncludeGenerationBehaviour.Content" /></summary>
     </member>
-    <member name="F:WXML.CodeDom.LanguageSpecificHacks.DerivedGenericMembersRequireConstraits">
-      <summary>
-            Generic члены производных классов требует наличия констрейтов
-            </summary>
-    </member>
-    <member name="F:WXML.CodeDom.LanguageSpecificHacks.MethodsInsteadParametrizedProperties">
-      <summary>
-            Генерировать методы вместо параметризованых пропертей
-            </summary>
-    </member>
-    <member name="F:WXML.CodeDom.LanguageSpecificHacks.SafeUnboxToEnum">
-      <summary>
-            Безопасная распаковка переменных с кастом в энам
-            </summary>
-    </member>
-    <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntityClassName(WXML.Model.Descriptors.EntityDefinition,System.Boolean)">
-      <summary>
-            Gets class name of the entity using settings
-            </summary>
-      <param name="entity">The entity.</param>
-      <param name="qualified">if set to <c>true</c> return qualified name.</param>
-      <returns>
-      </returns>
-    </member>
-    <member name="M:WXML.CodeDom.WXMLCodeDomGeneratorNameHelper.GetEntitySchemaDefClassName(WXML.Model.Descriptors.EntityDefinition)">
-      <summary>
-            Gets the name of the schema definition class for entity.
-            </summary>
-      <param name="entity">The entity.</param>
-      <returns>
-      </returns>
-    </member>
     <member name="F:WXML.Model.EntityBehaviuor.Default">
       <summary>
             Default behaviour when generator creates default classes(entity and schema) with full method set.
@@ -125,6 +109,22 @@
       <summary>
             RV or [ReadOnly] or SyncUpdate or SyncInsert
             </summary>
+    </member>
+    <member name="T:CommandLine.Utility.Arguments">
+      <summary>
+            Arguments class
+            Valid parameters forms:
+            {-,/,--}param{ ,=,:}((",')value(",'))
+            </summary>
+      <example>
+            -param1 value1 --param2 /param3:"Test-:-work" /param4=happy -param5 '--=nice=--'
+            </example>
+    </member>
+    <member name="M:CommandLine.Utility.Arguments.#ctor(System.String[])">
+      <summary>
+            Creates Arguments class
+            </summary>
+      <param name="Args">command line array (separated by space)</param>
     </member>
     <member name="T:Mvp.Xml.XPointer.Pointer">
       <summary>
