@@ -1,7 +1,9 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using Wms.Extensions;
@@ -84,10 +86,18 @@ namespace Wms.Web
 			///Edit action
 			var edit = CreateAction("Edit");
 
+			var eqExpressionList = new List<BinaryExpression>();
 			foreach(PropertyDefinition pk in ed.GetProperties().Where(pd => pd.IsPrimaryKey()))
 			{
 				edit.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(pk.PropertyType.ClrType), pk.Name));
+				///For testing purposes only!!!
+				var entityParam = Expression.Parameter(Type.GetType(ed.Name), "x");
+				var x = 10;
+				eqExpressionList.Add(Expression.Equal(Expression.Property(entityParam, pk.Name), Expression.Constant(x)));
 			}
+			///Creating predicate
+			var predicate = eqExpressionList.Aggregate(Expression.AndAlso);
+
 			edit.Statements.Add(returnStmt);
 
 			cc.Members.Add(edit);
