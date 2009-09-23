@@ -61,7 +61,7 @@ namespace Wms.Web
 			hb.GetWriter().Flush();
 		}
 
-		public CodeCompileUnit GenerateController(EntityDefinition ed)
+		public CodeCompileUnit GenerateController(EntityDefinition ed, Type clrType)
 		{
 			var cc = new CodeTypeDeclaration(ed.Identifier + "Controller");
 			cc.BaseTypes.Add(typeof (Controller));
@@ -76,27 +76,35 @@ namespace Wms.Web
 
 			cc.Members.Add(constructor);
 
-			///Index action
+			//Index action
 			var index = CreateAction("Index"); 
 			var returnStmt = new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View"));
 			index.Statements.Add(returnStmt);
 
 			cc.Members.Add(index);
 
-			///Edit action
+			//Edit action
 			var edit = CreateAction("Edit");
 
-			var eqExpressionList = new List<BinaryExpression>();
+			var eqExpressions = new List<String>();
 			foreach(PropertyDefinition pk in ed.GetProperties().Where(pd => pd.IsPrimaryKey()))
 			{
-				edit.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(pk.PropertyType.ClrType), pk.Name));
+				edit.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(pk.PropertyType.ClrType), pk.Name.ToLower()));
+				eqExpressions.Add(ed.Name.ToLower() + "." + pk.Name + " == " + pk.Name.ToLower());
+#region
 				///For testing purposes only!!!
-				var entityParam = Expression.Parameter(Type.GetType(ed.Name), "x");
-				var x = 10;
-				eqExpressionList.Add(Expression.Equal(Expression.Property(entityParam, pk.Name), Expression.Constant(x)));
+				//var entityParam = Expression.Parameter(Type.GetType(ed.Name), "x");
+				//var x = 10;
+				//eqExpressionList.Add(Expression.Equal(Expression.Property(entityParam, pk.Name), Expression.Constant(x)));
+#endregion
 			}
-			///Creating predicate
-			var predicate = eqExpressionList.Aggregate(Expression.AndAlso);
+			//Creating predicate
+
+			var predicate = new CodeVariableDeclarationStatement(new CodeTypeReference(typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(clrType, typeof(bool)))), "predicate");
+			edit.Statements.Add(predicate);
+			
+			var lambda = new CodeSnippetExpression(ed.Name.ToLower() + " => " + String.Join(" && ", eqExpressions.ToArray()));
+			edit.Statements.Add(new CodeAssignStatement(new CodeVariableReferenceExpression("predicate"), lambda));
 
 			edit.Statements.Add(returnStmt);
 

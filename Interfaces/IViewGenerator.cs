@@ -13,6 +13,6 @@ namespace Wms.Interfaces
 		void GenerateCreateView(EntityDefinition ed, TextWriter tw);
 		void GenerateBrowseView(EntityDefinition ed, TextWriter tw);
 		void GenerateEditView(EntityDefinition ed, TextWriter tw);
-		CodeCompileUnit GenerateController(EntityDefinition ed) ;
+		CodeCompileUnit GenerateController(EntityDefinition ed, Type clrType) ;
 	}
 }
