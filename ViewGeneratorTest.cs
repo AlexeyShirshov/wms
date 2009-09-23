@@ -95,7 +95,6 @@ namespace Wms.Tests
 		public void Browse_Action_Returns_Model()
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
-			var sw = new StringWriter();
 
             var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
 			
@@ -111,6 +110,27 @@ namespace Wms.Tests
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
 			Assert.IsInstanceOfType<IEnumerable>(result.ViewData.Model);
+		}
+
+		[Test]
+		public void Edit_Action_Returns_Model()
+		{
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
+
+            var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
+			
+			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post)));
+			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
+			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
+
+
+		    //var controller = Activator.CreateInstance(AssemblyName, "Wms.Controllers.PostController", new object[] { TestUtils.FakeContainer } );
+			var browseAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Edit");
+			var result = browseAction.Invoke(controller, new object[] { 1 }) as ViewResult;
+
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result.ViewData.Model);
+			Assert.IsInstanceOfType<Post>(result.ViewData.Model);
 		}
 
 		[Test]

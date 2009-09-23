@@ -7,6 +7,7 @@ using System.Text;
 using MbUnit.Framework;
 using Microsoft.Practices.Unity;
 using Wms.Data;
+using Wms.Tests.Fakes;
 
 namespace Wms.Tests
 {
@@ -30,7 +31,8 @@ namespace Wms.Tests
 			get
 			{
 				var container = new UnityContainer();
-				container.RegisterType(typeof(IWmsDataFacade), typeof(Fakes.FakeDataFacade));
+				container.RegisterType(typeof(IWmsDataFacade), typeof(Fakes.FakeDataFacade))
+					.RegisterInstance((new List<Post>() { new Post { ID = 1, Text = "Zhopa", Title = "Pizda"}}).AsQueryable() );
 				return container;
 			}
 		}
