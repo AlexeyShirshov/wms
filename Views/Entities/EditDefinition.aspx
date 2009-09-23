@@ -3,7 +3,7 @@
 <%@ Import Namespace="Wms.Web.Models.Entities"%>
 <%@ Import Namespace="MvcContrib.UI.Grid" %>
 <%@ Import Namespace="Wms.Web.Extensions"%>
-
+<%@ Register Src="~/Views/Shared/ViewUserControl1.ascx" TagName="uc1" TagPrefix="uc" %>
 <asp:content id="Content2" contentplaceholderid="Head" runat="server" >
 </asp:content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -86,4 +86,5 @@ sdflsfmhl
 <td><% Html.RenderView("ctrl1","ViewUserControl1", null); %></td>
 </tr>
 </table>
+<uc:uc1 runat="server" ID="ctdf" />
 </asp:Content>
