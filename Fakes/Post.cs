@@ -11,4 +11,10 @@ namespace Wms.Tests.Fakes
 		public string Title { get; set; }
 		public string Text { get; set; }
 	}
+
+	public class PostToTag
+	{
+		public int PostId { get; set; }
+		public int TagId { get; set; }
+	}
 }

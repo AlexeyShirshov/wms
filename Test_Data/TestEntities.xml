@@ -4,6 +4,7 @@
   <oos:SourceFragments>
     <oos:SourceFragment id="tblPost" name="Posts" selector="Internal" />
     <oos:SourceFragment id="tblNews" name="News" selector="Internal" />
+    <oos:SourceFragment id="tblPostToTag" name="PostToTag" selector="Internal" />
   </oos:SourceFragments>
   <oos:Types>
   <oos:Type id="tInt32">
@@ -35,6 +36,15 @@
         <oos:Property propertyName="ID" attributes="PrimaryKey" table="tblNews" fieldName="id" typeRef="tInt32" dbTypeName="int" dbTypeNullable="false" />
         <oos:Property propertyName="Name" table="tblNews" fieldName="name" typeRef="tString" dbTypeName="nvarchar" dbTypeSize="100" dbTypeNullable="false" />
         <oos:Property propertyName="Url" table="tblNews" fieldName="url" typeRef="tString" dbTypeName="nvarchar" dbTypeSize="1000" dbTypeNullable="false" />
+      </oos:Properties>
+    </oos:Entity>
+    <oos:Entity id="PostToTag" name="PostToTag" namespace="Wms.Data.User">
+      <oos:SourceFragments>
+        <oos:SourceFragment ref="tblPostToTag" />
+      </oos:SourceFragments>
+      <oos:Properties>
+        <oos:Property propertyName="PostId" attributes="PrimaryKey" table="tblPostToTag" fieldName="PostId" typeRef="tInt32" dbTypeName="int" dbTypeNullable="false" />
+        <oos:Property propertyName="TagId" attributes="PrimaryKey" table="tblPostToTag" fieldName="TagId" typeRef="tInt32" dbTypeName="int" dbTypeSize="100" dbTypeNullable="false" />
       </oos:Properties>
     </oos:Entity>
   </oos:Entities>

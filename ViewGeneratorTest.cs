@@ -31,7 +31,7 @@ namespace Wms.Tests
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 			var sw = new StringWriter();
 
-			generator.GenerateEditView(GetEntityDefinition(), sw);
+			generator.GenerateEditView(GetPostDefinition(), sw);
 
 			Console.WriteLine(sw.ToString());
 
@@ -44,7 +44,7 @@ namespace Wms.Tests
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 			var sw = new StringWriter();
 
-			generator.GenerateCreateView(GetEntityDefinition(), sw);
+			generator.GenerateCreateView(GetPostDefinition(), sw);
 
 			Console.WriteLine(sw.ToString());
 
@@ -57,7 +57,7 @@ namespace Wms.Tests
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
-			var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
+			var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 
             //var cdp = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", "3.5"}});
             //var opts = new CompilerParameters {GenerateInMemory = true, GenerateExecutable = false};
@@ -79,7 +79,7 @@ namespace Wms.Tests
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
-            var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
+            var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 
 			new DefaultClassLoader().Load(ccu, "Test", Assembly.GetAssembly(typeof(Post)));
 
@@ -96,7 +96,7 @@ namespace Wms.Tests
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
-            var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
+            var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 			
 			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post)));
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
@@ -117,7 +117,7 @@ namespace Wms.Tests
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
-            var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
+            var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 			
 			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post)));
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
@@ -159,7 +159,7 @@ namespace Wms.Tests
 			StringAssert.EqualToWhiteSpace(@"<%=Html.CheckBox(""Flag"",Model.Flag)%>", result);
 		}
 
-        private static EntityDefinition  GetEntityDefinition()
+        private static EntityDefinition  GetPostDefinition()
 		{
 			var ed = new FakeDataFacade().EntityModel.GetEntity("Post");
             var pd = new ScalarPropertyDefinition(null, "Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
@@ -168,9 +168,24 @@ namespace Wms.Tests
 		}
 
 		[Test]
-		public void Supports_Complex_PK()
+		public void Edit_Supports_Complex_Pk()
 		{
-			Assert.Fail("Write the test!");
+			var generator = new ViewGenerator(TestUtils.FakeContainer);
+
+			var ccu = generator.GenerateController(new FakeDataFacade().EntityModel.GetEntity("PostToTag"), typeof(PostToTag));
+
+			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(PostToTag)));
+			Type controllerType = Type.GetType("Wms.Controllers.PostToTagController" + "," + AssemblyName);
+			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
+
+
+			var browseAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Edit");
+			var result = browseAction.Invoke(controller, new object[] { 1, 2 }) as ViewResult;
+
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result.ViewData.Model);
+			Assert.IsInstanceOfType<PostToTag>(result.ViewData.Model);
+
 		}
 	}
 }
