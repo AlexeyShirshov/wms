@@ -59,7 +59,7 @@ namespace Wms.Tests.Fakes
 
         public FakeRepository()
 		{
-			_postList.Add(new Post { Id = 1, Title = "Post#1", Text = "This is the first post" });
+			_postList.Add(new Post { ID = 1, Title = "Post#1", Text = "This is the first post" });
 		}
 
         public IQueryable<Post> Posts

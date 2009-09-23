@@ -23,7 +23,7 @@ namespace Wms.Tests.Fakes
 			{
 				_model = WXMLModel.LoadFromXml(reader);
 			}
-			_postList.Add(new Post { Id = 1, Title = "Post#1", Text = "This is the first post" });
+			_postList.Add(new Post { ID = 1, Title = "Post#1", Text = "This is the first post" });
 			SaveCount = 0;
 		}
 		#region Implementation of IWmsDataFacade

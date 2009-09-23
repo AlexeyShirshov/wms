@@ -57,7 +57,7 @@ namespace Wms.Tests
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
-			var ccu = generator.GenerateController(GetEntityDefinition());
+			var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
 
             //var cdp = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", "3.5"}});
             //var opts = new CompilerParameters {GenerateInMemory = true, GenerateExecutable = false};
@@ -65,7 +65,7 @@ namespace Wms.Tests
 
             //Assert.AreEqual(0, resultAssembly.Errors.Count);
 
-			new DefaultClassLoader().Load(ccu, AssemblyName); 
+			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post))); 
 			Type controllerType = Type.GetType("Wms.Controllers.PostController," + AssemblyName );
             Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
@@ -79,10 +79,9 @@ namespace Wms.Tests
 		{
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 
-            var ccu = generator.GenerateController(GetEntityDefinition());
+            var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
 
-			var cl = new DefaultClassLoader();
-			cl.Load(ccu, "Test");
+			new DefaultClassLoader().Load(ccu, "Test", Assembly.GetAssembly(typeof(Post)));
 
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName );
 
@@ -98,9 +97,9 @@ namespace Wms.Tests
 			var generator = new ViewGenerator(TestUtils.FakeContainer);
 			var sw = new StringWriter();
 
-            var ccu = generator.GenerateController(GetEntityDefinition());
+            var ccu = generator.GenerateController(GetEntityDefinition(), typeof(Post));
 			
-			new DefaultClassLoader().Load(ccu, AssemblyName);
+			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post)));
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
 			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
 

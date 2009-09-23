@@ -52,7 +52,7 @@ namespace Wms.Tests.Controllers
 			Assert.IsInstanceOfType<ViewResult>(result);
 			Assert.IsNotNull(result);
 
-			var post = (_dataFacade.GetEntityQuery("Post") as IQueryable<Post>).First(p => p.Id == 1);
+			var post = (_dataFacade.GetEntityQuery("Post") as IQueryable<Post>).First(p => p.ID == 1);
 			Assert.AreEqual("Unit test", post.Text);
 			Assert.AreEqual("Unit test", post.Title);
 		}
