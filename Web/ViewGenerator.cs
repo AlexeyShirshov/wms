@@ -10,6 +10,7 @@ using Wms.Extensions;
 using Wms.Interfaces;
 using WXML.Model;
 using WXML.Model.Descriptors;
+using Wms.Helpers;
 //using LinqToCodedom;
 //using LinqToCodedom.Extensions;
 
@@ -77,9 +78,8 @@ namespace Wms.Web
 			cc.Members.Add(constructor);
 
 			//Index action
-			var index = CreateAction("Index"); 
-			var returnStmt = new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View"));
-			index.Statements.Add(returnStmt);
+			var index = CreateAction("Index");
+			index.Statements.Add(new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View")));
 
 			cc.Members.Add(index);
 
@@ -99,22 +99,32 @@ namespace Wms.Web
 #endregion
 			}
 			//Creating predicate
-
 			var predicate = new CodeVariableDeclarationStatement(new CodeTypeReference(typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(clrType, typeof(bool)))), "predicate");
 			edit.Statements.Add(predicate);
-			
 			var lambda = new CodeSnippetExpression(ed.Name.ToLower() + " => " + String.Join(" && ", eqExpressions.ToArray()));
 			edit.Statements.Add(new CodeAssignStatement(new CodeVariableReferenceExpression("predicate"), lambda));
+			
+			edit.Statements.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(clrType), "model"));
+			var modelReference = new CodeVariableReferenceExpression("model");
 
+			var source = new CodeMethodInvokeExpression(
+				new CodeMethodReferenceExpression(CodeGen.FieldRef("_container"), "Resolve", new CodeTypeReference(typeof(IQueryable<>).MakeGenericType(clrType))));
+			edit.Statements.Add(CodeGen.AssignVar("model", new CodeMethodInvokeExpression(source, "FirstOrDefault", lambda)));
+            
+
+			
+			var returnStmt = new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View", modelReference));
 			edit.Statements.Add(returnStmt);
 
 			cc.Members.Add(edit);
 
 			var ns = new CodeNamespace("Wms.Controllers");
 			ns.Types.Add(cc);
+			ns.Imports.Add(new CodeNamespaceImport("System.Linq"));
 
 			var ccu = new CodeCompileUnit();
 			ccu.Namespaces.Add(ns);
+			
 
 			return ccu;
 
