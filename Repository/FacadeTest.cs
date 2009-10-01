@@ -17,7 +17,7 @@ namespace Wms.Tests
         {
             string root = Path.GetFullPath(Environment.CurrentDirectory + @"..\..\..\Repository\Meta");
 
-            WmsDataFacade f = new WmsDataFacade(root);
+            WmsDefinitionManager f = new WmsDefinitionManager(root);
 
             WXMLModel model = new WXMLModel();
 

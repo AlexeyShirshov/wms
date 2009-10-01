@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MbUnit.Framework;
+using Microsoft.Practices.Unity;
+using Wms.Data;
 using Wms.Tests.Fakes;
 using Wms.Web.Models;
 using Wms.Web.Controllers;
@@ -18,19 +20,24 @@ namespace Wms.Tests.Controllers
     [TestFixture]
     public class PropertyControllerTest : ControllerTestBase<PropertyController>
     {
-   		private FakeDataFacade _dataFacade;
+   		private FakeDefinitionManager _definitionManager;
+    	private IUnityContainer _container;
 
-		private ControllerContext GetFakeControllerContext(ControllerBase controller)
+
+    	private IUnityContainer GetFakeContainer()
 		{
-			var httpContextMock = new Mock<HttpContextBase>();
-			return new ControllerContext(httpContextMock.Object, new RouteData(), controller);
+			_definitionManager = new FakeDefinitionManager();
+			var container = new UnityContainer();
+			container.RegisterInstance<IDefinitionManager>(_definitionManager);
+			return container;
 		}
+
 
 		[SetUp]
 		public void Setup()
 		{
-			_dataFacade = new FakeDataFacade();
-			_controller = new PropertyController(_dataFacade);
+			_container = GetFakeContainer();
+			_controller = new PropertyController(_container);
 		}
 
         [Test]
@@ -53,8 +60,8 @@ namespace Wms.Tests.Controllers
             var result = _controller.Edit("Post", "Url", form);
 
             Assert.IsInstanceOfType<ViewResult>(result);
-            Assert.AreEqual(1, _dataFacade.SaveCount);
-			Assert.AreEqual("Identifier", _dataFacade.EntityModel.GetEntity("Post").GetProperty("Url").Name);
+            Assert.AreEqual(1, _definitionManager.SaveCount);
+			Assert.AreEqual("Identifier", _definitionManager.EntityModel.GetEntity("Post").GetProperty("Url").Name);
 		}
 
         [Test]
@@ -85,7 +92,7 @@ namespace Wms.Tests.Controllers
 
             Assert.IsInstanceOfType<RedirectToRouteResult>(result);
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, _dataFacade.SaveCount);
+            Assert.AreEqual(1, _definitionManager.SaveCount);
         }
 
 

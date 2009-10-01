@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using Gallio.Framework;
 using MbUnit.Framework;
 using MbUnit.Framework.ContractVerifiers;
+using Wms.Data;
 using Wms.Tests.Fakes;
 using Wms.Web;
 using WXML.Model.Descriptors;
@@ -28,7 +29,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_Edit_View()
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 			var sw = new StringWriter();
 
 			generator.GenerateEditView(GetPostDefinition(), sw);
@@ -41,7 +42,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_Create_View()
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 			var sw = new StringWriter();
 
 			generator.GenerateCreateView(GetPostDefinition(), sw);
@@ -55,7 +56,7 @@ namespace Wms.Tests
 		[Test]
 		public void Can_Generate_Controller()
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 
 			var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 
@@ -77,7 +78,7 @@ namespace Wms.Tests
 		[Test]
 		public void Generates_Proper_Actions([Column("Index", "Create", "Edit")] string action)
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 
             var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 
@@ -94,7 +95,7 @@ namespace Wms.Tests
 		[Test]
 		public void Browse_Action_Returns_Model()
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 
             var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 			
@@ -115,7 +116,7 @@ namespace Wms.Tests
 		[Test]
 		public void Edit_Action_Returns_Model()
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 
             var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 			
@@ -161,7 +162,7 @@ namespace Wms.Tests
 
         private static EntityDefinition  GetPostDefinition()
 		{
-			var ed = new FakeDataFacade().EntityModel.GetEntity("Post");
+			var ed = new FakeDefinitionManager().EntityModel.GetEntity("Post");
             var pd = new ScalarPropertyDefinition(null, "Flag") { PropertyType = new TypeDefinition("tBoolean", typeof(bool)) };
 			ed.AddProperty(pd);
 			return ed;
@@ -170,9 +171,9 @@ namespace Wms.Tests
 		[Test]
 		public void Edit_Supports_Complex_Pk()
 		{
-			var generator = new ViewGenerator(TestUtils.FakeContainer);
+			var generator = new ViewGenerator();
 
-			var ccu = generator.GenerateController(new FakeDataFacade().EntityModel.GetEntity("PostToTag"), typeof(PostToTag));
+			var ccu = generator.GenerateController(new FakeDefinitionManager().EntityModel.GetEntity("PostToTag"), typeof(PostToTag));
 
 			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(PostToTag)));
 			Type controllerType = Type.GetType("Wms.Controllers.PostToTagController" + "," + AssemblyName);
