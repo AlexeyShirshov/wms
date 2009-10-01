@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Microsoft.Practices.Unity;
+using Wms.Data;
+using Wms.Repository;
 using Wms.Web.Controllers;
 using WXML.Model;
 using System.Xml;
@@ -16,18 +19,24 @@ namespace Wms.Web
 
 	public class MvcApplication : System.Web.HttpApplication
 	{
-        private static WXMLModel _model;
+
+		private static readonly IUnityContainer _container = new UnityContainer();
+		public static IUnityContainer Container
+		{
+			get { return _container; }
+		}
+
 
 		public static void RegisterRoutes(RouteCollection routes)
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("Properties", "admin/entities/{entityId}/property/{action}/{propertyId}/",
-                new { controller = "Property", action = "Index" });
-
 			routes.MapRoute("Entities", "admin/entities/{action}/{entityId}", new { controller = "Entities", action = "Index", entityId = "" });
 
+			routes.MapRoute("Properties",  "admin/properties/{entityId}/{propertyId}/{action}", new {controller = "Property"});
+
             routes.MapRoute("Default","{controller}/{action}/{id}",new { controller = "Home", action = "Index", id = "" });
+			
 
         }
 
@@ -35,18 +44,12 @@ namespace Wms.Web
 		{
 			RegisterRoutes(RouteTable.Routes);
 			ControllerBuilder.Current.SetControllerFactory(typeof(WmsControllerFactory));
+			Container.RegisterInstance<IDefinitionManager>(new WmsDefinitionManager(HostingEnvironment.MapPath(@"~/App_Data/Meta/")));
 
 
-            //Wms.Repository.WmsDataFacade.GetRepositoryProvider(
+            //Wms.Repository.WmsDefinitionManager.GetRepositoryProvider(
             //    System.IO.Path.GetDirectoryName(this.GetType().Assembly.CodeBase), _model);
 		}
 
-        public static WXMLModel Entities
-        {
-            get
-            {
-                return _model;
-            }
-        }
 	}
 }

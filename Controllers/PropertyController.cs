@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Microsoft.Practices.Unity;
 using Wms.Data;
 using Wms.Exceptions;
 using Wms.Web.Models;
@@ -14,10 +15,13 @@ using WXML.Model.Descriptors;
 
 namespace Wms.Web.Controllers
 {
-    public class PropertyController : EntityControllerBase
+    public class PropertyController : WmsController
     {
-        public PropertyController(IWmsDataFacade dataFacade) : base(dataFacade)
+    	private readonly IDefinitionManager _definitionManager;
+
+    	public PropertyController(IUnityContainer container) : base(container)
         {
+			_definitionManager = Container.Resolve<IDefinitionManager>();
         }
 
         public PropertyController() : this(null)
@@ -40,16 +44,16 @@ namespace Wms.Web.Controllers
         private PropertyDefinitionViewModel GetPropertyDefinitionViewModel(string entityId, string propertyId)
         {
             var model = new PropertyDefinitionViewModel();
-            model.AllowedTypes = DataFacade.EntityModel.GetTypes().Select(t => t.Identifier);
+            model.AllowedTypes = _definitionManager.EntityModel.GetTypes().Select(t => t.Identifier);
             model.PropertyDefinition =
-                DataFacade.EntityModel.GetEntity(entityId).GetProperties().First(p => p.Identifier == propertyId);
+                _definitionManager.EntityModel.GetEntity(entityId).GetProperties().First(p => p.Identifier == propertyId);
             return model;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(string entityId, string propertyId, FormCollection form)
         {
-            var ed = DataFacade.EntityModel.GetEntity(entityId);
+            var ed = _definitionManager.EntityModel.GetEntity(entityId);
             
             if(ed == null)
                 throw new HttpNotFoundException("entity");
@@ -63,7 +67,7 @@ namespace Wms.Web.Controllers
             
             try
             {
-                DataFacade.ApplyModelChanges(DataFacade.EntityModel);
+                _definitionManager.ApplyModelChanges(_definitionManager.EntityModel);
             }
             catch(Exception e)
             {
@@ -79,7 +83,7 @@ namespace Wms.Web.Controllers
             result.Add("Attributes", new ValueProviderResult(form["IsPrimaryKey"].StartsWith("true") ? Field2DbRelations.PrimaryKey : Field2DbRelations.None,
                 form["IsPrimaryKey"], CultureInfo.CurrentCulture));
 
-            var td = DataFacade.EntityModel.GetTypes().FirstOrDefault(t => t.Identifier == form["Type"]);
+            var td = _definitionManager.EntityModel.GetTypes().FirstOrDefault(t => t.Identifier == form["Type"]);
             if(td != null)
             {
                 result.Add("PropertyType", new ValueProviderResult(td, form["Type"], CultureInfo.CurrentCulture));
@@ -92,17 +96,17 @@ namespace Wms.Web.Controllers
 
         public ActionResult Create(string entityId)
         {
-            var ed = DataFacade.EntityModel.GetEntity(entityId);
+            var ed = _definitionManager.EntityModel.GetEntity(entityId);
             if (ed == null)
                 throw new HttpNotFoundException("entity");
 
-            return View(new PropertyDefinitionViewModel { EntityDefinition = ed, AllowedTypes = DataFacade.EntityModel.GetTypes().Select(t => t.Identifier)});
+            return View(new PropertyDefinitionViewModel { EntityDefinition = ed, AllowedTypes = _definitionManager.EntityModel.GetTypes().Select(t => t.Identifier)});
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(string entityId, FormCollection form)
         {
-            var entity = DataFacade.EntityModel.GetEntity(entityId);
+            var entity = _definitionManager.EntityModel.GetEntity(entityId);
             if(entity == null)
                 throw new HttpNotFoundException("entity");
 
@@ -114,19 +118,19 @@ namespace Wms.Web.Controllers
 
             try
             {
-                DataFacade.ApplyModelChanges(DataFacade.EntityModel);
+                _definitionManager.ApplyModelChanges(_definitionManager.EntityModel);
             }
             catch(Exception e)
             {
                 ModelState.AddModelError("_FORM", e.Message);
                 return View();
             }
-            return RedirectToAction("EditDefinition", "Entities", new {entityId = entity.Identifier});
+            return RedirectToAction("Edit", "Entities", new {entityId = entity.Identifier});
         }
 
         public ActionResult Delete(string entityId, string propertyId)
         {
-            var entity = DataFacade.EntityModel.GetEntity(entityId);
+            var entity = _definitionManager.EntityModel.GetEntity(entityId);
             
             if (entity == null)
                 throw new HttpNotFoundException("entity");
@@ -137,9 +141,9 @@ namespace Wms.Web.Controllers
                 throw new HttpNotFoundException("property");
 
             entity.RemoveProperty(property);
-            DataFacade.ApplyModelChanges(DataFacade.EntityModel);
+            _definitionManager.ApplyModelChanges(_definitionManager.EntityModel);
 
-            return RedirectToAction("EditDefinition", "Entities", new {entityId = entityId});
+            return RedirectToAction("Edit", "Entities", new {entityId});
         }
     }
 }

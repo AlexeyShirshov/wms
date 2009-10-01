@@ -6,28 +6,35 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Microsoft.Practices.Unity;
 using Wms.Data;
 using Wms.Exceptions;
 using Wms.Web.Extensions;
 using Wms.Web.Models.Entities;
+using WXML.CodeDom;
 using WXML.Model;
 using WXML.Model.Descriptors;
 using Wms.Repository;
 
 namespace Wms.Web.Controllers
 {
-    public class EntitiesController : EntityControllerBase
+    public class EntitiesController : WmsController
     {
-		
+		private const string Namespace = "Wms.Entities.User";
+		private readonly IDefinitionManager _definitionManager;
+
 		private IEnumerable<TypeDefinition> AllowedTypes
 		{
 			get
 			{
-                return DataFacade.EntityModel.GetTypes();
+                return _definitionManager.EntityModel.GetTypes();
 			}
 		}
 
-        public EntitiesController(IWmsDataFacade dataFacade) : base(dataFacade) { }
+        public EntitiesController(IUnityContainer container) : base(container)
+        {
+			_definitionManager = Container.Resolve<IDefinitionManager>();
+        }
         
         public EntitiesController() : this(null)
         {
@@ -35,95 +42,103 @@ namespace Wms.Web.Controllers
 
         public ActionResult Index()
         {
-            return View(DataFacade.EntityModel.GetActiveEntities());
+            return View(_definitionManager.EntityModel.GetActiveEntities());
         }
-
-
-    	public ActionResult Browse(string type)
-    	{
-    		var query = DataFacade.GetEntityQuery(type);
-			if (query == null)
-				throw new HttpException(404, "Entity type not found");
-    		return View(query);
-    	}
-
-		[ActionName("EditDefinition")]
+		
     	public ActionResult Edit(string entityId)
     	{
-			var entityDescription = DataFacade.EntityModel.GetEntity(entityId);
+			var entityDescription = _definitionManager.EntityModel.GetEntity(entityId);
 			if (entityDescription == null)
 				throw new HttpException(404, "Entity description not found");
-			return View("EditDefinition", new EntityDefinitionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()) , EntityDefinition = entityDescription } );
+			return View(new EntityDefinitionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()) , EntityDefinition = entityDescription } );
     	}
 
-		[ActionName("EditDefinition")]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Edit(string entityId, FormCollection form)
 		{
-			EntityDefinition entityDefinition = GetEntityDefinition(entityId, form);
-
-			DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.GetEntity(entityId));
-			DataFacade.EntityModel.AddEntity(entityDefinition);
-			DataFacade.ApplyModelChanges(DataFacade.EntityModel);
-
-			return View("EditDefinition", new EntityDefinitionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()), EntityDefinition = entityDefinition });
+			EntityDefinition entityDefinition = _definitionManager.EntityModel.GetEntity(entityId);
+			if(entityDefinition == null)
+			{
+				throw new HttpNotFoundException();
+			}
+			try
+			{
+				UpdateModel(entityDefinition, form.ToValueProvider());
+				_definitionManager.ApplyModelChanges(_definitionManager.EntityModel);
+				return RedirectToAction("Index");
+			}
+			catch (Exception e)
+			{
+				ModelState.AddModelError("_FORM", e);
+				return View(new EntityDefinitionViewModel { AllowedTypes = AllowedTypes.Select(t => t.ClrType.ToString()), EntityDefinition = entityDefinition });
+			}
 		}
 
-    	private EntityDefinition GetEntityDefinition(string entityId, NameValueCollection form)
-    	{
-			DebugExtensions.WriteCollection(form);
+//        private EntityDefinition GetEntityDefinition(string entityId, NameValueCollection form)
+//        {
+//#if DEBUG
+//            DebugExtensions.WriteCollection(form);
+//#endif
 
-    		var entityDefinition = new EntityDefinition(entityId, entityId, "Wms.Data.Internal", "", DataFacade.EntityModel);
-    		for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
-    		{
-                var curProp = DataFacade.EntityModel.GetEntity(entityId).GetProperty(form["propID." + i]);
+//            var entityDefinition = new EntityDefinition(entityId, entityId, "Wms.Data.Internal", "", _definitionManager.EntityModel);
+//            for (int i = 0; form.AllKeys.Any(k => k.StartsWith(i + ".")); i++ )
+//            {
+//                var curProp = _definitionManager.EntityModel.GetEntity(entityId).GetProperty(form["propID." + i]);
 
-                var propertyDefinition = new ScalarPropertyDefinition(entityDefinition, form[i + ".Name"])
-                {
-                    PropertyAlias = curProp.PropertyAlias
-                };
+//                var propertyDefinition = new ScalarPropertyDefinition(entityDefinition, form[i + ".Name"])
+//                {
+//                    PropertyAlias = curProp.PropertyAlias
+//                };
 
-    			if (form[i + ".IsPrimaryKey"].StartsWith("true"))
-    				propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
-    			string typeName = form[i + ".ClrTypeName"];
+//                if (form[i + ".IsPrimaryKey"].StartsWith("true"))
+//                    propertyDefinition.Attributes = Field2DbRelations.PrimaryKey;
+//                string typeName = form[i + ".ClrTypeName"];
 
-    			Debug.WriteLine("Type Name =" + typeName);
+//                Debug.WriteLine("Type Name =" + typeName);
 
-				propertyDefinition.PropertyType = AllowedTypes.First(t => t.ClrType.ToString() == typeName);
-    			entityDefinition.AddProperty(propertyDefinition);
-    		}
-    		return entityDefinition;
-    	}
-
-
+//                propertyDefinition.PropertyType = AllowedTypes.First(t => t.ClrType.ToString() == typeName);
+//                entityDefinition.AddProperty(propertyDefinition);
+//            }
+//            return entityDefinition;
+//        }
 
     	public ActionResult Create()
     	{
-			return View("CreateDescription");
+			return View();
     	}
 
-    	public ActionResult CreateInstance(string entityId)
-    	{
-			return View("CreateInstance");
-    	}
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Create(FormCollection form)
+		{
+			try
+			{
+				var entityName = form["Name"];
+				var sourceFragment = new SourceFragmentDefinition("tbl" + entityName, entityName, "Internal" );
+				_definitionManager.EntityModel.AddSourceFragment(sourceFragment);
+				var ed = new EntityDefinition(entityName, entityName, Namespace);
+				ed.AddSourceFragment(new SourceFragmentRefDefinition(sourceFragment));
+				_definitionManager.EntityModel.AddEntity(ed);
+				_definitionManager.ApplyModelChanges(_definitionManager.EntityModel);
+				return RedirectToAction("Index");
+			}
+			catch(Exception e)
+			{
+				ModelState.AddModelError("_FORM", e);
+				return View();
+			}
+		}
 
-    	public ActionResult DeleteInstance(string entityId, int instanceId)
-    	{
-			return RedirectToAction("Index");
-    	}
 
     	public ActionResult Delete(string entityId)
     	{
-			var entityDescription = DataFacade.EntityModel.GetEntity(entityId);
+			var entityDescription = _definitionManager.EntityModel.GetEntity(entityId);
 			if (entityDescription == null)
 				throw new HttpNotFoundException("Entity description");
-            DataFacade.EntityModel.RemoveEntity(DataFacade.EntityModel.GetActiveEntities().First(d => d.Identifier == entityId));
+            _definitionManager.EntityModel.RemoveEntity(_definitionManager.EntityModel.GetActiveEntities().First(d => d.Identifier == entityId));
 			return RedirectToAction("Index");
     	}
 
-        public ActionResult EditInstance(string entitiId, int instanceId)
-        {
-            throw new NotImplementedException();
-        }
+
+
     }
 }

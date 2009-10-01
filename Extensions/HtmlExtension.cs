@@ -39,7 +39,7 @@ namespace Wms.Web.Extensions
         
         public static string EntityEditLink(this HtmlHelper html, string linkText, EntityDefinition entityDefinition)
         {
-            return html.ActionLink(linkText, "EditDefinition", "Entities", new {entityId = entityDefinition.Identifier},
+            return html.ActionLink(linkText, "Edit", "Entities", new {entityId = entityDefinition.Identifier},
                                    null);
         }
 
