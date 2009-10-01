@@ -38,7 +38,7 @@ namespace Wms
                 model = WXMLModel.LoadFromXml(xr);
             }
 
-            IRepositoryProvider prov = WmsDataFacade.GetRepositoryProvider();
+            IRepositoryProvider prov = WmsDefinitionManager.GetRepositoryProvider();
 
             foreach (CodeCompileUnit unit in prov.CreateCompileUnits(model))
             {

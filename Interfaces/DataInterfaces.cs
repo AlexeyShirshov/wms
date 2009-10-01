@@ -11,28 +11,19 @@ namespace Wms.Data
 	public interface IRepository<T>
 	{
 		IQueryable<T> Items { get; }
-		void Save(T entity);
-		void Delete(T entity);
+		void Save(T instance);
+		void Delete(T instance);
 	}
-
-	public interface IWmsDataFacade
+	public interface IDefinitionManager
 	{
-		IQueryable GetEntityQuery(string entityName);
         WXMLModel EntityModel { get;  }
 		void ApplyModelChanges(WXMLModel model);
+		void ApplyModelChanges(string script);
 	}
 
-    //public interface IQueryProvider
-    //{
-    //    IQueryable GetEntityQuery(string entityName);
-    //}
-
-    //public interface IEntityService
-    //{
-    //    EntityDefinition GetDefinitionByIdentifier(string identifier);
-    //    void Delete(string identifier);
-    //    void Save(EntityDefinition entityDescription);
-    //    IEnumerable<Type> GetAllowedPropertyTypes();
-    //    IEnumerable<EntityDefinition> GetEntityDefinitions(int start, int count);
-    //}
+	public interface IRepositoryManager
+	{
+		IQueryable GetEntityQuery(string entityName);
+		IQueryable<T> GetEntityQuery<T>();
+	}
 }

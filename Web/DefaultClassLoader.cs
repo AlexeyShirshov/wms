@@ -30,7 +30,8 @@ namespace Wms.Web
 			            		Assembly.GetAssembly(typeof (Controller)),
 			            		Assembly.GetAssembly(typeof (IUnityContainer)),
 								Assembly.GetAssembly(typeof(Func<>)),
-								Assembly.GetAssembly(typeof(IQueryable<>))
+								Assembly.GetAssembly(typeof(IQueryable<>)),
+								Assembly.GetAssembly(typeof(Data.IRepositoryManager))
 			            	};
 
 			var files = required.Select(a => a.Location).Union(additionalAssemblies.Select(a => a.Location)).ToArray();

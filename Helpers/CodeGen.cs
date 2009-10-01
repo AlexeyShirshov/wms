@@ -18,6 +18,11 @@ namespace Wms.Helpers
 			return new CodeAssignStatement(new CodeVariableReferenceExpression(varName), value);
 		}
 
+		public static CodeAssignStatement AssignField(string fieldName, CodeExpression value)
+		{
+			return new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), fieldName), value);
+		}
+
 		public static CodeFieldReferenceExpression FieldRef(string fieldName)
 		{
 			return new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), fieldName);
