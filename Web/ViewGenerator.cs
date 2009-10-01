@@ -8,10 +8,11 @@ using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using Wms.Data;
 using Wms.Extensions;
+using Wms.Helpers;
 using Wms.Interfaces;
 using WXML.Model;
 using WXML.Model.Descriptors;
-using Wms.Helpers;
+
 //using LinqToCodedom;
 //using LinqToCodedom.Extensions;
 
@@ -19,7 +20,6 @@ namespace Wms.Web
 {
 	public class ViewGenerator : IViewGenerator
 	{
-
 		#region Implementation of IViewGenerator
 
 		public void GenerateCreateView(EntityDefinition ed, TextWriter tw)
@@ -78,8 +78,8 @@ namespace Wms.Web
 
 			var cc = new CodeTypeDeclaration(ed.Identifier + "Controller");
 			cc.BaseTypes.Add(typeof (Controller));
-			cc.Members.Add(new CodeMemberField(typeof(IUnityContainer), "_container"));
-			cc.Members.Add(new CodeMemberField(typeof(IRepositoryManager), "_repositoryManager"));
+			cc.Members.Add(new CodeMemberField(typeof (IUnityContainer), "_container"));
+			cc.Members.Add(new CodeMemberField(typeof (IRepositoryManager), "_repositoryManager"));
 
 			//constructor
 			var constructor = new CodeConstructor {Attributes = MemberAttributes.Public};
@@ -90,48 +90,82 @@ namespace Wms.Web
 				                        new CodeVariableReferenceExpression("container")));
 
 			constructor.Statements.Add(CodeGen.AssignField("_repositoryManager", new CodeMethodInvokeExpression(
-				new CodeMethodReferenceExpression(CodeGen.FieldRef("_container"), "Resolve", new CodeTypeReference(typeof(IRepositoryManager))))));
+			                                                                     	new CodeMethodReferenceExpression(
+			                                                                     		CodeGen.FieldRef("_container"), "Resolve",
+			                                                                     		new CodeTypeReference(
+			                                                                     			typeof (IRepositoryManager))))));
 
 			cc.Members.Add(constructor);
 
 			//Index action
-			var index = CreateAction("Index");
-			index.Statements.Add(new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View")));
+			CodeMemberMethod index = CreateAction("Index");
+			index.Statements.Add(
+				new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View",
+				                                                             new CodeMethodInvokeExpression(
+				                                                             	new CodeMethodReferenceExpression(
+				                                                             		CodeGen.FieldRef("_repositoryManager"),
+				                                                             		"GetEntityQuery", new CodeTypeReference(clrType))))));
+
 
 			cc.Members.Add(index);
 
 			//Edit action
-			var edit = CreateAction("Edit");
-
+			CodeMemberMethod edit = CreateAction("Edit");
 			var eqExpressions = new List<String>();
-			foreach(PropertyDefinition pk in ed.GetProperties().Where(pd => pd.IsPrimaryKey()))
+			edit.Parameters.AddRange(GetActionParameters(ed));
+
+			//Creating predicate
+			foreach (PropertyDefinition pk in ed.GetProperties().Where(pd => pd.IsPrimaryKey()))
 			{
-				edit.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(pk.PropertyType.ClrType), pk.Name.ToLower()));
 				eqExpressions.Add(ed.Name.ToLower() + "." + pk.Name + " == " + pk.Name.ToLower());
 			}
-			//Creating predicate
-			var predicate = new CodeVariableDeclarationStatement(new CodeTypeReference(typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(clrType, typeof(bool)))), "predicate");
+			var predicate =
+				new CodeVariableDeclarationStatement(
+					new CodeTypeReference(
+						typeof (Expression<>).MakeGenericType(typeof (Func<,>).MakeGenericType(clrType, typeof (bool)))), "predicate");
 			edit.Statements.Add(predicate);
 			var lambda = new CodeSnippetExpression(ed.Name.ToLower() + " => " + String.Join(" && ", eqExpressions.ToArray()));
 			edit.Statements.Add(new CodeAssignStatement(new CodeVariableReferenceExpression("predicate"), lambda));
-			
+
 			edit.Statements.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(clrType), "model"));
 			var modelReference = new CodeVariableReferenceExpression("model");
 
 			var source = new CodeMethodInvokeExpression(
-				new CodeMethodReferenceExpression(CodeGen.FieldRef("_repositoryManager"), "GetEntityQuery", new CodeTypeReference(clrType)));
+				new CodeMethodReferenceExpression(CodeGen.FieldRef("_repositoryManager"), "GetEntityQuery",
+				                                  new CodeTypeReference(clrType)));
 			edit.Statements.Add(CodeGen.AssignVar("model", new CodeMethodInvokeExpression(source, "FirstOrDefault", lambda)));
 
-			//Edit-save action
-			var editSave = CreateAction("Edit");
-			//edit.Parameters.Add()
-            
-
-			
-			var returnStmt = new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View", modelReference));
+			var returnStmt =
+				new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View",
+				                                                             modelReference));
 			edit.Statements.Add(returnStmt);
-
 			cc.Members.Add(edit);
+
+			//Edit-save action
+			CodeMemberMethod editSave = CreateAction("Edit");
+			editSave.Parameters.AddRange(GetActionParameters(ed));
+			editSave.Parameters.Add(new CodeParameterDeclarationExpression(typeof (FormCollection), "form"));
+			editSave.CustomAttributes = new CodeAttributeDeclarationCollection(new[]
+			                                                                   	{
+			                                                                   		new CodeAttributeDeclaration(
+			                                                                   			CodeGen.TypeRef<AcceptVerbsAttribute>(),
+			                                                                   			new CodeAttributeArgument(
+			                                                                   				new CodeSnippetExpression("\"POST\"")))
+			                                                                   	});
+
+			editSave.Statements.Add(new CodeMethodReturnStatement(
+			                        	new CodeMethodInvokeExpression(
+			                        		new CodeThisReferenceExpression(), "RedirectToAction",
+			                        		new CodeSnippetExpression("\"Index\""))));
+
+			cc.Members.Add(editSave);
+
+			var create = CreateAction("Create");
+			create.Statements.Add(new CodeMethodReturnStatement(
+				new CodeMethodInvokeExpression(
+					new CodeThisReferenceExpression(), "View")));
+
+			cc.Members.Add(create);
 
 			var ns = new CodeNamespace("Wms.Controllers");
 			ns.Types.Add(cc);
@@ -139,7 +173,7 @@ namespace Wms.Web
 
 			var ccu = new CodeCompileUnit();
 			ccu.Namespaces.Add(ns);
-			
+
 
 			return ccu;
 
@@ -176,10 +210,24 @@ namespace Wms.Web
 
 		private static CodeMemberMethod CreateAction(string name)
 		{
-			return new CodeMemberMethod { Name = name, Attributes = MemberAttributes.Public, ReturnType = new CodeTypeReference(typeof(ActionResult)) };
+			return new CodeMemberMethod
+			       	{
+			       		Name = name,
+			       		Attributes = MemberAttributes.Public,
+			       		ReturnType = new CodeTypeReference(typeof (ActionResult))
+			       	};
 		}
 
 		#endregion
+
+		private static CodeParameterDeclarationExpression[] GetActionParameters(EntityDefinition ed)
+		{
+			return
+				ed.GetProperties().Where(pd => pd.IsPrimaryKey()).Select(
+					pk => new CodeParameterDeclarationExpression(new CodeTypeReference(pk.PropertyType.ClrType), pk.Name.ToLower())).
+					ToArray();
+		}
+
 
 		public static string GetEditControl(PropertyDefinition propertyDefinition, bool isEditView)
 		{
@@ -196,7 +244,6 @@ namespace Wms.Web
 
 			return String.Format(@"<%= Html.TextBox(""{0}""{1}{2}) %>", propertyDefinition.Name,
 			                     isEditView ? @",Model." + propertyDefinition.Name : String.Empty, htmlAttributes);
-
 		}
 	}
 }

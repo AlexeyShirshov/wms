@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Web.Mvc;
@@ -31,7 +32,8 @@ namespace Wms.Web
 			            		Assembly.GetAssembly(typeof (IUnityContainer)),
 								Assembly.GetAssembly(typeof(Func<>)),
 								Assembly.GetAssembly(typeof(IQueryable<>)),
-								Assembly.GetAssembly(typeof(Data.IRepositoryManager))
+								Assembly.GetAssembly(typeof(Data.IRepositoryManager)),
+								Assembly.GetAssembly(typeof(NameValueCollection))
 			            	};
 
 			var files = required.Select(a => a.Location).Union(additionalAssemblies.Select(a => a.Location)).ToArray();
@@ -43,7 +45,7 @@ namespace Wms.Web
 			}
 			CompilerResults result =
 				codeProvider.CompileAssemblyFromDom(
-					new CompilerParameters(files) {GenerateInMemory = true, OutputAssembly = assemblyName}, compileUnit);
+					new CompilerParameters(files) {GenerateInMemory = true, OutputAssembly = assemblyName, IncludeDebugInformation = true}, compileUnit);
 
 			if (result.Errors.Count > 0)
 			{

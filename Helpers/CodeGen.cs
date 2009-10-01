@@ -13,6 +13,11 @@ namespace Wms.Helpers
 			return new CodeVariableDeclarationStatement(typeof(T), name);
 		}
 
+		public static CodeVariableDeclarationStatement DeclareVar(Type type, string name)
+		{
+			return new CodeVariableDeclarationStatement(type, name);
+		}
+
 		public static CodeAssignStatement AssignVar(string varName, CodeExpression value)
 		{
 			return new CodeAssignStatement(new CodeVariableReferenceExpression(varName), value);
@@ -32,5 +37,6 @@ namespace Wms.Helpers
 		{
 			return new CodeTypeReference(typeof(T));
 		}
+
 	}
 }
