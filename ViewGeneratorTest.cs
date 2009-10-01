@@ -60,21 +60,12 @@ namespace Wms.Tests
 
 			var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
 
-            //var cdp = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", "3.5"}});
-            //var opts = new CompilerParameters {GenerateInMemory = true, GenerateExecutable = false};
-            //var resultAssembly  = cdp.CompileAssemblyFromDom(opts, ccu);
-
-            //Assert.AreEqual(0, resultAssembly.Errors.Count);
-
 			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post))); 
 			Type controllerType = Type.GetType("Wms.Controllers.PostController," + AssemblyName );
             Assert.IsNotNull(controllerType);
 			Assert.IsTrue(typeof(Controller).IsAssignableFrom(controllerType));
 		}
 
-
-		
-		
 		[Test]
 		public void Generates_Proper_Actions([Column("Index", "Create", "Edit")] string action)
 		{
@@ -103,10 +94,8 @@ namespace Wms.Tests
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
 			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
 
-
-		    //var controller = Activator.CreateInstance(AssemblyName, "Wms.Controllers.PostController", new object[] { TestUtils.FakeContainer } );
 			var browseAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Index");
-			var result = browseAction.Invoke(controller, new object[] { }) as ViewResult;
+			var result = browseAction.Invoke(controller, new object[] {}) as ViewResult;
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
@@ -124,8 +113,6 @@ namespace Wms.Tests
 			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
 			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
 
-
-		    //var controller = Activator.CreateInstance(AssemblyName, "Wms.Controllers.PostController", new object[] { TestUtils.FakeContainer } );
 			var browseAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Edit");
 			var result = browseAction.Invoke(controller, new object[] { 1 }) as ViewResult;
 
