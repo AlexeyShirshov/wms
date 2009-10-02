@@ -32,9 +32,7 @@ namespace Wms.Tests
 			{
 				var container = new UnityContainer();
 				container.RegisterType<IDefinitionManager, FakeDefinitionManager>()
-					.RegisterType<IRepositoryManager, FakeRepositoryManager>()
-					.RegisterInstance((new List<Post> { new Post { ID = 1, Text = "Zhopa", Title = "Pizda"}}).AsQueryable() )
-					.RegisterInstance((new List<PostToTag> { new PostToTag { PostId = 1, TagId = 2}}).AsQueryable());
+					.RegisterInstance(typeof(IRepositoryManager), new FakeRepositoryManager());
 				return container;
 			}
 		}

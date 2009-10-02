@@ -48,21 +48,72 @@ namespace Wms.Tests.Fakes
 	internal class FakeRepositoryManager : IRepositoryManager
 	{
 		private readonly List<Post> _postList = new List<Post>();
-		
+		private readonly List<PostToTag> _postToTagList = new List<PostToTag>();
+
 		public FakeRepositoryManager()
 		{
 			_postList.Add(new Post { ID = 1, Title = "Post#1", Text = "This is the first post" });
+			_postToTagList.Add(new PostToTag() { PostId = 1, TagId = 2 });
 		}
 		#region Implementation of IRepositoryManager
 
 		public IQueryable GetEntityQuery(string entityName)
 		{
-			return String.Equals("post", entityName, StringComparison.InvariantCultureIgnoreCase) ? _postList.AsQueryable() : null;
+			switch (entityName.ToLower())
+			{
+				case "post":
+					return _postList.AsQueryable();
+				case "posttotag":
+					return _postToTagList.AsQueryable();
+				default:
+					return null;
+
+			}
 		}
 
 		public IQueryable<T>  GetEntityQuery<T>()
 		{
 			return GetEntityQuery(typeof(T).Name) as IQueryable<T>;
+		}
+
+		#endregion
+
+		#region Implementation of IDisposable
+
+		public void Dispose()
+		{
+		}
+
+		#endregion
+
+		#region Implementation of IModificationTracker
+
+		public void Add(params object[] entities)
+		{
+			foreach (var o in entities)
+			{
+				if(o is Post)
+					_postList.Add(o as Post);
+
+				if(o is PostToTag)
+					_postToTagList.Add(o as PostToTag);
+			}
+		}
+
+		public void Delete(params object[] entities)
+		{
+			foreach (var o in entities)
+			{
+				if (o is Post)
+					_postList.Remove(o as Post);
+
+				if (o is PostToTag)
+					_postToTagList.Remove(o as PostToTag);
+			}
+		}
+
+		public void AcceptModifications()
+		{
 		}
 
 		#endregion

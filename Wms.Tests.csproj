@@ -89,6 +89,7 @@
     <Compile Include="Fakes\FakeDefinitionManager.cs" />
     <Compile Include="Fakes\FakeQueryProvider.cs" />
     <Compile Include="Fakes\Post.cs" />
+    <Compile Include="HtmlBuilderTest.cs" />
     <Compile Include="Misc\Research.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\FacadeTest.cs" />

@@ -40,6 +40,19 @@ namespace Wms.Tests
 		}
 
 		[Test]
+		public void Can_Generate_Browsr_View()
+		{
+			var generator = new ViewGenerator();
+			var sw = new StringWriter();
+
+			generator.GenerateBrowseView(GetPostDefinition(), sw);
+
+			Console.WriteLine(sw.ToString());
+
+			Assert.IsFalse(String.IsNullOrEmpty(sw.GetStringBuilder().ToString()));
+		}
+
+		[Test]
 		public void Can_Generate_Create_View()
 		{
 			var generator = new ViewGenerator();
@@ -51,6 +64,8 @@ namespace Wms.Tests
 
 			Assert.IsFalse(String.IsNullOrEmpty(sw.GetStringBuilder().ToString()));
 		}
+
+
 
 
 		[Test]
@@ -164,16 +179,41 @@ namespace Wms.Tests
 
 			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(PostToTag)));
 			Type controllerType = Type.GetType("Wms.Controllers.PostToTagController" + "," + AssemblyName);
+
+			Assert.IsNotNull(controllerType);
+
 			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
 
 
-			var browseAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Edit");
+			var browseAction = controller.GetType().GetMethods().First(mi => mi.Name == "Edit" && mi.GetParameters().Count() == 2);
 			var result = browseAction.Invoke(controller, new object[] { 1, 2 }) as ViewResult;
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result.ViewData.Model);
 			Assert.IsInstanceOfType<PostToTag>(result.ViewData.Model);
 
+			var postToTag = result.ViewData.Model as PostToTag;
+
+			Assert.AreEqual(1, postToTag.PostId);
+			Assert.AreEqual(2, postToTag.TagId);
+		}
+
+		[Test]
+		public void Create_Action_Saves()
+		{
+			var generator = new ViewGenerator();
+
+            var ccu = generator.GenerateController(GetPostDefinition(), typeof(Post));
+			
+			new DefaultClassLoader().Load(ccu, AssemblyName, Assembly.GetAssembly(typeof(Post)));
+			Type controllerType = Type.GetType("Wms.Controllers.PostController" + "," + AssemblyName);
+			var controller = Activator.CreateInstance(controllerType, new object[] { TestUtils.FakeContainer });
+
+			var createAction = controller.GetType().GetMethods().FirstOrDefault(mi => mi.Name == "Create" && mi.GetParameters().Length == 1);
+			var form = new FormCollection() { { "Title", "CreateTest"}, {"Text", "Just a test"} } ;
+			var result = createAction.Invoke(controller, new object[] { form  }) ;
+			
+			Assert.IsInstanceOfType<RedirectToRouteResult>(result);
 		}
 	}
 }
