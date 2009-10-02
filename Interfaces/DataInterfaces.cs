@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Wms.Repository;
 using Wms.Web;
 using WXML.Model;
 using WXML.Model.Descriptors;
@@ -21,7 +22,7 @@ namespace Wms.Data
 		void ApplyModelChanges(string script);
 	}
 
-	public interface IRepositoryManager
+	public interface IRepositoryManager : IModificationTracker
 	{
 		IQueryable GetEntityQuery(string entityName);
 		IQueryable<T> GetEntityQuery<T>();

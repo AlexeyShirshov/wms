@@ -38,5 +38,18 @@ namespace Wms.Helpers
 			return new CodeTypeReference(typeof(T));
 		}
 
+		public static CodeMemberMethod AddParam<T>(this CodeMemberMethod method, string name)
+		{
+			method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(T), name));
+			return method;
+		}
+
+		public static CodeMemberMethod Decorate<T>(this CodeMemberMethod method, params object[] args ) where T : System.Attribute
+		{
+			method.CustomAttributes.Add(new CodeAttributeDeclaration(TypeRef<T>(),
+				args.Select(a => new CodeAttributeArgument(new CodePrimitiveExpression(a))).ToArray()));
+			return method;
+		}
+
 	}
 }

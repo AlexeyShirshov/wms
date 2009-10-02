@@ -10,6 +10,7 @@ using Wms.Data;
 using Wms.Extensions;
 using Wms.Helpers;
 using Wms.Interfaces;
+using Wms.MVC;
 using WXML.Model;
 using WXML.Model.Descriptors;
 
@@ -77,28 +78,24 @@ namespace Wms.Web
 				throw new ArgumentNullException("clrType");
 
 			var cc = new CodeTypeDeclaration(ed.Identifier + "Controller");
-			cc.BaseTypes.Add(typeof (Controller));
-			cc.Members.Add(new CodeMemberField(typeof (IUnityContainer), "_container"));
+			cc.BaseTypes.Add(typeof (WmsController));
 			cc.Members.Add(new CodeMemberField(typeof (IRepositoryManager), "_repositoryManager"));
 
 			//constructor
 			var constructor = new CodeConstructor {Attributes = MemberAttributes.Public};
-			var containerParam = new CodeParameterDeclarationExpression(typeof (IUnityContainer), "container");
-			constructor.Parameters.Add(containerParam);
-			constructor.Statements.Add(
-				new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_container"),
-				                        new CodeVariableReferenceExpression("container")));
+			constructor.AddParam<IUnityContainer>("container");
+			constructor.BaseConstructorArgs.Add(new CodeArgumentReferenceExpression("container"));
 
 			constructor.Statements.Add(CodeGen.AssignField("_repositoryManager", new CodeMethodInvokeExpression(
 			                                                                     	new CodeMethodReferenceExpression(
-			                                                                     		CodeGen.FieldRef("_container"), "Resolve",
-			                                                                     		new CodeTypeReference(
-			                                                                     			typeof (IRepositoryManager))))));
+			                                                                     		CodeGen.FieldRef("Container"), "Resolve",
+			                                                                     		CodeGen.TypeRef<IRepositoryManager>()
+			                                                                     		))));
 
 			cc.Members.Add(constructor);
 
 			//Index action
-			CodeMemberMethod index = CreateAction("Index");
+			CodeMemberMethod index = GetAction("Index");
 			index.Statements.Add(
 				new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View",
 				                                                             new CodeMethodInvokeExpression(
@@ -110,7 +107,7 @@ namespace Wms.Web
 			cc.Members.Add(index);
 
 			//Edit action
-			CodeMemberMethod edit = CreateAction("Edit");
+			CodeMemberMethod edit = GetAction("Edit");
 			var eqExpressions = new List<String>();
 			edit.Parameters.AddRange(GetActionParameters(ed));
 
@@ -133,39 +130,45 @@ namespace Wms.Web
 			var source = new CodeMethodInvokeExpression(
 				new CodeMethodReferenceExpression(CodeGen.FieldRef("_repositoryManager"), "GetEntityQuery",
 				                                  new CodeTypeReference(clrType)));
-			edit.Statements.Add(CodeGen.AssignVar("model", new CodeMethodInvokeExpression(source, "FirstOrDefault", lambda)));
+			edit.Statements.Add(CodeGen.AssignVar("model", new CodeMethodInvokeExpression(source, "First", lambda)));
 
-			var returnStmt =
+			edit.Statements.Add(
 				new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "View",
-				                                                             modelReference));
-			edit.Statements.Add(returnStmt);
+				                                                             modelReference)));
 			cc.Members.Add(edit);
 
 			//Edit-save action
-			CodeMemberMethod editSave = CreateAction("Edit");
-			editSave.Parameters.AddRange(GetActionParameters(ed));
-			editSave.Parameters.Add(new CodeParameterDeclarationExpression(typeof (FormCollection), "form"));
-			editSave.CustomAttributes = new CodeAttributeDeclarationCollection(new[]
-			                                                                   	{
-			                                                                   		new CodeAttributeDeclaration(
-			                                                                   			CodeGen.TypeRef<AcceptVerbsAttribute>(),
-			                                                                   			new CodeAttributeArgument(
-			                                                                   				new CodeSnippetExpression("\"POST\"")))
-			                                                                   	});
+			CodeMemberMethod editSave = GetAction("Edit");
+			editSave.AddParam<FormCollection>("form")
+				.Decorate<AcceptVerbsAttribute>("POST")
+				.Parameters.AddRange(GetActionParameters(ed));
 
-			editSave.Statements.Add(new CodeMethodReturnStatement(
-			                        	new CodeMethodInvokeExpression(
-			                        		new CodeThisReferenceExpression(), "RedirectToAction",
-			                        		new CodeSnippetExpression("\"Index\""))));
+			var returnRedirect = new CodeMethodReturnStatement(
+				new CodeMethodInvokeExpression(
+					new CodeThisReferenceExpression(), "RedirectToAction",
+					new CodePrimitiveExpression("Index")));
+			editSave.Statements.Add(returnRedirect);
+			editSave.Statements.Add(CodeGen.DeclareVar(clrType, "item"));
+			editSave.Statements.Add(CodeGen.AssignVar("item", new CodeMethodInvokeExpression(source, "First", lambda)));
 
 			cc.Members.Add(editSave);
 
-			var create = CreateAction("Create");
+			//Create action
+			CodeMemberMethod create = GetAction("Create");
 			create.Statements.Add(new CodeMethodReturnStatement(
-				new CodeMethodInvokeExpression(
-					new CodeThisReferenceExpression(), "View")));
+			                      	new CodeMethodInvokeExpression(
+			                      		new CodeThisReferenceExpression(), "View")));
 
 			cc.Members.Add(create);
+
+			//Create-save action
+			CodeMemberMethod createSave = GetAction("Create");
+			createSave.AddParam<FormCollection>("form")
+				.Decorate<AcceptVerbsAttribute>("POST");
+
+			createSave.Statements.Add(returnRedirect);
+
+			cc.Members.Add(createSave);
 
 			var ns = new CodeNamespace("Wms.Controllers");
 			ns.Types.Add(cc);
@@ -174,41 +177,10 @@ namespace Wms.Web
 			var ccu = new CodeCompileUnit();
 			ccu.Namespaces.Add(ns);
 
-
 			return ccu;
-
-
-			//var generator = new CodeDomGenerator();
-
-			//var rt = WmsDefinitionManager.GetRepositoryProvider().RepositoryType;
-
-			//var controller = generator
-			//    //.AddReference(typeof(Controller).Assembly.Location)
-			//    //.AddReference("System.dll")
-			//    //.AddReference("System.Web.dll")
-			//    //.AddReference(rt.Assembly.Location)
-			//    //.AddReference("System.Data.Linq.dll")
-			//    //.AddReference("System.Core.dll")
-			//    .AddNamespace("Wms.Controllers")
-			//    .AddClass(ed.Identifier + "Controller").Inherits(typeof (Controller));
-
-			//controller.AddField(rt, MemberAttributes.Private, "_ctx");
-
-			//controller.AddCtor(Emit.assignField("_ctx", () => CodeDom.@new(rt)));
-
-			//var propName = WXMLCodeDomGeneratorNameHelper.GetMultipleForm(ed.Name);
-
-			//var index = controller.AddMethod(MemberAttributes.Public, typeof (ActionResult), () => "Index",
-			//     Emit.@return(() => CodeDom.@this.Call<ActionResult>("View")(CodeDom.VarRef("_ctx").Property(propName)))
-			//);
-
-			//Console.WriteLine(generator.GenerateCode(CodeDomGenerator.Language.CSharp));
-			////generator.Compile();
-
-			//return generator.GetCompileUnit(CodeDomGenerator.Language.CSharp);
 		}
 
-		private static CodeMemberMethod CreateAction(string name)
+		private static CodeMemberMethod GetAction(string name)
 		{
 			return new CodeMemberMethod
 			       	{

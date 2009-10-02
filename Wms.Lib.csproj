@@ -81,6 +81,7 @@
     <Compile Include="Interfaces\IViewGenerator.cs" />
     <Compile Include="Interfaces\IXmlModelWrapper.cs" />
     <Compile Include="MVC\BaseController.cs" />
+    <Compile Include="MVC\WmsController.cs" />
     <Compile Include="MVC\WmsPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
