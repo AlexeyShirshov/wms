@@ -79,7 +79,6 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\EntitiesController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
-    <Compile Include="Controllers\WmsController.cs" />
     <Compile Include="Controllers\WmsControllerFactory.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Data\Container.cs" />

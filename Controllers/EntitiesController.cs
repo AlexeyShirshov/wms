@@ -9,6 +9,7 @@ using System.Web.Mvc.Ajax;
 using Microsoft.Practices.Unity;
 using Wms.Data;
 using Wms.Exceptions;
+using Wms.MVC;
 using Wms.Web.Extensions;
 using Wms.Web.Models.Entities;
 using WXML.CodeDom;
