@@ -9,6 +9,7 @@ using WXML.Model.Descriptors;
 
 namespace Wms.Data
 {
+    [Obsolete]
 	public interface IRepository<T>
 	{
 		IQueryable<T> Items { get; }
@@ -22,6 +23,7 @@ namespace Wms.Data
 		void ApplyModelChanges(string script);
 	}
 
+    [Obsolete]
 	public interface IRepositoryManager : IModificationTracker
 	{
 		IQueryable GetEntityQuery(string entityName);
