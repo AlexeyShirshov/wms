@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ModelDesigner", "MvcApplication1\ModelDesigner.vbproj", "{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs04.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MvcApplication1\\ModelDesigner.vbproj
+		SccProjectName1 = MvcApplication1
+		SccLocalPath1 = MvcApplication1
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
