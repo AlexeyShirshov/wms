@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ModelDesigner", "ModelDesigner\ModelDesigner.vbproj", "{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csproj", "{E7025EBD-1ED5-4215-B925-38364A56F13D}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs04.codeplex.com/
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = ModelDesigner\\ModelDesigner.vbproj
 		SccProjectName1 = ModelDesigner
 		SccLocalPath1 = ModelDesigner
+		SccProjectUniqueName2 = Config\\Config.csproj
+		SccProjectName2 = Config
+		SccLocalPath2 = Config
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +27,10 @@ Global
 		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F465946-6466-4FF4-ACAB-C1CD6A67C29A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
