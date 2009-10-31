@@ -148,10 +148,12 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <Content Include="WmsRoot.config" />
+    <Content Include="wms.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\AdventureWorks.xml" />
+    <Content Include="App_Data\commonTypes.xml" />
+    <Content Include="App_Data\viewModel.xml" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />

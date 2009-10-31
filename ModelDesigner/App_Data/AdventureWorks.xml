@@ -77,40 +77,10 @@ By user 'shirshov' at 29.10.2009 18:19:34.
     <oos:SourceFragment id="Sales.Store" name="Store" selector="Sales" />
     <oos:SourceFragment id="Sales.StoreContact" name="StoreContact" selector="Sales" />
   </oos:SourceFragments>
+  <oos:Includes>
+    <xi:include parse="xml" href="commonTypes.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </oos:Includes>
   <oos:Types>
-    <oos:Type id="tByte">
-      <oos:ClrType name="System.Byte" />
-    </oos:Type>
-    <oos:Type id="tString">
-      <oos:ClrType name="System.String" />
-    </oos:Type>
-    <oos:Type id="tDateTime">
-      <oos:ClrType name="System.DateTime" />
-    </oos:Type>
-    <oos:Type id="tInt32">
-      <oos:ClrType name="System.Int32" />
-    </oos:Type>
-    <oos:Type id="tStringnullable">
-      <oos:ClrType name="System.String" />
-    </oos:Type>
-    <oos:Type id="tXML">
-      <oos:ClrType name="System.Xml.XmlDocument" />
-    </oos:Type>
-    <oos:Type id="tInt32nullable">
-      <oos:ClrType name="System.Nullable`1[[System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" />
-    </oos:Type>
-    <oos:Type id="tInt16">
-      <oos:ClrType name="System.Int16" />
-    </oos:Type>
-    <oos:Type id="tBoolean">
-      <oos:ClrType name="System.Boolean" />
-    </oos:Type>
-    <oos:Type id="tGUID">
-      <oos:ClrType name="System.Guid" />
-    </oos:Type>
-    <oos:Type id="tXMLnullable">
-      <oos:ClrType name="System.Xml.XmlDocument" />
-    </oos:Type>
     <oos:Type id="tContact">
       <oos:Entity ref="e_Person_Contact" />
     </oos:Type>

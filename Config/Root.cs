@@ -6,6 +6,7 @@ using System.Configuration;
 
 namespace Config
 {
+
     public class WmsRoot : ConfigurationSection
     {
         [
@@ -17,11 +18,20 @@ namespace Config
             get { return this["domains"] as Domains; }
         }
 
+        [
+        ConfigurationProperty("viewModels", IsDefaultCollection = false),
+        ConfigurationCollection(typeof(ViewModels))
+        ]
+        public ViewModels ViewModels
+        {
+            get { return this["viewModels"] as ViewModels; }
+        }
+
         public static WmsRoot Config
         {
             get
             {
-                return (WmsRoot)ConfigurationManager.GetSection("WmsRoot");
+                return (WmsRoot)ConfigurationManager.GetSection("wms");
             }
         }
     }

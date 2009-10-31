@@ -4,7 +4,8 @@ Public Class HomeController
 
     Function Index() As ActionResult
         ViewData("Message") = "Welcome to ASP.NET MVC!"
-        ViewData("TypesCount") = Config.WmsRoot.Config.Domains(0).Model.GetTypes.Count()
+        ViewData("TypesCount") = Config.WmsRoot.Config.Domains(0).LoadWXMLModel.GetTypes.Count()
+        ViewData("ViewModelsCount") = Config.WmsRoot.Config.ViewModels(0).LoadWXMLModel.GetEntities.Count
         Return View()
     End Function
 

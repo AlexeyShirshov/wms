@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<oos:WXMLModel schemaVersion="1" xmlns:oos="http://wise-orm.com/WXMLSchema.xsd">
+  <oos:Includes>
+    <xi:include parse="xml" href="commonTypes.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </oos:Includes>
+
+  <oos:Entities>
+    <oos:Entity name="First" id="eFirst">
+      <oos:SourceFragments />
+      <oos:Properties>
+        <oos:Property propertyName="Name" typeRef="tString" />
+        <oos:Property propertyName="Code" typeRef="tInt32" />
+      </oos:Properties>
+    </oos:Entity>
+  </oos:Entities>
+</oos:WXMLModel>
