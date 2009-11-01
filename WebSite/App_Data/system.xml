@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WXMLModel xmlns="http://wise-orm.com/WXMLSchema.xsd">
+  <Includes>
+    <xi:include parse="xml" href="commonTypes.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </Includes>
+  <Types>
+    <Type id="IPage">
+      <UserType name="Data.IPage"/>
+    </Type>
+    <Type id="IQueryable_IPage">
+      <UserType name="System.Linq.IQueryable`1[[Data.IPage]]"/>
+    </Type>
+  </Types>
+
+  <Entities>
+    <Entity id="ePage" name="Page" namespace="WmsCoreTypes">
+      <interfaces>
+        <interface>IPage</interface>
+      </interfaces>
+      <Properties>
+        <Property name="ID" type="tInt32" />
+        <Property name="Name" type="tString" interface="IPage" />
+        <Property name="Body" type="tString" interface="IPage" />
+        <Property name="Description" type="tString" interface="IPage" />
+        <Property name="Creator" type="tString" interface="IPage" />
+        <Property name="CreateDate" type="tDateTime" interface="IPage" />
+        <Property name="Disabled" type="tBoolean" interface="IPage" />
+
+        <Property name="HtmlDescription" type="tString" interface="IPage" />
+        <Property name="Keywords" type="tString" interface="IPage" />
+        <Property name="Title" type="tString" interface="IPage" />
+        <Property name="Url" type="tString" interface="IPage" />
+        <EntityProperty name="Parent" referencedEntity="ePage">
+          <field relatedProperty="ID"/>
+        </EntityProperty>
+        <CustomProperty name="Parent" type="IPage" interface="IPage" propertyAccessLevel="Private">
+          <Get>
+            <Property name="Parent" />
+          </Get>
+          <Set>
+            <Property name="Parent" />
+          </Set>
+        </CustomProperty>
+        <CustomProperty name="Childs" type="IQueryable_IPage" interface="IPage" propertyAccessLevel="Private">
+          <Get>
+            <Property name="Childs" />
+          </Get>
+          <Set>
+            <Property name="Childs" />
+          </Set>
+        </CustomProperty>
+      </Properties>
+      <Relations>
+        <Relation entity="ePage" name="Childs" />
+      </Relations>
+    </Entity>
+  </Entities>
+</WXMLModel>

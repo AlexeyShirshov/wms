@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csproj", "{E7025EBD-1ED5-4215-B925-38364A56F13D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{AC7487B5-6616-4E1F-A530-0936C8FF8572}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSite", "WebSite\WebSite.csproj", "{A5E51C03-A39F-4A46-84EE-5EE005A202E2}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs04.codeplex.com/
+		SccProjectUniqueName0 = Config\\Config.csproj
+		SccProjectName0 = Config
+		SccLocalPath0 = Config
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = Data\\Data.csproj
+		SccProjectName2 = Data
+		SccLocalPath2 = Data
+		SccProjectUniqueName3 = WebSite\\WebSite.csproj
+		SccProjectName3 = WebSite
+		SccLocalPath3 = WebSite
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7025EBD-1ED5-4215-B925-38364A56F13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7487B5-6616-4E1F-A530-0936C8FF8572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7487B5-6616-4E1F-A530-0936C8FF8572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7487B5-6616-4E1F-A530-0936C8FF8572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7487B5-6616-4E1F-A530-0936C8FF8572}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E51C03-A39F-4A46-84EE-5EE005A202E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E51C03-A39F-4A46-84EE-5EE005A202E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E51C03-A39F-4A46-84EE-5EE005A202E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E51C03-A39F-4A46-84EE-5EE005A202E2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
