@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IController.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="IControlTemplate.cs" />
     <Compile Include="IControl.cs" />

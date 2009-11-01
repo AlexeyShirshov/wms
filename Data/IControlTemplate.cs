@@ -13,5 +13,17 @@ namespace Data
             get;
             set;
         }
+
+        IController Controller
+        {
+            get;
+            set;
+        }
+
+        string Body
+        {
+            get;
+            set;
+        }
     }
 }

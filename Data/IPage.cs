@@ -43,5 +43,11 @@ namespace Data
             get;
             set;
         }
+
+        string DocType
+        {
+            get;
+            set;
+        }
     }
 }

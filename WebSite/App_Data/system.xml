@@ -8,7 +8,7 @@
       <UserType name="Data.IPage"/>
     </Type>
     <Type id="IQueryable_IPage">
-      <UserType name="System.Linq.IQueryable`1[[Data.IPage]]"/>
+      <UserType name="System.Linq.IQueryable`1[Data.IPage]"/>
     </Type>
   </Types>
 
@@ -45,9 +45,6 @@
           <Get>
             <Property name="Childs" />
           </Get>
-          <Set>
-            <Property name="Childs" />
-          </Set>
         </CustomProperty>
       </Properties>
       <Relations>

@@ -5,28 +5,39 @@ using System.Text;
 
 namespace Data
 {
-    public interface IControl
+    public interface IController
     {
-
-        string ID
+        string Name
         {
             get;
             set;
         }
 
-        IControlTemplate Template
+        string ModelName
         {
             get;
             set;
         }
 
-        IVisual Visual
+        object LocalParameters
         {
             get;
             set;
         }
 
-        object ParametersBinding
+        object GlobalParameters
+        {
+            get;
+            set;
+        }
+
+        string Code
+        {
+            get;
+            set;
+        }
+
+        object Language
         {
             get;
             set;

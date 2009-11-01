@@ -7,11 +7,6 @@ namespace Data
 {
     public interface IVisual
     {
-        string Body
-        {
-            get;
-            set;
-        }
 
         int Name
         {
