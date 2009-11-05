@@ -1,0 +1,10 @@
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\ModelDesigner.dll
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\ModelDesigner.pdb
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\Config.dll
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\WXML.Model.dll
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\WXML.Model.pdb
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\WXML.Model.xml
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\bin\Config.pdb
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\obj\Debug\ResolveAssemblyReference.cache
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\obj\Debug\ModelDesigner.dll
+D:\Private\wxml\PersistentModelsDesigner\ModelDesigner\obj\Debug\ModelDesigner.pdb
