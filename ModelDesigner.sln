@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelDesigner", "ModelDesigner\ModelDesigner.csproj", "{ACD95712-8B2F-4AAA-AC8A-2248D5B1C086}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ModelDesigner", "Core.ModelDesigner\Core.ModelDesigner.csproj", "{3A1F3CF4-3C23-4831-96BE-F250F13ABEC1}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 3
@@ -31,6 +33,10 @@ Global
 		{ACD95712-8B2F-4AAA-AC8A-2248D5B1C086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD95712-8B2F-4AAA-AC8A-2248D5B1C086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD95712-8B2F-4AAA-AC8A-2248D5B1C086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A1F3CF4-3C23-4831-96BE-F250F13ABEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A1F3CF4-3C23-4831-96BE-F250F13ABEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A1F3CF4-3C23-4831-96BE-F250F13ABEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A1F3CF4-3C23-4831-96BE-F250F13ABEC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
